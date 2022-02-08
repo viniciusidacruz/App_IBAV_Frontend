@@ -9,8 +9,12 @@ export function AuthRoutes() {
 
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Settings" component={SendReportScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen name="Send Report" component={SendReportScreen} />
     </Tab.Navigator>
   );
 }
