@@ -10,7 +10,7 @@ export function AppRoutes() {
     <Stack.Navigator>
       <Stack.Screen
         options={{ headerShown: false }}
-        name="Sign In"
+        name="SignIn"
         component={SignInScreen}
       />
     </Stack.Navigator>
