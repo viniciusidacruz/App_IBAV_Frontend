@@ -11,6 +11,7 @@ export function InputFieldComponent({
   secureTextEntry,
   onChangeText,
   autoCorrect,
+  primary,
 }: IContentProps) {
   const [show, setShow] = useState(false);
 
@@ -19,7 +20,7 @@ export function InputFieldComponent({
   };
 
   return (
-    <S.Field>
+    <S.Field primary={primary}>
       {secureTextEntry ? (
         <S.Input
           placeholder={placeholder}
@@ -27,6 +28,7 @@ export function InputFieldComponent({
           secureTextEntry={show ? false : true}
           onChangeText={onChangeText}
           autoCorrect={autoCorrect}
+          primary={primary}
         />
       ) : (
         <S.Input
@@ -34,6 +36,7 @@ export function InputFieldComponent({
           placeholderTextColor={placeholderTextColor}
           onChangeText={onChangeText}
           autoCorrect={autoCorrect}
+          primary={primary}
         />
       )}
 

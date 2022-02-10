@@ -52,17 +52,17 @@ export default function HomeScreen() {
           <SelectOptionsComponent
             icon={<S.SendReportIcon name="document-text-sharp" />}
             title="Entregar Relatório"
-            onPress={() => {}}
+            onPress={() => redirect.navigate('SendReport')}
           />
           <SelectOptionsComponent
             icon={<S.MembersIcon name="user-friends" />}
             title="Membros"
-            onPress={() => {}}
+            onPress={() => redirect.navigate('SendReport')}
           />
           <SelectOptionsComponent
             icon={<S.RegisterIcon name="user-plus" />}
             title="Cadastrar"
-            onPress={() => {}}
+            onPress={() => redirect.navigate('SendReport')}
           />
         </S.ContentOptions>
       </S.Content>

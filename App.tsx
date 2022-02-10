@@ -11,8 +11,7 @@ import {
 } from '@expo-google-fonts/poppins';
 
 import theme from './src/styles/theme';
-
-import Routes from './src/routes';
+import { AppRoutes } from './src/routes/app.routes';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -28,7 +27,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar style="light" />
-      <Routes />
+      <AppRoutes />
     </ThemeProvider>
   );
 }

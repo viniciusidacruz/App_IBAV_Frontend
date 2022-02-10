@@ -1,8 +1,11 @@
 import styled from 'styled-components/native';
 import { Entypo } from '@expo/vector-icons';
 
-export const Field = styled.View`
-  border-bottom-color: ${({ theme }) => theme.colors.light};
+import { IColorsProps } from './types';
+
+export const Field = styled.View<IColorsProps>`
+  border-bottom-color: ${(props) =>
+    props.primary ? props.theme.colors.grey : props.theme.colors.light};
   border-bottom-width: 1px;
 
   width: 100%;
@@ -13,8 +16,9 @@ export const Field = styled.View`
   justify-content: space-between;
 `;
 
-export const Input = styled.TextInput`
-  color: ${({ theme }) => theme.colors.light};
+export const Input = styled.TextInput<IColorsProps>`
+  color: ${(props) =>
+    props.primary ? props.theme.colors.grey : props.theme.colors.light};
 
   width: 80%;
 
