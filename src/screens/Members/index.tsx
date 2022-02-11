@@ -5,12 +5,18 @@ import { HeaderComponent } from '../../components/Header';
 
 import { AppProps } from '../../routes/types/app';
 
-export function MembersReportScreen({ navigation }: AppProps) {
+import * as S from './styles';
+
+export function MembersScreen({ navigation }: AppProps) {
+
   return (
     <>
       <HeaderComponent>
-        <Text>Teste</Text>
       </HeaderComponent>
+
+      <>
+       <Text>Members</Text>
+      </>
     </>
   );
 }

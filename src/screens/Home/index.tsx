@@ -1,19 +1,29 @@
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { TouchableOpacity } from 'react-native';
 import { LogoComponent } from '../../components/Logo';
 import { TitleComponent } from '../../components/Title';
 import { HeaderComponent } from '../../components/Header';
-
-import * as S from './styles';
 import { SelectOptionsComponent } from '../../components/SelectOptions';
 
-export function HomeScreen() {
-  const redirect = useNavigation();
+import { AppProps } from '../../routes/types/app';
 
-  const logout = () => {
-    redirect.navigate('SignIn');
+import * as S from './styles';
+import useAuth from '../../hooks/useAuth';
+
+export function HomeScreen({ navigation }: AppProps) {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if(!user) {
+      navigation.navigate('SignIn')
+    }
+  }, []);
+  
+  const logout = async () => {
+    navigation.navigate('SignIn')
+    await AsyncStorage.removeItem('@storage_User')
   };
 
   return (
@@ -52,17 +62,17 @@ export function HomeScreen() {
           <SelectOptionsComponent
             icon={<S.SendReportIcon name="document-text-sharp" />}
             title="Entregar Relatório"
-            onPress={() => redirect.navigate('SendReport')}
+            onPress={() => navigation.navigate('SendReport')}
           />
           <SelectOptionsComponent
             icon={<S.MembersIcon name="user-friends" />}
             title="Membros"
-            onPress={() => redirect.navigate('SendReport')}
+            onPress={() => navigation.navigate('Members')}
           />
           <SelectOptionsComponent
             icon={<S.RegisterIcon name="user-plus" />}
             title="Cadastrar"
-            onPress={() => redirect.navigate('SendReport')}
+            onPress={() => navigation.navigate('Register')}
           />
         </S.ContentOptions>
       </S.Content>

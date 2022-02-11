@@ -1,29 +1,32 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import Reac from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
 import { HeaderComponent } from '../../components/Header';
 
-const data = [
-  { title: 'Dados', path: 'SendReport' },
-  { title: 'Membros', path: 'MembersReport' },
-  { title: 'Visitantes', path: 'VisitorsReport' },
-];
+import { AppProps } from '../../routes/types/app';
 
-export function VisitorsReportScreen() {
-  const redirect = useNavigation();
+export function VisitorsReportScreen({ navigation }: AppProps) {
 
   return (
     <>
       <HeaderComponent>
-        {data.map((item) => (
           <TouchableOpacity
-            key={item.title}
-            onPress={() => redirect.navigate(item.path)}
+            onPress={() => navigation.navigate('SendReport')}
           >
-            <Text>{item.title}</Text>
+            <Text>Dados</Text>
           </TouchableOpacity>
-        ))}
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('MembersReport')}
+          >
+            <Text>Membros</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('VisitorsReport')}
+          >
+            <Text>Visitantes</Text>
+          </TouchableOpacity>
       </HeaderComponent>
     </>
   );

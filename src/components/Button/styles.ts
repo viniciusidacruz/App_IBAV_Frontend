@@ -22,7 +22,7 @@ export const Background = styled(LinearGradient).attrs({
 
 export const Title = styled.Text`
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold}
+  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
 
   text-transform: uppercase;
   letter-spacing: 1px;

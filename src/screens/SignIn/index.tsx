@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import axios from 'axios'
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
@@ -9,7 +7,9 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+
 import { firebaseConfig } from "../../config/firebase";
+import { connectApi } from "../../common/services/ConnectApi";
 
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
@@ -17,18 +17,18 @@ import { ButtonComponent } from "../../components/Button";
 import { InputFieldComponent } from "../../components/InputField";
 
 import * as S from "./styles";
+import { AppProps } from "../../routes/types/app";
+import useAuth from "../../hooks/useAuth";
 
-export default function SignInScreen() {
+export function SignInScreen({ navigation }: AppProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const redirect = useNavigation();
-
+  
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const { user } = useAuth();
 
   const handleCreateAccount = () => {
-   
     createUserWithEmailAndPassword(auth, email, password)
       .then((response) => {
         const user = response.user;
@@ -64,10 +64,9 @@ export default function SignInScreen() {
 
         AsyncStorage.setItem("@storage_User", userStore);
 
-        console.log(userStore);
-        
-
-        redirect.navigate("Home");
+        if(userStore) {
+          navigation.navigate('Home')
+        };
       })
       .catch((error) => {
         if(error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
@@ -78,14 +77,18 @@ export default function SignInScreen() {
   };
 
   const createUser = (id: string) => {
-    axios.post('https://authentication-ibav-2ba41-default-rtdb.firebaseio.com/users.json', {
+    connectApi.post('/users.json', {
       email,
-      senha: password,
+      password,
       id
-    }).then((res: any) => {
-      console.log('Esse é o res', res);
-    });
+    })
   }
+
+  useEffect(() => {
+    if(user) {
+      navigation.navigate('Home')
+    }
+  }, []);
 
   return (
     <S.Container source={require("../../assets/background.png")}>
@@ -118,7 +121,6 @@ export default function SignInScreen() {
           </S.Field>
           <S.Buttons>
             <ButtonComponent title="Entrar" onPress={handleSignIn} />
-            <ButtonComponent title="Register" onPress={handleCreateAccount} />
           </S.Buttons>
         </S.Content>
       </S.Form>

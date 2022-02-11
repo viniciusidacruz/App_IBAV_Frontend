@@ -5,7 +5,7 @@ import { IColorsProps } from './types';
 
 export const Field = styled.View<IColorsProps>`
   border-bottom-color: ${(props) =>
-    props.primary ? props.theme.colors.grey : props.theme.colors.light};
+    props.primary ? props?.theme?.colors?.grey : props?.theme?.colors?.light};
   border-bottom-width: 1px;
 
   width: 100%;
@@ -18,7 +18,7 @@ export const Field = styled.View<IColorsProps>`
 
 export const Input = styled.TextInput<IColorsProps>`
   color: ${(props) =>
-    props.primary ? props.theme.colors.grey : props.theme.colors.light};
+    props.primary ? props?.theme?.colors?.grey : props?.theme?.colors?.light};
 
   width: 80%;
 

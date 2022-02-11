@@ -1,22 +1,34 @@
-import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { HomeScreen } from "../screens/Home";
+import { SignInScreen } from "../screens/SignIn";
+import { MembersScreen } from "../screens/Members";
+import { PreloadScreen } from "../screens/PreLoad";
+import { RegisterScreen } from "../screens/Register";
 import { SendReportScreen } from "../screens/SendReport";
 import { MembersReportScreen } from "../screens/MembersReport";
 import { VisitorsReportScreen } from "../screens/VisitorsReport";
 
-import { IParamsRoutesAppProps } from "./types/routes";
+import { AppStackParamsList } from "./types/app";
 
 export function AppRoutes() {
-  const { Navigator, Screen } =
-    createNativeStackNavigator<IParamsRoutesAppProps>();
+  const { Navigator, Screen } = createNativeStackNavigator<AppStackParamsList>();
 
   return (
-    <Navigator>
+    <Navigator initialRouteName="Preload">
       <Screen
         name="Home"
         component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Screen 
+        name="SignIn"
+        component={SignInScreen}
+        options={{ headerShown: false }}
+      />
+      <Screen 
+        name="Preload"
+        component={PreloadScreen}
         options={{ headerShown: false }}
       />
       <Screen
@@ -32,6 +44,16 @@ export function AppRoutes() {
       <Screen
         name="VisitorsReport"
         component={VisitorsReportScreen}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="Members"
+        component={MembersScreen}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="Register"
+        component={RegisterScreen}
         options={{ headerShown: false }}
       />
     </Navigator>

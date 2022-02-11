@@ -1,13 +1,22 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { AppRoutes } from "./app.routes";
-import SignInScreen from "../screens/SignIn";
+import { AuthRoutes } from "./auth.routes";
+import { NavigationContainer } from "@react-navigation/native";
 
-export function Routes() {
+export const Routes = () => {
+  const [user, setUser] = useState<any>();
+
+  useEffect(() => {
+    AsyncStorage.getItem("@storage_User").then((response) => {
+      setUser(response);
+    });
+  }, []);
+
   return (
     <NavigationContainer>
-      <SignInScreen />
+      <AppRoutes />
     </NavigationContainer>
   );
-}
+};

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+
 import { IPrimaryColorProps } from './types';
 
 export const Small = styled.Text<IPrimaryColorProps>`
@@ -27,12 +28,12 @@ export const Medium = styled.Text<IPrimaryColorProps>`
 
 export const Large = styled.Text<IPrimaryColorProps>`
   color: ${(props) =>
-    props.primary ? props.theme.colors.grey : props.theme.colors.light};
-  font-size: ${({ theme }) => theme.fonts.fontSize.large};
+    props.primary ? props?.theme?.colors?.grey : props?.theme?.colors?.light};
+  font-size: ${({ theme }) => theme?.fonts?.fontSize?.large};
   font-family: ${(props) =>
     props.weight
-      ? props.theme.fonts.fontWeight.bold
-      : props.theme.fonts.fontWeight.regular};
+      ? props?.theme?.fonts?.fontWeight?.bold
+      : props?.theme?.fonts?.fontWeight?.regular};
   letter-spacing: 1px;
   text-transform: ${(props) => (props.uppercase ? 'uppercase' : 'none')};
 `;
