@@ -9,7 +9,7 @@ import { HeaderComponent } from '../../components/Header';
 import * as S from './styles';
 import { SelectOptionsComponent } from '../../components/SelectOptions';
 
-export default function HomeScreen() {
+export function HomeScreen() {
   const redirect = useNavigation();
 
   const logout = () => {

@@ -10,7 +10,7 @@ import * as S from './styles';
 import { TitleComponent } from '../../components/Title';
 import { InputFieldComponent } from '../../components/InputField';
 
-export default function SendReportScreen() {
+export function SendReportScreen() {
   const [offer, setOffer] = useState('');
   const [observation, setObservation] = useState('');
 

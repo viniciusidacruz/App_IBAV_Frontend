@@ -10,7 +10,7 @@ const data = [
   { title: 'Visitantes', path: 'VisitorsReport' },
 ];
 
-export default function MembersReportScreen() {
+export function MembersReportScreen() {
   const redirect = useNavigation();
 
   return (
