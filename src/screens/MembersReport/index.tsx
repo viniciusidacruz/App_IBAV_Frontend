@@ -1,60 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { ScrollView, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { ButtonComponent } from '../../components/Button';
-import { HeaderComponent } from '../../components/Header';
-import { ComeBackComponent } from '../../components/ComeBack';
-import { FooterInfoComponent } from '../../components/FooterInfo';
-import { ModalComponent } from '../../components/Modal';
-import { NotificationComponent } from '../../components/Notification';
-import { CardMembersComponent } from '../../components/Cards/Members';
-import { HeadingPresentComponent } from '../../components/HeadingPresent';
+import { ModalComponent } from "../../components/Modal";
+import { ButtonComponent } from "../../components/Button";
+import { HeaderComponent } from "../../components/Header";
+import { ComeBackComponent } from "../../components/ComeBack";
+import { FooterInfoComponent } from "../../components/FooterInfo";
+import { NotificationComponent } from "../../components/Notification";
+import { CardMembersComponent } from "../../components/Cards/Members";
+import { HeadingPresentComponent } from "../../components/HeadingPresent";
+import { ReportContentModalComponent } from "../../components/Modal/Report";
 
-import { connectApi } from '../../common/services/ConnectApi';
-import { AppProps } from '../../routes/types/app';
+import { connectApi } from "../../common/services/ConnectApi";
+import { AppProps } from "../../routes/types/app";
 
-import * as S from './styles'
-import { ReportContentModalComponent } from '../../components/Modal/Report';
+import * as S from "./styles";
 
 export function MembersReportScreen({ navigation }: AppProps) {
-  const [members, setMembers] = useState();
+  const [members, setMembers] = useState<any>([]);
+  const [celulas, setCelulas] = useState<any>()
+  const [user, setUser] = useState<any>();
   const [isModalVisible, setModalVisible] = useState(false);
+
+  console.log('----------------------------Esse é o state celulas----------------------------------------', celulas);
+  console.log('----------------------------Esse é o state user----------------------------------------', user);
 
   const handleOpenModal = () => {
     setModalVisible(true);
   };
 
   const handleCloseModal = () => {
-    setModalVisible(false)
-  }
-
-  const teste = [
-    { nome: "Caio Silva Barbara", status: "Aprovado", id: 1 },
-    { nome: "Julia Silva Barbara", status: "Aprovado", id: 2 },
-    { nome: "Andrea Silva Barbara", status: "Aprovado", id: 3 },
-    { nome: "Beatriz Barbara da Cruz", status: "Aprovado", id: 4 },
-    { nome: "Vinicius Italo da Cruz", status: "Aprovado", id: 5 },
-    { nome: "Mauricio", status: "Aguardando Aprovação", id: 6 }
-  ];
+    setModalVisible(false);
+  };  
 
   useEffect(() => {
-    const ID_CELULAS = '-Mve6Q42f4wIHHdTQLuu'
+    const checkUser = async () => {
+      const user = await AsyncStorage.getItem("@storage_dateUser");      
 
-    connectApi.get(`celulas/${ID_CELULAS}/membros.json`)
-      .then((response) => {
-        setMembers(response.data)
-      })
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    };
+    checkUser();
+  }, []);  
+
+  useEffect(() => {    
+    const ID_CELULAS = "-Mve6Q42f4wIHHdTQLuu";
+
+    connectApi.get(`celulas/${ID_CELULAS}/membros.json`).then((response) => {
+      setMembers(Object.entries(response.data));
+    });
   }, []);
 
-
+  useEffect(() => {
+    connectApi.get('/celulas.json').then((response) => {
+      setCelulas(Object.entries(response.data))
+    })
+  }, []);
+  
   return (
     <>
       <HeaderComponent>
-        <ComeBackComponent onPress={() => navigation.navigate('SendReport')} />
+        <ComeBackComponent onPress={() => navigation.navigate("SendReport")} />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation>
-            Dados
-          </S.Navigation>
+          <S.Navigation>Dados</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
@@ -73,17 +83,18 @@ export function MembersReportScreen({ navigation }: AppProps) {
 
       <S.Content>
         <HeadingPresentComponent />
-
-        <FlatList
-          data={teste}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => <CardMembersComponent data={item} />}
-        />
-
+        <ScrollView>
+          {members.map((data: any) => {      
+            return <CardMembersComponent key={data} data={data} />;
+          })}
+        </ScrollView>
         <FooterInfoComponent />
 
         <S.Button>
-          <ButtonComponent title="Entregar relatório" onPress={handleOpenModal} />
+          <ButtonComponent
+            title="Entregar relatório"
+            onPress={handleOpenModal}
+          />
         </S.Button>
       </S.Content>
 
@@ -91,7 +102,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
         isVisible={isModalVisible}
         onBackdropPress={() => setModalVisible(false)}
       >
-        <ReportContentModalComponent handleCloseModal={handleCloseModal} />
+        <ReportContentModalComponent handleCloseModal={handleCloseModal} data={user && user[1]} />
       </ModalComponent>
     </>
   );

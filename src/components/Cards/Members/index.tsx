@@ -7,12 +7,12 @@ export function CardMembersComponent({ data }: any) {
     const [presentCelula, setCelulaPresent] = useState('F');
     const [presentCulto, setPresentCulto] = useState('-');
 
-    const maxName = data.nome.substring(0, 20);
+    const maxName = data[1].nome.substring(0, 20);
 
     return (
         <S.Content>
             <S.ContentName>
-                <S.InfoName>{maxName}...</S.InfoName>
+                 <S.InfoName>{maxName}...</S.InfoName>
             </S.ContentName>
             <S.ContentPresent>
                 <Picker

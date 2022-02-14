@@ -4,15 +4,20 @@ import { TitleComponent } from '../../Title'
 import { ButtonComponent } from '../../Button'
 
 import * as S from './styles'
-import { ICloseModal } from './types'
+import { IContentModal } from './types'
 
-export function ReportContentModalComponent({ handleCloseModal }: ICloseModal) {
+export function ReportContentModalComponent({ handleCloseModal, data }: IContentModal) {
     return (
         <S.ContentModal>
             <S.TitleModal>Resumo do relatório</S.TitleModal>
 
             <S.ListModal>
-                <TitleComponent title="Célula: 008-Radicais livres" decoration primary />
+                <TitleComponent
+                    title={`Célula: ${data.numero_celula} - ${data.rede}`}
+                    decoration
+                    primary
+                />
+
                 <TitleComponent title="Oferta: R$10,00" decoration primary />
                 <TitleComponent title="Data: 20/02/2022" decoration primary />
                 <TitleComponent title="Presença:" decoration primary />

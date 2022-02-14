@@ -14,7 +14,7 @@ export function FooterInfoComponent() {
   return (
     <S.Footer>
       {infos.map((info) => (
-        <S.Info>
+        <S.Info key={info.lettring}>
           <S.Decoration>
             {info.lettring}
           </S.Decoration>

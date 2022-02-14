@@ -8,6 +8,7 @@ export interface IContentProps {
   uppercase?: boolean;
   decoration?: boolean;
   red?: boolean;
+  blue?: boolean;
 }
 
 export interface IPrimaryColorProps {
@@ -15,4 +16,5 @@ export interface IPrimaryColorProps {
   weight?: boolean;
   uppercase?: boolean;
   red?: boolean;
+  blue?: boolean;
 }

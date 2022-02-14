@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
@@ -18,6 +19,7 @@ import * as S from "./styles";
 export function SendReportScreen({ navigation }: AppProps) {
   const [offer, setOffer] = useState("");
   const [observation, setObservation] = useState("");
+  const [user, setUser] = useState<any>();
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handleOpenModal = () => {
@@ -25,13 +27,26 @@ export function SendReportScreen({ navigation }: AppProps) {
   };
 
   const handleCloseModal = () => {
-    setModalVisible(false)
-  }
+    setModalVisible(false);
+  };
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await AsyncStorage.getItem("@storage_dateUser");      
+
+      if (user) {
+        setUser(JSON.parse(user));
+      } else {
+        navigation.navigate("SignIn");
+      }
+    };
+    checkUser();
+  }, []);  
 
   return (
     <>
       <HeaderComponent>
-        <ComeBackComponent onPress={() => navigation.navigate('Home')} />
+        <ComeBackComponent onPress={() => navigation.navigate("Home")} />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
           <S.Navigation
             style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
@@ -50,56 +65,63 @@ export function SendReportScreen({ navigation }: AppProps) {
         <NotificationComponent />
       </HeaderComponent>
 
-      <S.Content>
-        <S.Grid>
-          <TitleComponent title="Célula:" small primary />
-          <S.ContentC>
-            <S.IconC name="user-friends" />
-            <S.DescriptionC>008-Radicais livres</S.DescriptionC>
-          </S.ContentC>
-        </S.Grid>
+      {user && (
+        <>
+          <S.Content>
+            <S.Grid>
+              <TitleComponent title="Célula:" small primary />
+              <S.ContentC>
+                <S.IconC name="user-friends" />
+                <S.DescriptionC>{`${user[1].numero_celula} - ${user[1].rede}`}</S.DescriptionC>
+              </S.ContentC>
+            </S.Grid>
 
-        <S.Grid>
-          <TitleComponent title="Oferta R$:" small primary />
-          <S.ContentC>
-            <S.IconC name="file-invoice-dollar" />
-            <InputFieldComponent
-              primary
-              value={offer}
-              placeholderTextColor="grey"
-              onChangeText={(value) => setOffer(value)}
-            />
-          </S.ContentC>
-        </S.Grid>
+            <S.Grid>
+              <TitleComponent title="Oferta R$:" small primary />
+              <S.ContentC>
+                <S.IconC name="file-invoice-dollar" />
+                <InputFieldComponent
+                  primary
+                  value={offer}
+                  placeholderTextColor="grey"
+                  onChangeText={(value) => setOffer(value)}
+                />
+              </S.ContentC>
+            </S.Grid>
 
-        <S.Grid>
-          <TitleComponent title="Data:" small primary />
-          <S.ContentC>
-            <DateComponent />
-          </S.ContentC>
-        </S.Grid>
+            <S.Grid>
+              <TitleComponent title="Data:" small primary />
+              <S.ContentC>
+                <DateComponent />
+              </S.ContentC>
+            </S.Grid>
 
-        <S.Grid>
-          <TitleComponent title="Observações:" small primary />
-          <S.Observations
-            multiline={true}
-            numberOfLines={5}
-            onChangeText={(text) => setObservation(text)}
-            value={observation}
-          />
-        </S.Grid>
+            <S.Grid>
+              <TitleComponent title="Observações:" small primary />
+              <S.Observations
+                multiline={true}
+                numberOfLines={5}
+                onChangeText={(text) => setObservation(text)}
+                value={observation}
+              />
+            </S.Grid>
 
-        <S.Button>
-          <ButtonComponent title="Entregar relatório" onPress={handleOpenModal} />
-        </S.Button>
-      </S.Content>
+            <S.Button>
+              <ButtonComponent
+                title="Entregar relatório"
+                onPress={handleOpenModal}
+              />
+            </S.Button>
+          </S.Content>
 
-      <ModalComponent
-        isVisible={isModalVisible}
-        onBackdropPress={() => setModalVisible(false)}
-      >
-        <ReportContentModalComponent handleCloseModal={handleCloseModal} />
-      </ModalComponent>
+          <ModalComponent
+            isVisible={isModalVisible}
+            onBackdropPress={() => setModalVisible(false)}
+          >
+            <ReportContentModalComponent handleCloseModal={handleCloseModal} data={user[1]} />
+          </ModalComponent>
+        </>
+      )}
     </>
   );
 }
