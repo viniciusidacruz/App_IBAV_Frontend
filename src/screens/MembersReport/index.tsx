@@ -5,6 +5,7 @@ import { ButtonComponent } from '../../components/Button';
 import { HeaderComponent } from '../../components/Header';
 import { ComeBackComponent } from '../../components/ComeBack';
 import { FooterInfoComponent } from '../../components/FooterInfo';
+import { ModalComponent } from '../../components/Modal';
 import { NotificationComponent } from '../../components/Notification';
 import { CardMembersComponent } from '../../components/Cards/Members';
 import { HeadingPresentComponent } from '../../components/HeadingPresent';
@@ -13,9 +14,19 @@ import { connectApi } from '../../common/services/ConnectApi';
 import { AppProps } from '../../routes/types/app';
 
 import * as S from './styles'
+import { ReportContentModalComponent } from '../../components/Modal/Report';
 
 export function MembersReportScreen({ navigation }: AppProps) {
   const [members, setMembers] = useState();
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false)
+  }
 
   const teste = [
     { nome: "Caio Silva Barbara", status: "Aprovado", id: 1 },
@@ -72,9 +83,16 @@ export function MembersReportScreen({ navigation }: AppProps) {
         <FooterInfoComponent />
 
         <S.Button>
-          <ButtonComponent title="Entregar relatório" onPress={() => { }} />
+          <ButtonComponent title="Entregar relatório" onPress={handleOpenModal} />
         </S.Button>
       </S.Content>
+
+      <ModalComponent
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+      >
+        <ReportContentModalComponent handleCloseModal={handleCloseModal} />
+      </ModalComponent>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 
+import { ModalComponent } from '../../components/Modal';
 import { ButtonComponent } from '../../components/Button';
 import { HeaderComponent } from '../../components/Header';
 import { ComeBackComponent } from '../../components/ComeBack';
@@ -9,14 +10,32 @@ import { InputFieldComponent } from '../../components/InputField';
 import { NotificationComponent } from '../../components/Notification';
 import { CardVisitorsComponent } from '../../components/Cards/Visitors';
 import { HeadingPresentComponent } from '../../components/HeadingPresent';
+import { ReportContentModalComponent } from '../../components/Modal/Report';
+import { VisitorContentModalComponent } from '../../components/Modal/Visitor';
 
 import { AppProps } from '../../routes/types/app';
 
 import * as S from './styles'
 
 export function VisitorsReportScreen({ navigation }: AppProps) {
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isAddVisible, setisAddVisible] = useState(false);
+
+  const handleOpenModalReport = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModalReport = () => {
+    setModalVisible(false)
+  }
+
+  const handleOpenModalAdd = () => {
+    if (phone !== '') {
+      setisAddVisible(true)
+    }
+  }
 
   const teste = [
     { nome: "Caio Silva Barbara", status: "Aprovado", id: 1 },
@@ -73,7 +92,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
 
           <S.FinishForm>
             <S.Info>*Campo obrigatório</S.Info>
-            <ButtonComponent title="Adicionar visitante" onPress={() => { }} small />
+            <ButtonComponent title="Adicionar visitante" onPress={handleOpenModalAdd} small />
           </S.FinishForm>
         </S.HeadingForm>
 
@@ -88,9 +107,23 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         <FooterInfoComponent />
 
         <S.Button>
-          <ButtonComponent title="Entregar relatório" onPress={() => { }} />
+          <ButtonComponent title="Entregar relatório" onPress={handleOpenModalReport} />
         </S.Button>
       </S.Content>
+
+      <ModalComponent
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+      >
+        <ReportContentModalComponent handleCloseModal={handleCloseModalReport} />
+      </ModalComponent>
+
+      <ModalComponent
+        isVisible={isAddVisible}
+        onBackdropPress={() => setisAddVisible(false)}
+      >
+        <VisitorContentModalComponent setisAddVisible={setisAddVisible} />
+      </ModalComponent>
     </>
   );
 }

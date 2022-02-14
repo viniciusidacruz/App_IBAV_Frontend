@@ -1,22 +1,32 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
+import { TouchableOpacity } from "react-native";
 
+import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
+import { ModalComponent } from "../../components/Modal";
 import { HeaderComponent } from "../../components/Header";
+import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
+import { ReportContentModalComponent } from "../../components/Modal/Report";
 
 import { AppProps } from "../../routes/types/app";
 
 import * as S from "./styles";
-import { DateComponent } from "../../components/Date";
-import { ButtonComponent } from "../../components/Button";
 
 export function SendReportScreen({ navigation }: AppProps) {
   const [offer, setOffer] = useState("");
   const [observation, setObservation] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false)
+  }
 
   return (
     <>
@@ -80,9 +90,16 @@ export function SendReportScreen({ navigation }: AppProps) {
         </S.Grid>
 
         <S.Button>
-          <ButtonComponent title="Entregar relatório" onPress={() => { }} />
+          <ButtonComponent title="Entregar relatório" onPress={handleOpenModal} />
         </S.Button>
       </S.Content>
+
+      <ModalComponent
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+      >
+        <ReportContentModalComponent handleCloseModal={handleCloseModal} />
+      </ModalComponent>
     </>
   );
 }

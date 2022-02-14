@@ -13,8 +13,6 @@ export const Content = styled.View`
 `
 
 export const ContentName = styled.View`
-    width: 65%;
-
     margin-right: 20;
 `
 
@@ -28,6 +26,9 @@ export const InfoName = styled.Text`
 export const ContentPresent = styled.View`
     flex-direction: row;
     justify-content: space-between;
+`
 
-    width: 20%;
+export const CheckCelula = styled.View``
+
+export const CheckCulto = styled.View`
 `

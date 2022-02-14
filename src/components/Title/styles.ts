@@ -41,11 +41,10 @@ export const Large = styled.Text<IPrimaryColorProps>`
 export const Decoration = styled.Text<IPrimaryColorProps>`
   color: ${(props) =>
     props.red ? props.theme.colors.red : props.theme.colors.grey};
-  font-size: ${({ theme }) => theme.fonts.fontSize.small};
+  font-size: 14;
   font-family: ${(props) =>
     props.weight
       ? props.theme.fonts.fontWeight.bold
       : props.theme.fonts.fontWeight.regular};
-  letter-spacing: 1px;
   text-transform: ${(props) => (props.uppercase ? 'uppercase' : 'none')};
 `;
