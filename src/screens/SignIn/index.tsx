@@ -18,15 +18,13 @@ import { InputFieldComponent } from "../../components/InputField";
 
 import * as S from "./styles";
 import { AppProps } from "../../routes/types/app";
-import useAuth from "../../hooks/useAuth";
 
 export function SignInScreen({ navigation }: AppProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const { user } = useAuth();
 
   const handleCreateAccount = () => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -60,19 +58,19 @@ export function SignInScreen({ navigation }: AppProps) {
     signInWithEmailAndPassword(auth, email, password)
       .then((response) => {
         const user = response.user;
-        const userStore = JSON.stringify(user);        
+        const userStore = JSON.stringify(user);
 
         AsyncStorage.setItem("@storage_User", userStore);
 
-        if(userStore) {
+        if (userStore) {
           navigation.navigate('Home')
         };
       })
       .catch((error) => {
-        if(error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
           alert('Email/Senha não encontrado!');
         }
-        
+
       });
   };
 
@@ -83,12 +81,6 @@ export function SignInScreen({ navigation }: AppProps) {
       id
     })
   }
-
-  useEffect(() => {
-    if(user) {
-      navigation.navigate('Home')
-    }
-  }, []);
 
   return (
     <S.Container source={require("../../assets/background.png")}>

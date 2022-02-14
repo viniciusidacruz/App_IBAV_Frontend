@@ -9,7 +9,7 @@ export const Content = styled.TouchableOpacity`
 `;
 
 export const Background = styled(LinearGradient).attrs({
-  colors: ['#4F0609', '#D30000'],
+  colors: ['#A60100', '#EA0000'],
 })`
   align-items: center;
   justify-content: center;

@@ -11,21 +11,12 @@ import { NotificationComponent } from "../../components/Notification";
 import { AppProps } from "../../routes/types/app";
 
 import * as S from "./styles";
+import { DateComponent } from "../../components/Date";
+import { ButtonComponent } from "../../components/Button";
 
 export function SendReportScreen({ navigation }: AppProps) {
   const [offer, setOffer] = useState("");
   const [observation, setObservation] = useState("");
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [show, setShow] = useState(false);
-
-  const onChange = (event: Event, selectedDate: any) => {
-    setDate(selectedDate);
-    setShow(false)
-  };
-
-  const showDatepicker = () => {
-    setShow(true);
-  };
 
   return (
     <>
@@ -74,21 +65,7 @@ export function SendReportScreen({ navigation }: AppProps) {
         <S.Grid>
           <TitleComponent title="Data:" small primary />
           <S.ContentC>
-            <View>
-              <TouchableOpacity onPress={showDatepicker}>
-                <Text>Selecione a data</Text>
-              </TouchableOpacity>
-            </View>
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={'date'}
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-              />
-            )}
+            <DateComponent />
           </S.ContentC>
         </S.Grid>
 
@@ -96,10 +73,15 @@ export function SendReportScreen({ navigation }: AppProps) {
           <TitleComponent title="Observações:" small primary />
           <S.Observations
             multiline={true}
-            numberOfLines={4}
+            numberOfLines={5}
             onChangeText={(text) => setObservation(text)}
+            value={observation}
           />
         </S.Grid>
+
+        <S.Button>
+          <ButtonComponent title="Entregar relatório" onPress={() => { }} />
+        </S.Button>
       </S.Content>
     </>
   );

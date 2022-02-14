@@ -53,5 +53,13 @@ export const Observations = styled.TextInput`
   border-color: ${({ theme }) => theme.colors.grey};
   border-width: 1px;
 
+  padding-left: 10px;
+  padding-right: 10px;
+
   margin-top: 15;
 `;
+
+export const Button = styled.View`
+  justify-content: flex-end;
+  height: 170;
+`

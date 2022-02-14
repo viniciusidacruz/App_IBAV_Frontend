@@ -21,12 +21,12 @@ export function AppRoutes() {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-      <Screen 
+      <Screen
         name="SignIn"
         component={SignInScreen}
         options={{ headerShown: false }}
       />
-      <Screen 
+      <Screen
         name="Preload"
         component={PreloadScreen}
         options={{ headerShown: false }}
