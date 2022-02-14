@@ -1,14 +1,12 @@
-import { NavigationContainer } from '@react-navigation/native';
+import React from "react";
 
-import { AppRoutes } from './app.routes';
-import { AuthRoutes } from './auth.routes';
+import { AppRoutes } from "./app.routes";
+import { NavigationContainer } from "@react-navigation/native";
 
-export default function Routes() {
-  const isAuthenticated = true;
-
+export const Routes = () => {
   return (
     <NavigationContainer>
-      {isAuthenticated ? <AuthRoutes /> : <AppRoutes />}
+      <AppRoutes />
     </NavigationContainer>
   );
-}
+};

@@ -2,7 +2,7 @@ import React from 'react';
 import { IContentProps } from './types';
 import * as S from './styles';
 
-export function SelectOptionsComponent({
+export function SelectedMenuComponent({
   icon,
   title,
   onPress,

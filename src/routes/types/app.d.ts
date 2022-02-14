@@ -1,7 +1,14 @@
-import { IParamsRoutesProps } from './routes';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends IParamsRoutesProps {}
-  }
-}
+export type AppStackParamsList = {
+  Home: undefined;
+  SendReport: undefined;
+  MembersReport: undefined;
+  VisitorsReport: undefined;
+  Members: undefined;
+  Register: undefined;
+  SignIn: undefined;
+  Preload: undefined;
+};
+
+export type AppProps = NativeStackScreenProps<AppStackParamsList>;

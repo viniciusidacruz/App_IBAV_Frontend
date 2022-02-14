@@ -1,0 +1,21 @@
+import styled from 'styled-components/native'
+
+export const Heading = styled.View`
+  align-items: flex-end;
+
+  border-bottom-color: ${({ theme }) => theme.colors.red};
+  border-bottom-width: 1px;
+`
+
+export const Titles = styled.View`
+  flex-direction: row;
+`
+
+export const Title = styled.Text`
+  margin-left: 10;
+
+  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  text-transform: uppercase;
+
+  color: ${({ theme }) => theme.colors.blue};
+`

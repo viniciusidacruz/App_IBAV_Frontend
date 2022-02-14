@@ -1,16 +1,20 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import styled from 'styled-components/native';
 
-export const Content = styled.TouchableOpacity`
-  height: 48px;
+import { ISizeProps } from './types';
+
+export const Content = styled.TouchableOpacity<ISizeProps>`
+  height: ${(props) => props.small ? '32px' : '48px'};
+
+  width: ${(props) => props.small ? '150px' : '100%'};
 
   background-color: ${({ theme }) => theme.colors.red};
   border-radius: 10;
 `;
 
 export const Background = styled(LinearGradient).attrs({
-  colors: ['#4F0609', '#D30000'],
-})`
+  colors: ['#A60100', '#EA0000'],
+}) <ISizeProps>`
   align-items: center;
   justify-content: center;
 
@@ -20,9 +24,9 @@ export const Background = styled(LinearGradient).attrs({
   border-radius: 10;
 `;
 
-export const Title = styled.Text`
-  font-size: ${({ theme }) => theme.fonts.fontSize.small};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold}
+export const Title = styled.Text<ISizeProps>`
+  font-size: ${(props) => props.small ? '10px' : props.theme.fonts.fontSize.small};
+  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
 
   text-transform: uppercase;
   letter-spacing: 1px;

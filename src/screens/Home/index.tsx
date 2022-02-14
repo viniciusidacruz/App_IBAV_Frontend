@@ -1,19 +1,47 @@
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { LogoComponent } from '../../components/Logo';
 import { TitleComponent } from '../../components/Title';
 import { HeaderComponent } from '../../components/Header';
+import { SelectedMenuComponent } from '../../components/SelectedMenu';
+
+import { AppProps } from '../../routes/types/app';
+import { connectApi } from '../../common/services/ConnectApi';
+
+import { IUsers } from './types/users';
 
 import * as S from './styles';
-import { SelectOptionsComponent } from '../../components/SelectOptions';
 
-export default function HomeScreen() {
-  const redirect = useNavigation();
+export function HomeScreen({ navigation }: AppProps) {
+  const [users, setUsers] = useState<IUsers>();
+  const [userAuth, setUserAuth] = useState<any>();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await AsyncStorage.getItem("@storage_User");
+
+      if (!user) {
+        navigation.navigate('SignIn')
+      }
+    }
+    checkUser();
+  }, []);
+
+  useEffect(() => {
+    AsyncStorage.getItem("@storage_User")
+      .then((response) => setUserAuth(response))
+  }, []);
+
+  useEffect(() => {
+    connectApi.get('users.json')
+      .then((response) => setUsers(response.data))
+  }, []);
 
   const logout = () => {
-    redirect.navigate('SignIn');
+    AsyncStorage.removeItem('@storage_User')
+    navigation.navigate('SignIn')
   };
 
   return (
@@ -49,20 +77,20 @@ export default function HomeScreen() {
         </S.Info>
 
         <S.ContentOptions>
-          <SelectOptionsComponent
+          <SelectedMenuComponent
             icon={<S.SendReportIcon name="document-text-sharp" />}
             title="Entregar Relatório"
-            onPress={() => {}}
+            onPress={() => navigation.navigate('SendReport')}
           />
-          <SelectOptionsComponent
+          <SelectedMenuComponent
             icon={<S.MembersIcon name="user-friends" />}
             title="Membros"
-            onPress={() => {}}
+            onPress={() => navigation.navigate('Members')}
           />
-          <SelectOptionsComponent
+          <SelectedMenuComponent
             icon={<S.RegisterIcon name="user-plus" />}
             title="Cadastrar"
-            onPress={() => {}}
+            onPress={() => navigation.navigate('Register')}
           />
         </S.ContentOptions>
       </S.Content>
