@@ -4,8 +4,10 @@ import { FlatList, TouchableOpacity } from 'react-native';
 import { ButtonComponent } from '../../components/Button';
 import { HeaderComponent } from '../../components/Header';
 import { ComeBackComponent } from '../../components/ComeBack';
+import { FooterInfoComponent } from '../../components/FooterInfo';
 import { NotificationComponent } from '../../components/Notification';
 import { CardMembersComponent } from '../../components/Cards/Members';
+import { HeadingPresentComponent } from '../../components/HeadingPresent';
 
 import { connectApi } from '../../common/services/ConnectApi';
 import { AppProps } from '../../routes/types/app';
@@ -14,8 +16,6 @@ import * as S from './styles'
 
 export function MembersReportScreen({ navigation }: AppProps) {
   const [members, setMembers] = useState();
-  const [selectedPresent, setSelectedPresent] = useState("F");
-
 
   const teste = [
     { nome: "Caio Silva Barbara", status: "Aprovado", id: 1 },
@@ -24,14 +24,6 @@ export function MembersReportScreen({ navigation }: AppProps) {
     { nome: "Beatriz Barbara da Cruz", status: "Aprovado", id: 4 },
     { nome: "Vinicius Italo da Cruz", status: "Aprovado", id: 5 },
     { nome: "Mauricio", status: "Aguardando Aprovação", id: 6 }
-  ];
-
-  const infos = [
-    { lettring: "F", text: ": Faltou" },
-    { lettring: "P", text: ": Presença" },
-    { lettring: "D", text: ": Doença" },
-    { lettring: "T", text: ": Trabalho" },
-    { lettring: "V", text: ": Viagem" },
   ];
 
   useEffect(() => {
@@ -47,7 +39,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
   return (
     <>
       <HeaderComponent>
-        <ComeBackComponent onPress={() => navigation.navigate('Home')} />
+        <ComeBackComponent onPress={() => navigation.navigate('SendReport')} />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
           <S.Navigation>
             Dados
@@ -69,12 +61,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
       </HeaderComponent>
 
       <S.Content>
-        <S.Heading>
-          <S.Titles>
-            <S.Title>Célula</S.Title>
-            <S.Title>Culto</S.Title>
-          </S.Titles>
-        </S.Heading>
+        <HeadingPresentComponent />
 
         <FlatList
           data={teste}
@@ -82,16 +69,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
           renderItem={({ item }) => <CardMembersComponent data={item} />}
         />
 
-        <S.Footer>
-          {infos.map((info) => (
-            <S.Info>
-              <S.Decoration>
-                {info.lettring}
-              </S.Decoration>
-              {info.text}
-            </S.Info>
-          ))}
-        </S.Footer>
+        <FooterInfoComponent />
 
         <S.Button>
           <ButtonComponent title="Entregar relatório" onPress={() => { }} />

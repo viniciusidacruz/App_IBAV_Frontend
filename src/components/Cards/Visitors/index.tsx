@@ -1,11 +1,11 @@
-import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react'
+import { Picker } from '@react-native-picker/picker';
 
 import * as S from './styles'
 
-export function CardMembersComponent({ data }: any) {
+export function CardVisitorsComponent({ data }: any) {
     const [presentCelula, setCelulaPresent] = useState('F');
-    const [presentCulto, setPresentCulto] = useState('-');
+    const [presentCulto, setPresentCulto] = useState('F');
 
     const maxName = data.nome.substring(0, 20);
 
