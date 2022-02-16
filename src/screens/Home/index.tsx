@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { getAuth, signOut } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 import { Button, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -7,65 +9,60 @@ import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
-import { AppProps } from "../../routes/types/app";
+import { firebaseConfig } from "../../config/firebase";
 import { connectApi } from "../../common/services/ConnectApi";
 
+import { AppProps } from "../../routes/types/app";
+
 import * as S from "./styles";
-import { setStatusBarBackgroundColor } from "expo-status-bar";
 
 export function HomeScreen({ navigation }: AppProps) {
-  const [users, setUsers] = useState<any>();
-  const [user, setUser] = useState<any>();
+  const [listUsers, setListUsers] = useState<any>();
   const [userAuth, setUserAuth] = useState<any>();
+  const [user, setUser] = useState<any>();
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
   useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_User");      
-
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setUserAuth(JSON.parse(user))
+        setUserAuth(user);
       } else {
-        navigation.navigate("SignIn");
+        navigation.replace("SignIn");
       }
-    };
-    checkUser();
+    });
+
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
     connectApi
       .get("/users.json")
-      .then((response) => setUsers(Object.entries(response.data)));
+      .then((response) => setListUsers(Object.entries(response.data)));
   }, []);
 
   useEffect(() => {
-    const emailAuth = userAuth?.email;
+    const emailAuth = auth.currentUser?.email;
     const filterUser =
-      users &&
-      users.filter((item: any) => {
+      listUsers &&
+      listUsers.filter((item: any) => {
         return item[1].email === emailAuth;
-      });
+      });      
 
-    setUser(filterUser);
-  }, [userAuth, users]);
+    if (filterUser) {
+      setUser(filterUser);
+      AsyncStorage.setItem("@storage_dataUser", JSON.stringify(filterUser));
+    }
+  }, [listUsers]);
 
-  useEffect(() => {
-    const data = user && user[0];
-
-    AsyncStorage.setItem('@storage_dateUser', JSON.stringify(data))
-  }, [])  
-
-  const redirectReportWithData = async () => {
-    navigation.navigate("Members");
-  };
 
   const logout = () => {
-    AsyncStorage.removeItem("@storage_User");
-    navigation.navigate("SignIn");
+    auth.signOut().then(() => alert("Você está deslogado"));
+    AsyncStorage.removeItem("@storage_User")
   };
 
-  console.log('Esse é o user', user);
-  
-  // const dataUser = user && user[0][1];
+  const dataUser = user && user[0][1];
 
   return (
     <>
@@ -78,7 +75,7 @@ export function HomeScreen({ navigation }: AppProps) {
       </HeaderComponent>
 
       <S.Content>
-        {/* {dataUser && (
+        {dataUser && (
           <>
             <S.Names>
               <TitleComponent
@@ -99,7 +96,7 @@ export function HomeScreen({ navigation }: AppProps) {
             <S.Info>
               <TitleComponent title="Célula" decoration red weight uppercase />
               <TitleComponent
-                title={`${dataUser.celula} - ${dataUser.rede}`}
+                title={`${dataUser.numero_celula} - ${dataUser.rede}`}
                 small
                 uppercase
                 primary
@@ -115,7 +112,7 @@ export function HomeScreen({ navigation }: AppProps) {
               <SelectedMenuComponent
                 icon={<S.MembersIcon name="user-friends" />}
                 title="Membros"
-                onPress={redirectReportWithData}
+                onPress={() => navigation.navigate("Members")}
               />
               <SelectedMenuComponent
                 icon={<S.RegisterIcon name="user-plus" />}
@@ -124,7 +121,7 @@ export function HomeScreen({ navigation }: AppProps) {
               />
             </S.ContentOptions>
           </>
-        )} */}
+        )}
       </S.Content>
     </>
   );

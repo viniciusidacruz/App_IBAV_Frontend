@@ -13,14 +13,20 @@ import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 
 import { AppProps } from "../../routes/types/app";
+import { useFormReport } from "../../hooks/useFormReport";
+import { FormReportActions } from "../../contexts/FormReport";
 
 import * as S from "./styles";
 
 export function SendReportScreen({ navigation }: AppProps) {
-  const [offer, setOffer] = useState("");
   const [observation, setObservation] = useState("");
   const [user, setUser] = useState<any>();
   const [isModalVisible, setModalVisible] = useState(false);
+
+  const { state, dispatch } = useFormReport();
+
+  console.log('esse é o meu state', state.offer);
+  
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -30,18 +36,34 @@ export function SendReportScreen({ navigation }: AppProps) {
     setModalVisible(false);
   };
 
+  const handleOfferChange = (value: string) =>{
+    dispatch({
+      type: FormReportActions.setOffer,
+      payload: value
+    })
+  }
+
+  const handleObservationsChange = (value: string) =>{
+    dispatch({
+      type: FormReportActions.setObservations,
+      payload: value
+    })
+  }
+
   useEffect(() => {
     const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dateUser");      
+      const user = await AsyncStorage.getItem("@storage_dataUser");      
 
       if (user) {
         setUser(JSON.parse(user));
       } else {
-        navigation.navigate("SignIn");
+        navigation.replace("SignIn");
       }
     };
     checkUser();
-  }, []);  
+  }, []);
+
+  const userInfo = user && user[0][1];
 
   return (
     <>
@@ -65,14 +87,14 @@ export function SendReportScreen({ navigation }: AppProps) {
         <NotificationComponent />
       </HeaderComponent>
 
-      {user && (
+      {userInfo && (
         <>
           <S.Content>
             <S.Grid>
               <TitleComponent title="Célula:" small primary />
               <S.ContentC>
                 <S.IconC name="user-friends" />
-                <S.DescriptionC>{`${user[1].numero_celula} - ${user[1].rede}`}</S.DescriptionC>
+                <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${userInfo && userInfo.rede}`}</S.DescriptionC>
               </S.ContentC>
             </S.Grid>
 
@@ -82,9 +104,9 @@ export function SendReportScreen({ navigation }: AppProps) {
                 <S.IconC name="file-invoice-dollar" />
                 <InputFieldComponent
                   primary
-                  value={offer}
+                  value={state.offer}
                   placeholderTextColor="grey"
-                  onChangeText={(value) => setOffer(value)}
+                  onChangeText={handleOfferChange}
                 />
               </S.ContentC>
             </S.Grid>
@@ -101,8 +123,8 @@ export function SendReportScreen({ navigation }: AppProps) {
               <S.Observations
                 multiline={true}
                 numberOfLines={5}
-                onChangeText={(text) => setObservation(text)}
-                value={observation}
+                onChangeText={handleObservationsChange}
+                value={state.observations}
               />
             </S.Grid>
 
@@ -118,7 +140,7 @@ export function SendReportScreen({ navigation }: AppProps) {
             isVisible={isModalVisible}
             onBackdropPress={() => setModalVisible(false)}
           >
-            <ReportContentModalComponent handleCloseModal={handleCloseModal} data={user[1]} />
+            <ReportContentModalComponent handleCloseModal={handleCloseModal} data={user} />
           </ModalComponent>
         </>
       )}

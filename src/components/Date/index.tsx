@@ -1,41 +1,54 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
 
-import * as S from './styles';
+import { useFormReport } from "../../hooks/useFormReport";
+import { FormReportActions } from "../../contexts/FormReport";
+
+import * as S from "./styles";
 
 export function DateComponent() {
-  const [date, setDate] = useState(new Date());
   const [showCalender, setShowCalender] = useState(false);
-  const [text, setText] = useState('Selecione uma data');
 
-  const onChangeDate = (event: Event, selectedDate: any) => {
-    const currentDate = selectedDate || date;
+  const { state, dispatch } = useFormReport();
 
-    setShowCalender(false)
-    setDate(currentDate)
 
-    const tempDate = new Date(currentDate)
-    const newDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+  const handleDateChange = (event: Event, selectedDate: any) => {
+    const currentDate = selectedDate || state.date;
 
-    setText(newDate)
+    setShowCalender(false);
+
+    const tempDate = new Date(currentDate);
+    const newDate =
+      tempDate.getDate() +
+      "/" +
+      (tempDate.getMonth() + 1) +
+      "/" +
+      tempDate.getFullYear();
+
+    dispatch({
+      type: FormReportActions.setDate,
+      payload: currentDate
+    })
+    dispatch({
+      type: FormReportActions.setTextDate,
+      payload: newDate
+    })
   }
 
   const showMode = () => {
     setShowCalender(true);
-  }
+  };
 
   return (
     <>
-      <S.SelectDate onPress={showMode}>
-        <S.TextSelect>{text}</S.TextSelect>
-      </S.SelectDate>
+      <S.Content onPress={showMode}>
+        <S.TextSelect>{state.textDate}</S.TextSelect>
+        <S.SelectDate>
+          <S.Icon name="calendar" />
+        </S.SelectDate>
+      </S.Content>
 
-      {showCalender && (
-        <DateTimePicker
-          value={date}
-          onChange={onChangeDate}
-        />
-      )}
+      {showCalender && <DateTimePicker value={state.date} onChange={handleDateChange} />}
     </>
-  )
+  );
 }

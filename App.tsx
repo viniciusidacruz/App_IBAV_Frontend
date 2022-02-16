@@ -11,6 +11,7 @@ import {
 } from "@expo-google-fonts/poppins";
 
 import { Routes } from "./src/routes";
+import { FormProvider } from "./src/contexts/FormReport";
 
 import theme from "./src/styles/theme";
 
@@ -27,7 +28,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes />
+      <FormProvider>
+        <Routes />
+      </FormProvider>
       <StatusBar style="light" />
     </ThemeProvider>
   );

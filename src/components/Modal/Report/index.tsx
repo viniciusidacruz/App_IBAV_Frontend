@@ -3,23 +3,26 @@ import React from 'react'
 import { TitleComponent } from '../../Title'
 import { ButtonComponent } from '../../Button'
 
-import * as S from './styles'
-import { IContentModal } from './types'
+import { useFormReport } from '../../../hooks/useFormReport'
 
-export function ReportContentModalComponent({ handleCloseModal, data }: IContentModal) {
+import * as S from './styles'
+
+export function ReportContentModalComponent({ handleCloseModal, data }: any) {
+   const { state } = useFormReport();
+    
     return (
         <S.ContentModal>
             <S.TitleModal>Resumo do relatório</S.TitleModal>
 
             <S.ListModal>
                 <TitleComponent
-                    title={`Célula: ${data.numero_celula} - ${data.rede}`}
+                    title={`Célula: ${data && data[0][1].numero_celula} - ${data && data[0][1].rede}`}
                     decoration
                     primary
                 />
 
-                <TitleComponent title="Oferta: R$10,00" decoration primary />
-                <TitleComponent title="Data: 20/02/2022" decoration primary />
+                <TitleComponent title={`Oferta: ${state.offer}`} decoration primary />
+                <TitleComponent title={`Data: ${state.textDate}`} decoration primary />
                 <TitleComponent title="Presença:" decoration primary />
                 <TitleComponent title="- 10 membros (célula)" decoration primary />
                 <TitleComponent title="- 10 membros (culto)" decoration primary />
@@ -28,7 +31,7 @@ export function ReportContentModalComponent({ handleCloseModal, data }: IContent
             </S.ListModal>
 
             <S.ObservationModal>
-                <TitleComponent title="Observações: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s" decoration primary />
+                <TitleComponent title={`Observações: ${state.observations}`} decoration primary />
             </S.ObservationModal>
 
             <ButtonComponent title="Confirmar" onPress={handleCloseModal} />

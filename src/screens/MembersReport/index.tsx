@@ -23,9 +23,6 @@ export function MembersReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();
   const [isModalVisible, setModalVisible] = useState(false);
 
-  console.log('----------------------------Esse é o state celulas----------------------------------------', celulas);
-  console.log('----------------------------Esse é o state user----------------------------------------', user);
-
   const handleOpenModal = () => {
     setModalVisible(true);
   };
