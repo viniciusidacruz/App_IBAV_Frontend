@@ -19,7 +19,7 @@ import * as S from "./styles";
 
 export function MembersReportScreen({ navigation }: AppProps) {
   const [members, setMembers] = useState<any>([]);
-  const [celulas, setCelulas] = useState<any>()
+  const [celulas, setCelulas] = useState<any>();
   const [user, setUser] = useState<any>();
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -29,33 +29,37 @@ export function MembersReportScreen({ navigation }: AppProps) {
 
   const handleCloseModal = () => {
     setModalVisible(false);
-  };  
+  };
 
   useEffect(() => {
     const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dateUser");      
+      const user = await AsyncStorage.getItem("@storage_dataUser");
 
       if (user) {
         setUser(JSON.parse(user));
       }
     };
     checkUser();
-  }, []);  
+  }, []);
 
-  useEffect(() => {    
-    const ID_CELULAS = "-Mve6Q42f4wIHHdTQLuu";
+  const identifyCelula = user && user[0][1].numero_celula;
 
-    connectApi.get(`celulas/${ID_CELULAS}/membros.json`).then((response) => {
+  useEffect(() => {
+    const t =
+      members &&
+      members.filter((item: any) => {
+        return item[1].celula === identifyCelula;
+      });
+
+    setCelulas(t);
+  }, [identifyCelula, members]);
+
+  useEffect(() => {
+    connectApi.get(`celulas.json`).then((response) => {
       setMembers(Object.entries(response.data));
     });
   }, []);
 
-  useEffect(() => {
-    connectApi.get('/celulas.json').then((response) => {
-      setCelulas(Object.entries(response.data))
-    })
-  }, []);
-  
   return (
     <>
       <HeaderComponent>
@@ -81,9 +85,11 @@ export function MembersReportScreen({ navigation }: AppProps) {
       <S.Content>
         <HeadingPresentComponent />
         <ScrollView>
-          {members.map((data: any) => {      
-            return <CardMembersComponent key={data} data={data} />;
-          })}
+          {celulas &&
+            celulas.length > 0 &&
+            Object.values(celulas[0][1].membros).map((data: any) => {
+              return <CardMembersComponent key={data} data={data} />;
+            })}
         </ScrollView>
         <FooterInfoComponent />
 
@@ -99,7 +105,10 @@ export function MembersReportScreen({ navigation }: AppProps) {
         isVisible={isModalVisible}
         onBackdropPress={() => setModalVisible(false)}
       >
-        <ReportContentModalComponent handleCloseModal={handleCloseModal} data={user && user[1]} />
+        <ReportContentModalComponent
+          handleCloseModal={handleCloseModal}
+          data={user && user[1]}
+        />
       </ModalComponent>
     </>
   );

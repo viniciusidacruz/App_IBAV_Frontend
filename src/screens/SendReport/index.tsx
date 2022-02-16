@@ -23,10 +23,7 @@ export function SendReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const { state, dispatch } = useFormReport();
-
-  console.log('esse é o meu state', state.offer);
-  
+  const { state, dispatch } = useFormReport();  
 
   const handleOpenModal = () => {
     setModalVisible(true);

@@ -7,7 +7,7 @@ export function CardMembersComponent({ data }: any) {
   const [presentCelula, setCelulaPresent] = useState("F");
   const [presentCulto, setPresentCulto] = useState("-");
 
-  const maxName = data[1].nome.substring(0, 20);
+  const maxName = data && data.nome.substring(0, 20);
 
   return (
     <S.Content>
