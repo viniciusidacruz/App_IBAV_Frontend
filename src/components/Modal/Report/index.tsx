@@ -9,7 +9,7 @@ import * as S from './styles'
 
 export function ReportContentModalComponent({ handleCloseModal, data }: any) {
    const { state } = useFormReport();
-    
+
     return (
         <S.ContentModal>
             <S.TitleModal>Resumo do relatório</S.TitleModal>
@@ -21,7 +21,7 @@ export function ReportContentModalComponent({ handleCloseModal, data }: any) {
                     primary
                 />
 
-                <TitleComponent title={`Oferta: ${state.offer}`} decoration primary />
+                <TitleComponent title={`Oferta: ${state.offer ? state.offer : 'Precisa selecionar uma data[E'}`} decoration primary />
                 <TitleComponent title={`Data: ${state.textDate}`} decoration primary />
                 <TitleComponent title="Presença:" decoration primary />
                 <TitleComponent title="- 10 membros (célula)" decoration primary />
