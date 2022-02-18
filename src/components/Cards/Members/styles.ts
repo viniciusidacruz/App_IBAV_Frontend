@@ -6,43 +6,30 @@ export const Content = styled.View`
   justify-content: space-between;
   align-items: center;
 
-  padding-bottom: 5;
-  padding-top: 5;
+  height: 48;
 
   border-bottom-color: ${({ theme }) => theme.colors.grey};
   border-bottom-width: 1px;
 `;
 
 export const ContentName = styled.View`
-  margin-right: 20;
+  width: 63%;
 `;
 
 export const InfoName = styled.Text`
   color: ${({ theme }) => theme.colors.grey};
 
-  font-size: ${({ theme }) => theme.fonts.fontSize.small};
+  font-size: 14;
   text-transform: uppercase;
 `;
 
 export const ContainerSelect = styled.View`
   flex-direction: row;
+  height: 100%;
+  width: 35%;
+
+  background-color: grey;
 `;
 
-export const ContentPresent = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
+export const ContentPresent = styled.View``;
 
-  border-color: ${({ theme }) => theme.colors.grey};
-  border-width: 1px;
-
-  padding-right: 80px;
-
-  width: 25%;
-`;
-
-export const Select = styled(Picker)`
-  background: #D30000;
-/* 
-  width: 27px;
-  height: 14px; */
-`;

@@ -13,17 +13,18 @@ import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 
 import { AppProps } from "../../routes/types/app";
+const loadingGif = require("../../assets/loader-two.gif");
 import { useFormReport } from "../../hooks/useFormReport";
 import { FormReportActions } from "../../contexts/FormReport";
 
 import * as S from "./styles";
 
 export function SendReportScreen({ navigation }: AppProps) {
-  const [observation, setObservation] = useState("");
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>();
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const { state, dispatch } = useFormReport();  
+  const { state, dispatch } = useFormReport();
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -33,26 +34,28 @@ export function SendReportScreen({ navigation }: AppProps) {
     setModalVisible(false);
   };
 
-  const handleOfferChange = (value: string) =>{
+  const handleOfferChange = (value: string) => {
     dispatch({
       type: FormReportActions.setOffer,
-      payload: value
-    })
-  }
+      payload: value,
+    });
+  };
 
-  const handleObservationsChange = (value: string) =>{
+  const handleObservationsChange = (value: string) => {
     dispatch({
       type: FormReportActions.setObservations,
-      payload: value
-    })
-  }
+      payload: value,
+    });
+  };
 
   useEffect(() => {
+    setLoading(true);
     const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dataUser");      
+      const user = await AsyncStorage.getItem("@storage_dataUser");
 
       if (user) {
         setUser(JSON.parse(user));
+        setLoading(false);
       } else {
         navigation.replace("SignIn");
       }
@@ -84,61 +87,72 @@ export function SendReportScreen({ navigation }: AppProps) {
         <NotificationComponent />
       </HeaderComponent>
 
-      {userInfo && (
+      {loading ? (
+        <S.Loading source={loadingGif} />
+      ) : (
         <>
-          <S.Content>
-            <S.Grid>
-              <TitleComponent title="Célula:" small primary />
-              <S.ContentC>
-                <S.IconC name="user-friends" />
-                <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${userInfo && userInfo.rede}`}</S.DescriptionC>
-              </S.ContentC>
-            </S.Grid>
+          {userInfo && (
+            <>
+              <S.Content>
+                <S.Grid>
+                  <TitleComponent title="Célula:" small primary />
+                  <S.ContentC>
+                    <S.IconC name="user-friends" />
+                    <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
+                      userInfo && userInfo.rede
+                    }`}</S.DescriptionC>
+                  </S.ContentC>
+                </S.Grid>
 
-            <S.Grid>
-              <TitleComponent title="Oferta R$:" small primary />
-              <S.ContentC>
-                <S.IconC name="file-invoice-dollar" />
-                <InputFieldComponent
-                  primary
-                  value={state.offer}
-                  placeholderTextColor="grey"
-                  onChangeText={handleOfferChange}
+                <S.Grid>
+                  <TitleComponent title="Oferta R$:" small primary />
+                  <S.ContentC>
+                    <S.IconC name="file-invoice-dollar" />
+                    <InputFieldComponent
+                      primary
+                      value={state.offer}
+                      placeholderTextColor="grey"
+                      onChangeText={handleOfferChange}
+                    />
+                  </S.ContentC>
+                </S.Grid>
+
+                <S.Grid>
+                  <TitleComponent title="Data:" small primary />
+                  <S.ContentC>
+                    <DateComponent />
+                  </S.ContentC>
+                </S.Grid>
+
+                <S.Grid>
+                  <TitleComponent title="Observações:" small primary />
+                  <S.Observations
+                    multiline={true}
+                    numberOfLines={5}
+                    onChangeText={handleObservationsChange}
+                    value={state.observations}
+                  />
+                </S.Grid>
+
+                <S.Button>
+                  <ButtonComponent
+                    title="Entregar relatório"
+                    onPress={handleOpenModal}
+                  />
+                </S.Button>
+              </S.Content>
+
+              <ModalComponent
+                isVisible={isModalVisible}
+                onBackdropPress={() => setModalVisible(false)}
+              >
+                <ReportContentModalComponent
+                  handleCloseModal={handleCloseModal}
+                  data={user}
                 />
-              </S.ContentC>
-            </S.Grid>
-
-            <S.Grid>
-              <TitleComponent title="Data:" small primary />
-              <S.ContentC>
-                <DateComponent />
-              </S.ContentC>
-            </S.Grid>
-
-            <S.Grid>
-              <TitleComponent title="Observações:" small primary />
-              <S.Observations
-                multiline={true}
-                numberOfLines={5}
-                onChangeText={handleObservationsChange}
-                value={state.observations}
-              />
-            </S.Grid>
-
-            <S.Button>
-              <ButtonComponent
-                title="Entregar relatório"
-                onPress={handleOpenModal}
-              />
-            </S.Button>
-          </S.Content>
-
-          <ModalComponent
-            isVisible={isModalVisible}
-            onBackdropPress={() => setModalVisible(false)}
-          >
-            <ReportContentModalComponent handleCloseModal={handleCloseModal} data={user} />
-          </ModalComponent>
+              </ModalComponent>
+            </>
+          )}
         </>
       )}
     </>

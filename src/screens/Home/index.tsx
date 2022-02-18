@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAuth, signOut } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { Button, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { LogoComponent } from "../../components/Logo";
@@ -48,7 +48,7 @@ export function HomeScreen({ navigation }: AppProps) {
       listUsers &&
       listUsers.filter((item: any) => {
         return item[1].email === emailAuth;
-      });      
+      });
 
     if (filterUser) {
       setUser(filterUser);

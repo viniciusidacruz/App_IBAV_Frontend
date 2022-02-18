@@ -12,8 +12,9 @@ import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 
-import { connectApi } from "../../common/services/ConnectApi";
 import { AppProps } from "../../routes/types/app";
+const loadingGif = require("../../assets/loader-two.gif");
+import { connectApi } from "../../common/services/ConnectApi";
 
 import * as S from "./styles";
 
@@ -22,6 +23,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
   const [celulas, setCelulas] = useState<any>();
   const [user, setUser] = useState<any>();
   const [isModalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -55,7 +57,9 @@ export function MembersReportScreen({ navigation }: AppProps) {
   }, [identifyCelula, members]);
 
   useEffect(() => {
-    connectApi.get(`celulas.json`).then((response) => {
+    setLoading(true);
+    connectApi.get("celulas.json").then((response) => {
+      setLoading(false);
       setMembers(Object.entries(response.data));
     });
   }, []);
@@ -84,14 +88,20 @@ export function MembersReportScreen({ navigation }: AppProps) {
 
       <S.Content>
         <HeadingPresentComponent />
-        <ScrollView>
-          {celulas &&
-            celulas.length > 0 &&
-            Object.values(celulas[0][1].membros).map((data: any) => {
-              return <CardMembersComponent key={data} data={data} />;
-            })}
-        </ScrollView>
-        <FooterInfoComponent />
+        {loading ? (
+          <S.Loading source={loadingGif} />
+        ) : (
+          <>
+            <ScrollView>
+              {celulas &&
+                celulas.length > 0 &&
+                Object.values(celulas[0][1].membros).map((data: any) => {
+                  return <CardMembersComponent key={data} data={data} />;
+                })}
+            </ScrollView>
+            <FooterInfoComponent />
+          </>
+        )}
 
         <S.Button>
           <ButtonComponent
