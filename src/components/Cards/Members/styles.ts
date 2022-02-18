@@ -7,13 +7,14 @@ export const Content = styled.View`
   align-items: center;
 
   height: 48;
+  width: 100%;
 
   border-bottom-color: ${({ theme }) => theme.colors.grey};
   border-bottom-width: 1px;
 `;
 
 export const ContentName = styled.View`
-  width: 63%;
+  width: 60%;
 `;
 
 export const InfoName = styled.Text`
@@ -26,9 +27,7 @@ export const InfoName = styled.Text`
 export const ContainerSelect = styled.View`
   flex-direction: row;
   height: 100%;
-  width: 35%;
-
-  background-color: grey;
+  width: 40%;
 `;
 
 export const ContentPresent = styled.View``;

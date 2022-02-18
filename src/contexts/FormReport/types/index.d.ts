@@ -5,8 +5,8 @@ export interface IState {
   date: any;
   textDate: string;
   observations: string;
-  membersCL: boolean;
-  membersCT: boolean;
+  membersCL: 'F' | 'P' | 'D' | 'T' | 'V';
+  membersCT:  'F' | 'P' | 'D' | 'T' | 'V';
   visitorsCL: boolean;
   visitorsCT: boolean;
   nameVisitor: string;

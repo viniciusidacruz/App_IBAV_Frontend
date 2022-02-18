@@ -1,65 +1,92 @@
-import React, { useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { FlatList, ScrollView, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { ModalComponent } from '../../components/Modal';
-import { ButtonComponent } from '../../components/Button';
-import { HeaderComponent } from '../../components/Header';
-import { ComeBackComponent } from '../../components/ComeBack';
-import { FooterInfoComponent } from '../../components/FooterInfo';
-import { InputFieldComponent } from '../../components/InputField';
-import { NotificationComponent } from '../../components/Notification';
-import { CardVisitorsComponent } from '../../components/Cards/Visitors';
-import { HeadingPresentComponent } from '../../components/HeadingPresent';
-import { ReportContentModalComponent } from '../../components/Modal/Report';
-import { VisitorContentModalComponent } from '../../components/Modal/Visitor';
+import { ModalComponent } from "../../components/Modal";
+import { ButtonComponent } from "../../components/Button";
+import { HeaderComponent } from "../../components/Header";
+import { ComeBackComponent } from "../../components/ComeBack";
+import { FooterInfoComponent } from "../../components/FooterInfo";
+import { InputFieldComponent } from "../../components/InputField";
+import { NotificationComponent } from "../../components/Notification";
+import { CardVisitorsComponent } from "../../components/Cards/Visitors";
+import { HeadingPresentComponent } from "../../components/HeadingPresent";
+import { ReportContentModalComponent } from "../../components/Modal/Report";
+import { VisitorContentModalComponent } from "../../components/Modal/Visitor";
 
-import { AppProps } from '../../routes/types/app';
+import { useFormReport } from "../../hooks/useFormReport";
+import { FormReportActions } from "../../contexts/FormReport";
+const loadingGif = require("../../assets/loader-two.gif");
 
-import * as S from './styles'
+import { AppProps } from "../../routes/types/app";
+
+import * as S from "./styles";
 
 export function VisitorsReportScreen({ navigation }: AppProps) {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [isAddVisible, setisAddVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [members, setMembers] = useState<any>();
+  const [error, setError] = useState('');
+
+  const { state, dispatch } = useFormReport();
 
   const handleOpenModalReport = () => {
     setModalVisible(true);
   };
 
   const handleCloseModalReport = () => {
-    setModalVisible(false)
-  }
+    setModalVisible(false);
+  };
 
   const handleOpenModalAdd = () => {
-    if (phone !== '') {
-      setisAddVisible(true)
+    if (state.phoneVisitor === "") {
+      setError("Campo obrigatório!")
+    } else {
+      setisAddVisible(true);
     }
-  }
+  };
 
-  const teste = [
-    { nome: "Caio Silva Barbara", status: "Aprovado", id: 1 },
-    { nome: "Julia Silva Barbara", status: "Aprovado", id: 2 },
-    { nome: "Andrea Silva Barbara", status: "Aprovado", id: 3 },
-    { nome: "Beatriz Barbara da Cruz", status: "Aprovado", id: 4 },
-    { nome: "Vinicius Italo da Cruz", status: "Aprovado", id: 5 },
-    { nome: "Mauricio", status: "Aguardando Aprovação", id: 6 }
-  ];
+  useEffect(() => {
+    setLoading(true);
+    const checkMembers = async () => {
+      const members = await AsyncStorage.getItem("@storage_members");
+
+      if (members) {
+        setMembers(JSON.parse(members));
+        setLoading(false);
+      }
+    };
+
+    checkMembers();
+  }, []);
+
+  const handleNameVisitorChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setNameVisitor,
+      payload: value,
+    });
+  };
+
+  const handlePhoneVisitorChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setPhoneVisitor,
+      payload: value,
+    });
+  };
 
   return (
     <>
       <HeaderComponent>
-        <ComeBackComponent onPress={() => navigation.navigate('MembersReport')} />
+        <ComeBackComponent
+          onPress={() => navigation.navigate("MembersReport")}
+        />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation>
-            Dados
-          </S.Navigation>
+          <S.Navigation>Dados</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
-          <S.Navigation>
-            Membros
-          </S.Navigation>
+          <S.Navigation>Membros</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
@@ -72,50 +99,66 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         <NotificationComponent />
       </HeaderComponent>
 
-      <S.Content>
-        <S.HeadingForm>
-          <InputFieldComponent
-            primary
-            value={name}
-            placeholder="*Nome"
-            placeholderTextColor="grey"
-            onChangeText={(value) => setName(value)}
-          />
+      {loading ? (
+        <S.Loading source={loadingGif} />
+      ) : (
+        <S.Content>
+          <S.HeadingForm>
+            <InputFieldComponent
+              primary
+              value={state.nameVisitor}
+              placeholder="*Nome"
+              placeholderTextColor="grey"
+              onChangeText={handleNameVisitorChange}
+            />
 
-          <InputFieldComponent
-            primary
-            placeholder="*Telefone"
-            value={phone}
-            placeholderTextColor="grey"
-            onChangeText={(value) => setPhone(value)}
-          />
+            <InputFieldComponent
+              primary
+              placeholder="*Telefone"
+              value={state.phoneVisitor}
+              placeholderTextColor="grey"
+              onChangeText={handlePhoneVisitorChange}
+            />
 
-          <S.FinishForm>
-            <S.Info>*Campo obrigatório</S.Info>
-            <ButtonComponent title="Adicionar visitante" onPress={handleOpenModalAdd} small />
-          </S.FinishForm>
-        </S.HeadingForm>
+            <S.FinishForm>
+              <S.Info>{error !== "" && error}</S.Info>
 
-        <HeadingPresentComponent />
+              <ButtonComponent
+                title="Adicionar visitante"
+                onPress={handleOpenModalAdd}
+                small
+              />
+            </S.FinishForm>
+          </S.HeadingForm>
 
-        <FlatList
-          data={teste}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => <CardVisitorsComponent data={item} />}
-        />
+          <HeadingPresentComponent />
 
-        <FooterInfoComponent />
+          <ScrollView>
+            {/* {celulas &&
+            celulas.length > 0 &&
+            Object.values(celulas[0][1].membros).map((data: any) => {
+              return <CardMembersComponent key={data} data={data} />;
+            })} */}
+          </ScrollView>
 
-        <S.Button>
-          <ButtonComponent title="Entregar relatório" onPress={handleOpenModalReport} />
-        </S.Button>
-      </S.Content>
+          <FooterInfoComponent />
+
+          <S.Button>
+            <ButtonComponent
+              title="Entregar relatório"
+              onPress={handleOpenModalReport}
+            />
+          </S.Button>
+        </S.Content>
+      )}
 
       <ModalComponent
         isVisible={isModalVisible}
         onBackdropPress={() => setModalVisible(false)}
       >
-        <ReportContentModalComponent handleCloseModal={handleCloseModalReport} />
+        <ReportContentModalComponent
+          handleCloseModal={handleCloseModalReport}
+        />
       </ModalComponent>
 
       <ModalComponent

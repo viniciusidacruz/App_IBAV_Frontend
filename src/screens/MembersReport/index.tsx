@@ -47,13 +47,16 @@ export function MembersReportScreen({ navigation }: AppProps) {
   const identifyCelula = user && user[0][1].numero_celula;
 
   useEffect(() => {
-    const t =
+    const filterMembers =
       members &&
       members.filter((item: any) => {
         return item[1].celula === identifyCelula;
       });
 
-    setCelulas(t);
+    if (filterMembers) {
+      setCelulas(filterMembers);
+      AsyncStorage.setItem("@storage_members", JSON.stringify(filterMembers));
+    }
   }, [identifyCelula, members]);
 
   useEffect(() => {
@@ -86,12 +89,12 @@ export function MembersReportScreen({ navigation }: AppProps) {
         <NotificationComponent />
       </HeaderComponent>
 
-      <S.Content>
-        <HeadingPresentComponent />
-        {loading ? (
-          <S.Loading source={loadingGif} />
-        ) : (
-          <>
+      {loading ? (
+        <S.Loading source={loadingGif} />
+      ) : (
+        <>
+          <S.Content>
+            <HeadingPresentComponent />
             <ScrollView>
               {celulas &&
                 celulas.length > 0 &&
@@ -100,16 +103,16 @@ export function MembersReportScreen({ navigation }: AppProps) {
                 })}
             </ScrollView>
             <FooterInfoComponent />
-          </>
-        )}
 
-        <S.Button>
-          <ButtonComponent
-            title="Entregar relatório"
-            onPress={handleOpenModal}
-          />
-        </S.Button>
-      </S.Content>
+            <S.Button>
+              <ButtonComponent
+                title="Entregar relatório"
+                onPress={handleOpenModal}
+              />
+            </S.Button>
+          </S.Content>
+        </>
+      )}
 
       <ModalComponent
         isVisible={isModalVisible}

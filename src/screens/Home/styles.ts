@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Image } from 'react-native';
 
 export const Logout = styled(MaterialIcons)`
   font-size: ${({ theme }) => theme.fonts.fontSize.medium};
@@ -63,3 +64,5 @@ export const RegisterIcon = styled(FontAwesome5)`
 
   font-size: ${({ theme }) => theme.fonts.fontSize.large};
 `;
+
+export const Loading = styled(Image)``
