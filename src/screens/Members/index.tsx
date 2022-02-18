@@ -1,17 +1,18 @@
-import React from 'react';
-import { ScrollView, TouchableOpacity } from "react-native";
+import React, {useState} from 'react';
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import { Text } from 'react-native';
 
 import { HeaderComponent } from '../../components/Header';
 import { ComeBackComponent } from "../../components/ComeBack";
 import { ButtonComponent } from '../../components/Button';
 import { NotificationComponent } from '../../components/Notification';
+import { PersonLabelComponent } from '../../components/PersonLabel';
 
 import { AppProps } from '../../routes/types/app';
-
 import * as S from './styles';
 
-export function MembersScreen({ navigation }: AppProps) {
+export function MembersScreen(this: any, { navigation }: AppProps) {
+  const [selectedValue, setSelectedValue] = useState(['']);
 
   return (
     <>
@@ -21,9 +22,10 @@ export function MembersScreen({ navigation }: AppProps) {
         <ButtonComponent title="Cadastrar" onPress={()=>{}} small icon={<S.RegisterIcon name="user-plus" />}/>
         <NotificationComponent />
       </HeaderComponent>
-      <>
-       <Text>Members</Text>
-      </>
+      <S.Container>
+        <PersonLabelComponent nome='CAIO SILVA BARBARA'/>
+      </S.Container>
+
     </>
   );
 }

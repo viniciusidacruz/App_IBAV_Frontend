@@ -69,3 +69,7 @@ export const RegisterIcon = styled(FontAwesome5)`
 
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
 `;
+
+export const Container = styled.View`
+  margin: 20px;
+`
