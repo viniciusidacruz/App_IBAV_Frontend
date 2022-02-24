@@ -12,3 +12,4 @@ export interface ISizeProps {
 export interface ISvgProps {
   icon?: any;
 }
+

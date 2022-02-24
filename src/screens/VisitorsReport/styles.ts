@@ -31,7 +31,9 @@ export const FinishForm = styled.View`
   margin-bottom: 40;
 `
 
-export const Info = styled.Text``
+export const Info = styled.Text`
+  color: ${({ theme }) => theme.colors.red};
+`
 
 export const Button = styled.View`
   justify-content: flex-end;

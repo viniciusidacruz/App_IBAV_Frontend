@@ -14,3 +14,4 @@ export function ButtonComponent({ title, onPress, small, icon }: IContentProps) 
     </S.Content>
   );
 }
+

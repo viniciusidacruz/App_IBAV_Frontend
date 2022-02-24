@@ -39,3 +39,4 @@ export const Title = styled.Text<ISizeProps>`
 
   color: ${({ theme }) => theme.colors.light};
 `;
+

@@ -10,12 +10,13 @@ import { HeaderComponent } from "../../components/Header";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
 import { firebaseConfig } from "../../config/firebase";
-import { connectApi } from "../../common/services/ConnectApi";
 const loadingGif = require("../../assets/loader-two.gif");
+import { connectApi } from "../../common/services/ConnectApi";
 
 import { AppProps } from "../../routes/types/app";
 
 import * as S from "./styles";
+import { NotificationComponent } from "../../components/Notification";
 
 export function HomeScreen({ navigation }: AppProps) {
   const [listUsers, setListUsers] = useState<any>();
@@ -65,8 +66,9 @@ export function HomeScreen({ navigation }: AppProps) {
 
   const logout = () => {
     auth.signOut().then(() => alert("Você está deslogado"));
-    AsyncStorage.removeItem("@storage_User")
-    AsyncStorage.removeItem("@storage_dataUser")
+    AsyncStorage.removeItem("@storage_User");
+    AsyncStorage.removeItem("@storage_dataUser");
+    AsyncStorage.removeItem("@storage_members");
   };
 
   const dataUser = user && user[0][1];
@@ -76,9 +78,13 @@ export function HomeScreen({ navigation }: AppProps) {
       <HeaderComponent>
         <LogoComponent full />
 
-        <TouchableOpacity onPress={logout}>
-          <S.Logout name="logout" />
-        </TouchableOpacity>
+        <S.Buttons>
+          <NotificationComponent />
+
+          <TouchableOpacity onPress={logout}>
+            <S.Logout name="logout" />
+          </TouchableOpacity>
+        </S.Buttons>
       </HeaderComponent>
       {loading ? (
         <S.Loading source={loadingGif} />

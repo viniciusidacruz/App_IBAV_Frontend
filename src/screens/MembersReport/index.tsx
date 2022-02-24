@@ -17,13 +17,16 @@ const loadingGif = require("../../assets/loader-two.gif");
 import { connectApi } from "../../common/services/ConnectApi";
 
 import * as S from "./styles";
+import { IDataUserProps, ISelectedUserProps } from "./types";
 
 export function MembersReportScreen({ navigation }: AppProps) {
-  const [members, setMembers] = useState<any>([]);
-  const [celulas, setCelulas] = useState<any>();
   const [user, setUser] = useState<any>();
-  const [isModalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [celulas, setCelulas] = useState<any>();
+  const [members, setMembers] = useState<any>([]);
+  const [membersIdentify, setMembersIdentify] = useState<any>();
+  const [selectPerson, setSelectPerson] = useState<ISelectedUserProps | undefined>(undefined);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -67,6 +70,37 @@ export function MembersReportScreen({ navigation }: AppProps) {
     });
   }, []);
 
+  const newMembersList =
+    celulas &&
+    celulas.length > 0 &&
+    Object.values(celulas[0][1].membros).filter(
+      (member: any) => member.status !== "visitante"
+    );
+
+  const newArrayMembers = membersIdentify ? membersIdentify : newMembersList;
+
+  function compared(a: IDataUserProps, b: IDataUserProps) {
+    if (a.nome < b.nome) return -1;
+    if (a.nome > b.nome) return 1;
+    return 0;
+  }
+
+  useEffect(() => {
+    const memberFilter =
+      newArrayMembers &&
+      newArrayMembers.filter((item: IDataUserProps) => {
+        if (item.nome !== selectPerson?.nome) {
+          return item;
+        }
+      });
+
+    if (selectPerson) {
+      setMembersIdentify([...memberFilter, selectPerson]);
+    }
+  }, [selectPerson]);
+
+  newArrayMembers && newArrayMembers.sort(compared);
+
   return (
     <>
       <HeaderComponent>
@@ -96,10 +130,15 @@ export function MembersReportScreen({ navigation }: AppProps) {
           <S.Content>
             <HeadingPresentComponent />
             <ScrollView>
-              {celulas &&
-                celulas.length > 0 &&
-                Object.values(celulas[0][1].membros).map((data: any) => {
-                  return <CardMembersComponent key={data} data={data} />;
+              {newArrayMembers &&
+                newArrayMembers.map((data: any) => {
+                  return (
+                    <CardMembersComponent
+                      key={data}
+                      data={data}
+                      setSelectPerson={setSelectPerson}
+                    />
+                  );
                 })}
             </ScrollView>
             <FooterInfoComponent />
