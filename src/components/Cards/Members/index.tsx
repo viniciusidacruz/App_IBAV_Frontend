@@ -1,29 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { Picker } from "@react-native-picker/picker";
-
-import { useFormReport } from "../../../hooks/useFormReport";
-import { FormReportActions } from "../../../contexts/FormReport";
 
 import { IDataPros } from "./types";
 
 import * as S from "./styles";
 
 export function CardMembersComponent({ data, setSelectPerson }: IDataPros) {
-  const { state, dispatch } = useFormReport();
   const handlePresentCelula = (value: string) => {
     setSelectPerson({...data, celula: value})
-    dispatch({
-      type: FormReportActions.setMembersCL,
-      payload: value,
-    });
   };
 
   const handlePresentCulto = (value: string) => {
     setSelectPerson({...data, culto: value})
-    dispatch({
-      type: FormReportActions.setMembersCT,
-      payload: value,
-    });
   };
 
   return (
