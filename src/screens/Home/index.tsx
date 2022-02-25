@@ -58,6 +58,8 @@ export function HomeScreen({ navigation }: AppProps) {
       });
 
     if (filterUser) {
+      console.log('filterUser', filterUser);
+
       setUser(filterUser);
       AsyncStorage.setItem("@storage_dataUser", JSON.stringify(filterUser));
     }

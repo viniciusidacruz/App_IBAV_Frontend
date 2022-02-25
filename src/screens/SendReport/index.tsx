@@ -30,10 +30,6 @@ export function SendReportScreen({ navigation }: AppProps) {
     setModalVisible(true);
   };
 
-  const handleCloseModal = () => {
-    setModalVisible(false);
-  };
-
   const handleOfferChange = (value: string) => {
     dispatch({
       type: FormReportActions.setOffer,
@@ -147,7 +143,7 @@ export function SendReportScreen({ navigation }: AppProps) {
                 onBackdropPress={() => setModalVisible(false)}
               >
                 <ReportContentModalComponent
-                  handleCloseModal={handleCloseModal}
+                  handleCloseModal={setModalVisible}
                   data={user}
                 />
               </ModalComponent>

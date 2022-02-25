@@ -13,7 +13,7 @@ import { NotificationComponent } from "../../components/Notification";
 import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
-import { VisitorContentModalComponent } from "../../components/Modal/Visitor";
+import { VisitorContentModalComponent } from "../../components/Modal/Default";
 
 const loadingGif = require("../../assets/loader-two.gif");
 import { useFormReport } from "../../hooks/useFormReport";
@@ -23,14 +23,19 @@ import { FormReportActions } from "../../contexts/FormReport";
 import { AppProps } from "../../routes/types/app";
 
 import * as S from "./styles";
+import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
 export function VisitorsReportScreen({ navigation }: AppProps) {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isAddVisible, setisAddVisible] = useState(false);
+  const [isAddVisible, setIsAddVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [memberStorage, setMemberStorage] = useState<any>();
   const [membersPerPage, setMembersPerPage] = useState<any>();
+  const [visitorsIdentify, setVisitorsIdentify] = useState<any>();
+  const [selectPerson, setSelectPerson] = useState<
+    ISelectedUserProps | undefined
+  >(undefined);
 
   const { state, dispatch } = useFormReport();
 
@@ -38,28 +43,27 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
     setModalVisible(true);
   };
 
-  const handleCloseModalReport = () => {
-    setModalVisible(false);
-  };
-
-  const ID_CELULA = memberStorage && memberStorage.length > 0 && memberStorage[0][0];
+  const ID_CELULA =
+    memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
   const handleOpenModalAdd = () => {
     const nome = state.nameVisitor;
     const telefone = state.phoneVisitor;
-    const status = 'visitante'
+    const status = "visitante";
 
     if (state.phoneVisitor !== "") {
-      connectApi.post(`/celulas/${ID_CELULA}/membros.json`, {
-        nome,
-        telefone,
-        status
-      }).then(() => {
-        setisAddVisible(true)
-        setError('')
-      });
+      connectApi
+        .post(`/celulas/${ID_CELULA}/membros.json`, {
+          nome,
+          telefone,
+          status,
+        })
+        .then(() => {
+          setIsAddVisible(true);
+          setError("");
+        });
     } else {
-      setError("Campo obrigatório!")
+      setError("Campo obrigatório!");
     }
   };
 
@@ -78,9 +82,37 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
   }, [isAddVisible]);
 
   useEffect(() => {
-    connectApi.get(`/celulas/${ID_CELULA}/membros.json`)
-      .then((response) => setMembersPerPage(response.data));
+    connectApi.get(`/celulas/${ID_CELULA}/membros.json`).then((response) => {
+      setMembersPerPage(response.data);
+    });
   }, [isAddVisible]);
+
+  const newVisitorsList =
+    membersPerPage !== undefined && Object.values(membersPerPage);
+
+  const filterVisitorList =
+    newVisitorsList &&
+    newVisitorsList.filter(
+      (item: any) => item.status === "visitante" || item.status === "Visitante"
+    );
+
+  const newArrayVisitors = visitorsIdentify
+    ? visitorsIdentify
+    : filterVisitorList;
+
+  useEffect(() => {
+    const memberFilter =
+      newArrayVisitors &&
+      newArrayVisitors.filter((item: IDataUserProps) => {
+        if (item.nome !== selectPerson?.nome) {
+          return item;
+        }
+      });
+
+    if (selectPerson) {
+      setVisitorsIdentify([...memberFilter, selectPerson]);
+    }
+  }, [selectPerson]);
 
   const handleNameVisitorChange = (value: string) => {
     dispatch({
@@ -96,12 +128,16 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
     });
   };
 
-  const newVisitorsList =
-    membersPerPage &&
-    membersPerPage !== undefined &&
-    Object.values(membersPerPage);
+  function compared(a: IDataUserProps, b: IDataUserProps) {
+    if (a.nome < b.nome) return -1;
+    if (a.nome > b.nome) return 1;
+    return 0;
+  }
 
-  console.log('Esse é o newVisitorsList ==========>', newVisitorsList && newVisitorsList);
+  newArrayVisitors && newArrayVisitors.sort(compared);
+
+  console.log('visitorsIdentify', visitorsIdentify);
+
 
   return (
     <>
@@ -162,9 +198,12 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
           <HeadingPresentComponent />
 
           <ScrollView>
-            {/* {newVisitorsList && newVisitorsList.map((data: any) => {
-              return <CardMembersComponent key={data} data={data} />;
-            })} */}
+            {newArrayVisitors &&
+              newArrayVisitors.map((data: any) => {
+                console.log('Dataaa', data);
+
+                return <CardMembersComponent key={data} data={data} setSelectPerson={setSelectPerson} />;
+              })}
           </ScrollView>
 
           <FooterInfoComponent />
@@ -183,15 +222,16 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         onBackdropPress={() => setModalVisible(false)}
       >
         <ReportContentModalComponent
-          handleCloseModal={handleCloseModalReport}
+          handleCloseModal={setModalVisible}
+          visitorsPresent={newArrayVisitors}
         />
       </ModalComponent>
 
       <ModalComponent
         isVisible={isAddVisible}
-        onBackdropPress={() => setisAddVisible(false)}
+        onBackdropPress={() => setIsAddVisible(false)}
       >
-        <VisitorContentModalComponent setisAddVisible={setisAddVisible} />
+        <VisitorContentModalComponent closeModal={setIsAddVisible}  />
       </ModalComponent>
     </>
   );

@@ -53,3 +53,10 @@ export const Decoration = styled.Text`
   color: ${({ theme }) => theme.colors.light};
   font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
 `
+
+export const InfoNotResults = styled.View`
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+`

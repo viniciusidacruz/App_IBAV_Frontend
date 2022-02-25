@@ -25,15 +25,13 @@ export function MembersReportScreen({ navigation }: AppProps) {
   const [celulas, setCelulas] = useState<any>();
   const [members, setMembers] = useState<any>([]);
   const [membersIdentify, setMembersIdentify] = useState<any>();
-  const [selectPerson, setSelectPerson] = useState<ISelectedUserProps | undefined>(undefined);
+  const [selectPerson, setSelectPerson] = useState<
+    ISelectedUserProps | undefined
+  >(undefined);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handleOpenModal = () => {
     setModalVisible(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalVisible(false);
   };
 
   useEffect(() => {
@@ -74,16 +72,11 @@ export function MembersReportScreen({ navigation }: AppProps) {
     celulas &&
     celulas.length > 0 &&
     Object.values(celulas[0][1].membros).filter(
-      (member: any) => member.status !== "visitante"
+      (member: any) =>
+        member.status !== "visitante" && member.status !== "Visitante"
     );
 
   const newArrayMembers = membersIdentify ? membersIdentify : newMembersList;
-
-  function compared(a: IDataUserProps, b: IDataUserProps) {
-    if (a.nome < b.nome) return -1;
-    if (a.nome > b.nome) return 1;
-    return 0;
-  }
 
   useEffect(() => {
     const memberFilter =
@@ -98,6 +91,12 @@ export function MembersReportScreen({ navigation }: AppProps) {
       setMembersIdentify([...memberFilter, selectPerson]);
     }
   }, [selectPerson]);
+
+  function compared(a: IDataUserProps, b: IDataUserProps) {
+    if (a.nome < b.nome) return -1;
+    if (a.nome > b.nome) return 1;
+    return 0;
+  }
 
   newArrayMembers && newArrayMembers.sort(compared);
 
@@ -158,8 +157,9 @@ export function MembersReportScreen({ navigation }: AppProps) {
         onBackdropPress={() => setModalVisible(false)}
       >
         <ReportContentModalComponent
-          handleCloseModal={handleCloseModal}
+          handleCloseModal={setModalVisible}
           data={user && user[1]}
+          membersPresent={newArrayMembers}
         />
       </ModalComponent>
     </>
