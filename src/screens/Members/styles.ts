@@ -10,6 +10,12 @@ export const Logout = styled(MaterialIcons)`
   color: ${({ theme }) => theme.colors.light};
 `;
 
+export const Navigation = styled.Text`
+  color: ${({ theme }) => theme.colors.light};
+
+  font-size: ${({ theme }) => theme.fonts.fontSize.small};
+`;
+
 export const Content = styled.View`
   flex: 1;
   align-items: center;
@@ -61,5 +67,5 @@ export const MembersIcon = styled(FontAwesome5)`
 export const RegisterIcon = styled(FontAwesome5)`
   color: ${({ theme }) => theme.colors.light};
 
-  font-size: ${({ theme }) => theme.fonts.fontSize.large};
+  font-size: ${({ theme }) => theme.fonts.fontSize.small};
 `;

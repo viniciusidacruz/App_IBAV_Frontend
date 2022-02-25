@@ -1,99 +1,145 @@
-import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { initializeApp } from "firebase/app";
+import { TouchableOpacity } from "react-native";
+import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { LogoComponent } from '../../components/Logo';
-import { TitleComponent } from '../../components/Title';
-import { HeaderComponent } from '../../components/Header';
-import { SelectedMenuComponent } from '../../components/SelectedMenu';
+import { LogoComponent } from "../../components/Logo";
+import { TitleComponent } from "../../components/Title";
+import { HeaderComponent } from "../../components/Header";
+import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
-import { AppProps } from '../../routes/types/app';
-import { connectApi } from '../../common/services/ConnectApi';
+import { firebaseConfig } from "../../config/firebase";
+const loadingGif = require("../../assets/loader-two.gif");
+import { connectApi } from "../../common/services/ConnectApi";
 
-import { IUsers } from './types/users';
+import { AppProps } from "../../routes/types/app";
 
-import * as S from './styles';
+import * as S from "./styles";
+import { NotificationComponent } from "../../components/Notification";
 
 export function HomeScreen({ navigation }: AppProps) {
-  const [users, setUsers] = useState<IUsers>();
-  const [userAuth, setUserAuth] = useState<any>();
+  const [listUsers, setListUsers] = useState<any>();
+  const [user, setUser] = useState<any>();
+  const [loading, setLoading] = useState(false);
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
   useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_User");
-
-      if (!user) {
-        navigation.navigate('SignIn')
+    setLoading(true)
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setLoading(false)
+      } else {
+        navigation.replace("SignIn");
       }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    setLoading(true)
+    connectApi
+      .get("/users.json")
+      .then((response) => {
+        setListUsers(Object.entries(response.data))
+        setLoading(false)
+      });
+  }, []);
+
+  useEffect(() => {
+    const emailAuth = auth.currentUser?.email;
+    const filterUser =
+      listUsers &&
+      listUsers.filter((item: any) => {
+        return item[1].email === emailAuth;
+      });
+
+    if (filterUser) {
+      setUser(filterUser);
+      AsyncStorage.setItem("@storage_dataUser", JSON.stringify(filterUser));
     }
-    checkUser();
-  }, []);
+  }, [listUsers]);
 
-  useEffect(() => {
-    AsyncStorage.getItem("@storage_User")
-      .then((response) => setUserAuth(response))
-  }, []);
-
-  useEffect(() => {
-    connectApi.get('users.json')
-      .then((response) => setUsers(response.data))
-  }, []);
 
   const logout = () => {
-    AsyncStorage.removeItem('@storage_User')
-    navigation.navigate('SignIn')
+    auth.signOut().then(() => alert("Você está deslogado"));
+    AsyncStorage.removeItem("@storage_User");
+    AsyncStorage.removeItem("@storage_dataUser");
+    AsyncStorage.removeItem("@storage_members");
   };
+
+  const dataUser = user && user[0][1];
 
   return (
     <>
       <HeaderComponent>
         <LogoComponent full />
 
-        <TouchableOpacity onPress={logout}>
-          <S.Logout name="logout" />
-        </TouchableOpacity>
+        <S.Buttons>
+          <NotificationComponent />
+
+          <TouchableOpacity onPress={logout}>
+            <S.Logout name="logout" />
+          </TouchableOpacity>
+        </S.Buttons>
       </HeaderComponent>
+      {loading ? (
+        <S.Loading source={loadingGif} />
+      ) : (
 
       <S.Content>
-        <S.Names>
-          <TitleComponent
-            title="Felipe Paulino Ribeiro"
-            medium
-            uppercase
-            primary
-            weight
-          />
-          <TitleComponent title="Lider de Célula" decoration red />
-        </S.Names>
+        {dataUser && (
+          <>
+            <S.Names>
+              <TitleComponent
+                title={dataUser.nome}
+                medium
+                uppercase
+                primary
+                weight
+              />
+              {dataUser.cargo === "lider" && (
+                <TitleComponent
+                  title={`${dataUser.cargo} de Célula`}
+                  decoration
+                  red
+                />
+              )}
+            </S.Names>
+            <S.Info>
+              <TitleComponent title="Célula" decoration red weight uppercase />
+              <TitleComponent
+                title={`${dataUser.numero_celula} - ${dataUser.rede}`}
+                small
+                uppercase
+                primary
+              />
+            </S.Info>
 
-        <S.Info>
-          <TitleComponent title="Célula" decoration red weight uppercase />
-          <TitleComponent
-            title="0008 - Radicais livres"
-            small
-            uppercase
-            primary
-          />
-        </S.Info>
-
-        <S.ContentOptions>
-          <SelectedMenuComponent
-            icon={<S.SendReportIcon name="document-text-sharp" />}
-            title="Entregar Relatório"
-            onPress={() => navigation.navigate('SendReport')}
-          />
-          <SelectedMenuComponent
-            icon={<S.MembersIcon name="user-friends" />}
-            title="Membros"
-            onPress={() => navigation.navigate('Members')}
-          />
-          <SelectedMenuComponent
-            icon={<S.RegisterIcon name="user-plus" />}
-            title="Cadastrar"
-            onPress={() => navigation.navigate('Register')}
-          />
-        </S.ContentOptions>
+            <S.ContentOptions>
+              <SelectedMenuComponent
+                icon={<S.SendReportIcon name="document-text-sharp" />}
+                title="Entregar Relatório"
+                onPress={() => navigation.navigate("SendReport")}
+              />
+              <SelectedMenuComponent
+                icon={<S.MembersIcon name="user-friends" />}
+                title="Membros"
+                onPress={() => navigation.navigate("Members")}
+              />
+              <SelectedMenuComponent
+                icon={<S.RegisterIcon name="user-plus" />}
+                title="Cadastrar"
+                onPress={() => navigation.navigate("Register")}
+              />
+            </S.ContentOptions>
+          </>
+        )}
       </S.Content>
+      )}
     </>
   );
 }

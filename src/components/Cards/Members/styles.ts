@@ -1,33 +1,34 @@
-import styled from 'styled-components/native'
+import { Picker } from "@react-native-picker/picker";
+import styled from "styled-components/native";
 
 export const Content = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
-    padding-bottom: 5;
-    padding-top: 5;
+  height: 48;
+  width: 100%;
 
-    border-bottom-color: ${({ theme }) => theme.colors.grey};
-    border-bottom-width: 1px;
-`
+  border-bottom-color: ${({ theme }) => theme.colors.grey};
+  border-bottom-width: 1px;
+`;
 
 export const ContentName = styled.View`
-    width: 65%;
-
-    margin-right: 20;
-`
+  width: 60%;
+`;
 
 export const InfoName = styled.Text`
-    color: ${({ theme }) => theme.colors.grey};
-    
-    font-size: ${({ theme }) => theme.fonts.fontSize.small};
-    text-transform: uppercase;
-`
+  color: ${({ theme }) => theme.colors.grey};
 
-export const ContentPresent = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
+  font-size: 14;
+  text-transform: uppercase;
+`;
 
-    width: 20%;
-`
+export const ContainerSelect = styled.View`
+  flex-direction: row;
+  height: 100%;
+  width: 40%;
+`;
+
+export const ContentPresent = styled.View``;
+

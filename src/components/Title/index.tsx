@@ -14,26 +14,27 @@ export function TitleComponent({
   uppercase,
   decoration,
   red,
+  blue
 }: IContentProps) {
   return (
     <>
       {small && (
-        <S.Small primary={primary} weight={weight} uppercase={uppercase}>
+        <S.Small red={red} blue={blue} primary={primary} weight={weight} uppercase={uppercase}>
           {title}
         </S.Small>
       )}
       {medium && (
-        <S.Medium primary={primary} weight={weight} uppercase={uppercase}>
+        <S.Medium red={red} blue={blue} primary={primary} weight={weight} uppercase={uppercase}>
           {title}
         </S.Medium>
       )}
       {large && (
-        <S.Large primary={primary} weight={weight} uppercase={uppercase}>
+        <S.Large red={red} blue={blue} primary={primary} weight={weight} uppercase={uppercase}>
           {title}
         </S.Large>
       )}
       {decoration && (
-        <S.Decoration red={red} weight={weight} uppercase={uppercase}>
+        <S.Decoration red={red} blue={blue} weight={weight} uppercase={uppercase}>
           {title}
         </S.Decoration>
       )}

@@ -9,6 +9,7 @@ export const Heading = styled.View`
 
 export const Titles = styled.View`
   flex-direction: row;
+  width: 40%;
 `
 
 export const Title = styled.Text`

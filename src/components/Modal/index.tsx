@@ -11,7 +11,6 @@ export function ModalComponent({
     <Modal
       isVisible={isVisible}
       onBackdropPress={onBackdropPress}
-      swipeDirection="left"
     >
       {children}
     </Modal>

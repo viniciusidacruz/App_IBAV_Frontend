@@ -1,47 +1,50 @@
-import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react'
+import React from "react";
+import { Picker } from "@react-native-picker/picker";
 
-import * as S from './styles'
+import { IDataPros } from "./types";
 
-export function CardMembersComponent({ data }: any) {
-    const [presentCelula, setCelulaPresent] = useState('F');
-    const [presentCulto, setPresentCulto] = useState('-');
+import * as S from "./styles";
 
-    const maxName = data.nome.substring(0, 20);
+export function CardMembersComponent({ data, setSelectPerson }: IDataPros) {
+  const handlePresentCelula = (value: string) => {
+    setSelectPerson({...data, celula: value})
+  };
 
-    return (
-        <S.Content>
-            <S.ContentName>
-                <S.InfoName>{maxName}...</S.InfoName>
-            </S.ContentName>
-            <S.ContentPresent>
-                <Picker
-                    selectedValue={presentCelula}
-                    onValueChange={(value, index) => {
-                        setCelulaPresent(value)
-                    }}
-                >
-                    <Picker.Item label="F" value='F' />
-                    <Picker.Item label="P" value='P' />
-                    <Picker.Item label="D" value='D' />
-                    <Picker.Item label="T" value='T' />
-                    <Picker.Item label="V" value='V' />
-                </Picker>
+  const handlePresentCulto = (value: string) => {
+    setSelectPerson({...data, culto: value})
+  };
 
-                <Picker
-                    style={{ width: 75, height: 50 }}
-                    selectedValue={presentCulto}
-                    onValueChange={(value, index) => {
-                        setPresentCulto(value)
-                    }}
-                >
-                    <Picker.Item label="F" value='F' />
-                    <Picker.Item label="P" value='P' />
-                    <Picker.Item label="D" value='D' />
-                    <Picker.Item label="T" value='T' />
-                    <Picker.Item label="V" value='V' />
-                </Picker>
-            </S.ContentPresent>
-        </S.Content>
-    )
+  return (
+    <S.Content>
+      <S.ContentName>
+        <S.InfoName>{data.nome}</S.InfoName>
+      </S.ContentName>
+
+      <S.ContainerSelect>
+        <Picker
+          selectedValue={data.celula}
+          style={{ height: 50, width: 80 }}
+          onValueChange={handlePresentCelula}
+        >
+          <Picker.Item label="F" value="F" />
+          <Picker.Item label="P" value="P" />
+          <Picker.Item label="D" value="D" />
+          <Picker.Item label="T" value="T" />
+          <Picker.Item label="V" value="V" />
+        </Picker>
+
+        <Picker
+          selectedValue={data.culto}
+          style={{ height: 50, width: 80 }}
+          onValueChange={handlePresentCulto}
+        >
+          <Picker.Item label="F" value="F" />
+          <Picker.Item label="P" value="P" />
+          <Picker.Item label="D" value="D" />
+          <Picker.Item label="T" value="T" />
+          <Picker.Item label="V" value="V" />
+        </Picker>
+      </S.ContainerSelect>
+    </S.Content>
+  );
 }
