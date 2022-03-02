@@ -23,7 +23,10 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
         <NotificationComponent />
       </HeaderComponent>
       <S.Container>
-        <PersonLabelComponent nome='CAIO SILVA BARBARA'/>
+        <PersonLabelComponent nome='CAIO SILVA BARBARA' status={1} categoria='MEMBRO'/>
+        <PersonLabelComponent nome='CAIO SILVA BARBARA' status={2} categoria='FREQUENTADOR ASSIDUO'/>
+        <PersonLabelComponent nome='CAIO SILVA BARBARA' status={3} categoria='VISITANTE'/>
+        <PersonLabelComponent nome='CAIO SILVA BARBARA' status={4} categoria='AGUARDANDO APROVAÇÃO'/>
       </S.Container>
 
     </>

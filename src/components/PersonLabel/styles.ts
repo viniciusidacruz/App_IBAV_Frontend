@@ -1,10 +1,41 @@
 import styled from 'styled-components/native';
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
+
+interface props {
+    status: string
+}
+
+const typeStatus = (props: any) => {
+    if(props.status === 1) {
+        return {
+        Background: '#000A3E'
+        }
+    }
+
+    if(props.status === 2) {
+        return {
+        Background: '#00C637'
+        }
+    }
+
+    if(props.status === 3) {
+        return {
+        Background: '#FF7E06'
+        }
+    }
+
+    if(props.status === 4) {
+        return {
+        Background: '#D30000'
+        }
+    }
+}
 
 export const Box = styled.View`
     justify-content: space-between;
     flex-direction: row;
     padding: 2px 5px;
+    margin: 5px 0;
 
     border-bottom-color: ${({ theme }) => theme.colors.grey};
     border-bottom-width: 0.5px;
@@ -27,8 +58,8 @@ export const TextName = styled.Text`
     color: #666666;
 `
 
-export const BoxStatus = styled.View`
-    background: #000A3E;
+export const BoxStatus = styled.View<props>`
+    background: ${(props) => typeStatus(props)?.Background ? typeStatus(props)?.Background : ''}
 
 `
 
