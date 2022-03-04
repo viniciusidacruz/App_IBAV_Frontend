@@ -1,33 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { getAuth, signOut } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { TouchableOpacity } from "react-native";
+import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
+import { NotificationComponent } from "../../components/Notification";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
+const loadingGif = require("../../assets/loader-two.gif");
+
+import { AppProps } from "../../routes/types/app";
 import { firebaseConfig } from "../../config/firebase";
 import { connectApi } from "../../common/services/ConnectApi";
 
-import { AppProps } from "../../routes/types/app";
-
 import * as S from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 export function HomeScreen({ navigation }: AppProps) {
   const [listUsers, setListUsers] = useState<any>();
-  const [userAuth, setUserAuth] = useState<any>();
   const [user, setUser] = useState<any>();
+  const [loading, setLoading] = useState(false);
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
   useEffect(() => {
+    setLoading(true)
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setUserAuth(user);
+        setLoading(false)
       } else {
         navigation.replace("SignIn");
       }
@@ -37,9 +41,13 @@ export function HomeScreen({ navigation }: AppProps) {
   }, []);
 
   useEffect(() => {
+    setLoading(true)
     connectApi
       .get("/users.json")
-      .then((response) => setListUsers(Object.entries(response.data)));
+      .then((response) => {
+        setListUsers(Object.entries(response.data))
+        setLoading(false)
+      });
   }, []);
 
   useEffect(() => {
@@ -59,7 +67,9 @@ export function HomeScreen({ navigation }: AppProps) {
 
   const logout = () => {
     auth.signOut().then(() => alert("Você está deslogado"));
-    AsyncStorage.removeItem("@storage_User")
+    AsyncStorage.removeItem("@storage_User");
+    AsyncStorage.removeItem("@storage_dataUser");
+    AsyncStorage.removeItem("@storage_members");
   };
 
   const dataUser = user && user[0][1];
@@ -69,10 +79,17 @@ export function HomeScreen({ navigation }: AppProps) {
       <HeaderComponent>
         <LogoComponent full />
 
-        <TouchableOpacity onPress={logout}>
-          <S.Logout name="logout" />
-        </TouchableOpacity>
+        <S.Buttons>
+          <NotificationComponent />
+
+          <TouchableOpacity onPress={logout}>
+            <S.Logout name="logout" />
+          </TouchableOpacity>
+        </S.Buttons>
       </HeaderComponent>
+      {loading ? (
+        <S.Loading source={loadingGif} />
+      ) : (
 
       <S.Content>
         {dataUser && (
@@ -123,6 +140,7 @@ export function HomeScreen({ navigation }: AppProps) {
           </>
         )}
       </S.Content>
+      )}
     </>
   );
 }

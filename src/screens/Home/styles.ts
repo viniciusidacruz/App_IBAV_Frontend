@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 
+import { Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -8,6 +9,14 @@ export const Logout = styled(MaterialIcons)`
   font-size: ${({ theme }) => theme.fonts.fontSize.medium};
 
   color: ${({ theme }) => theme.colors.light};
+`;
+
+export const Buttons = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 20%;
 `;
 
 export const Content = styled.View`
@@ -63,3 +72,5 @@ export const RegisterIcon = styled(FontAwesome5)`
 
   font-size: ${({ theme }) => theme.fonts.fontSize.large};
 `;
+
+export const Loading = styled(Image)``

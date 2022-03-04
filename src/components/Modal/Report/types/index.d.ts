@@ -1,11 +1,13 @@
 export interface IContentModal {
-  handleCloseModal: () => void;
-  data: {
-    cargo: string;
-    numero_celula: string;
-    email: string;
-    pastor: string;
-    rede: string;
-    usuario: string;
-  };
+  handleCloseModal: any;
+  data?: any;
+  membersPresent?: IMemberOrVisitor[] | undefined;
+  visitorsPresent?: IMemberOrVisitor[] | undefined;
 }
+
+export type IMemberOrVisitor = {
+  celula: string;
+  culto: string;
+  nome: string;
+  status: string;
+};

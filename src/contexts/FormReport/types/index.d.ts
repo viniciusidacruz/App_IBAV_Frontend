@@ -5,14 +5,22 @@ export interface IState {
   date: any;
   textDate: string;
   observations: string;
-  membersCL: boolean;
-  membersCT: boolean;
+  membersCL: 'F' | 'P' | 'D' | 'T' | 'V';
+  membersCT:  'F' | 'P' | 'D' | 'T' | 'V';
   visitorsCL: boolean;
   visitorsCT: boolean;
   nameVisitor: string;
   phoneVisitor: string;
+  members: IContentMembers[];
+  visitors: IContentMembers[];
 }
 
+interface IContentMembers {
+  nome: string;
+  status: string;
+  culto?: string;
+  celula?: string;
+}
 export interface IActions {
     type: FormReportActions;
     payload: any;

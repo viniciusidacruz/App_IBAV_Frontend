@@ -1,128 +1,245 @@
-import React, { useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { ScrollView, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { ModalComponent } from '../../components/Modal';
-import { ButtonComponent } from '../../components/Button';
-import { HeaderComponent } from '../../components/Header';
-import { ComeBackComponent } from '../../components/ComeBack';
-import { FooterInfoComponent } from '../../components/FooterInfo';
-import { InputFieldComponent } from '../../components/InputField';
-import { NotificationComponent } from '../../components/Notification';
-import { CardVisitorsComponent } from '../../components/Cards/Visitors';
-import { HeadingPresentComponent } from '../../components/HeadingPresent';
-import { ReportContentModalComponent } from '../../components/Modal/Report';
-import { VisitorContentModalComponent } from '../../components/Modal/Visitor';
+import { ModalComponent } from "../../components/Modal";
+import { ButtonComponent } from "../../components/Button";
+import { HeaderComponent } from "../../components/Header";
+import { ComeBackComponent } from "../../components/ComeBack";
+import { InputMaskComponent } from "../../components/InputMask";
+import { FooterInfoComponent } from "../../components/FooterInfo";
+import { InputFieldComponent } from "../../components/InputField";
+import { NotificationComponent } from "../../components/Notification";
+import { CardMembersComponent } from "../../components/Cards/Members";
+import { HeadingPresentComponent } from "../../components/HeadingPresent";
+import { ReportContentModalComponent } from "../../components/Modal/Report";
+import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
-import { AppProps } from '../../routes/types/app';
+const loadingGif = require("../../assets/loader-two.gif");
 
-import * as S from './styles'
+import { AppProps } from "../../routes/types/app";
+import ButtonsText from "../../common/constants/buttons";
+import { useFormReport } from "../../hooks/useFormReport";
+import { connectApi } from "../../common/services/ConnectApi";
+import { FormReportActions } from "../../contexts/FormReport";
+import MenuNavigation from "../../common/constants/navigation";
+
+import * as S from "./styles";
+import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
 export function VisitorsReportScreen({ navigation }: AppProps) {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isAddVisible, setIsAddVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isAddVisible, setisAddVisible] = useState(false);
+  const [memberStorage, setMemberStorage] = useState<any>();
+  const [membersPerPage, setMembersPerPage] = useState<any>();
+  const [visitorsIdentify, setVisitorsIdentify] = useState<any>();
+  const [selectPerson, setSelectPerson] = useState<
+    ISelectedUserProps | undefined
+  >(undefined);
+
+  const { state, dispatch } = useFormReport();
 
   const handleOpenModalReport = () => {
     setModalVisible(true);
   };
 
-  const handleCloseModalReport = () => {
-    setModalVisible(false)
-  }
+  const ID_CELULA =
+    memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
   const handleOpenModalAdd = () => {
-    if (phone !== '') {
-      setisAddVisible(true)
+    const nome = state.nameVisitor;
+    const telefone = state.phoneVisitor;
+    const status = "visitante";
+
+    if (state.phoneVisitor !== "") {
+      connectApi
+        .post(`/celulas/${ID_CELULA}/membros.json`, {
+          nome,
+          telefone,
+          status,
+        })
+        .then(() => {
+          setIsAddVisible(true);
+          setError("");
+        });
+    } else {
+      setError("Campo obrigatório!");
     }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    const checkMembers = async () => {
+      const members = await AsyncStorage.getItem("@storage_members");
+
+      if (members) {
+        setMemberStorage(JSON.parse(members));
+        setLoading(false);
+      }
+    };
+
+    checkMembers();
+  }, [isAddVisible]);
+
+  useEffect(() => {
+    connectApi.get(`/celulas/${ID_CELULA}/membros.json`).then((response) => {
+      setMembersPerPage(response.data);
+    });
+  }, [isAddVisible]);
+
+  const newVisitorsList =
+    membersPerPage !== undefined && Object.values(membersPerPage);
+
+  const filterVisitorList =
+    newVisitorsList &&
+    newVisitorsList.filter(
+      (item: any) => item.status === "visitante" || item.status === "Visitante"
+    );
+
+  const newArrayVisitors = visitorsIdentify
+    ? visitorsIdentify
+    : filterVisitorList;
+
+  useEffect(() => {
+    const visitorsFilter =
+      newArrayVisitors &&
+      newArrayVisitors.filter((item: IDataUserProps) => {
+        if (item.nome !== selectPerson?.nome) {
+          return item;
+        }
+      });
+
+    if (selectPerson) {
+      const tratarFalta = visitorsFilter.map((item:any) =>{
+        return {nome: item.nome, status: item.status, celula: item.celula ? item.celula : "F", culto: item.culto ? item.culto : "F"}
+      })
+
+      const selectPersonFalta = {nome: selectPerson.nome, status: selectPerson.status, celula: selectPerson.celula ? selectPerson.celula : "F", culto: selectPerson.culto ? selectPerson.culto : "F"}
+
+      dispatch({
+        type: FormReportActions.setVisitors,
+        payload: [...tratarFalta, selectPersonFalta],
+      });
+
+      setVisitorsIdentify([...visitorsFilter, selectPerson]);
+    }
+  }, [selectPerson]);
+
+  const handleNameVisitorChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setNameVisitor,
+      payload: value,
+    });
+  };
+
+  const handlePhoneVisitorChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setPhoneVisitor,
+      payload: value,
+    });
+  };
+
+  function compared(a: IDataUserProps, b: IDataUserProps) {
+    if (a.nome < b.nome) return -1;
+    if (a.nome > b.nome) return 1;
+    return 0;
   }
 
-  const teste = [
-    { nome: "Caio Silva Barbara", status: "Aprovado", id: 1 },
-    { nome: "Julia Silva Barbara", status: "Aprovado", id: 2 },
-    { nome: "Andrea Silva Barbara", status: "Aprovado", id: 3 },
-    { nome: "Beatriz Barbara da Cruz", status: "Aprovado", id: 4 },
-    { nome: "Vinicius Italo da Cruz", status: "Aprovado", id: 5 },
-    { nome: "Mauricio", status: "Aguardando Aprovação", id: 6 }
-  ];
+  newArrayVisitors && newArrayVisitors.sort(compared);
 
   return (
     <>
       <HeaderComponent>
-        <ComeBackComponent onPress={() => navigation.navigate('MembersReport')} />
+        <ComeBackComponent
+          onPress={() => navigation.navigate("MembersReport")}
+        />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation>
-            Dados
-          </S.Navigation>
+          <S.Navigation>{MenuNavigation.DATA}</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
-          <S.Navigation>
-            Membros
-          </S.Navigation>
+          <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
           <S.Navigation
             style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
           >
-            Visitantes
+            {MenuNavigation.VISITORS}
           </S.Navigation>
         </TouchableOpacity>
         <NotificationComponent />
       </HeaderComponent>
 
-      <S.Content>
-        <S.HeadingForm>
-          <InputFieldComponent
-            primary
-            value={name}
-            placeholder="*Nome"
-            placeholderTextColor="grey"
-            onChangeText={(value) => setName(value)}
-          />
+      {loading ? (
+        <S.Loading source={loadingGif} />
+      ) : (
+        <S.Content>
+          <S.HeadingForm>
+            <InputFieldComponent
+              primary
+              value={state.nameVisitor}
+              placeholder="*Nome"
+              onChangeText={handleNameVisitorChange}
+            />
 
-          <InputFieldComponent
-            primary
-            placeholder="*Telefone"
-            value={phone}
-            placeholderTextColor="grey"
-            onChangeText={(value) => setPhone(value)}
-          />
+            <InputMaskComponent
+              value={state.phoneVisitor}
+              mask="phone"
+              maxLength={14}
+              placeholder="*Digite o Telefone"
+              inputMaskChange={handlePhoneVisitorChange}
+              primary
+            />
 
-          <S.FinishForm>
-            <S.Info>*Campo obrigatório</S.Info>
-            <ButtonComponent title="Adicionar visitante" onPress={handleOpenModalAdd} small />
-          </S.FinishForm>
-        </S.HeadingForm>
+            <S.FinishForm>
+              <S.Info>{error !== "" && error}</S.Info>
 
-        <HeadingPresentComponent />
+              <ButtonComponent
+                title={ButtonsText.ADD_VISITOR}
+                onPress={handleOpenModalAdd}
+                small
+              />
+            </S.FinishForm>
+          </S.HeadingForm>
 
-        <FlatList
-          data={teste}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => <CardVisitorsComponent data={item} />}
-        />
+          <HeadingPresentComponent />
 
-        <FooterInfoComponent />
+          <ScrollView>
+            {newArrayVisitors &&
+              newArrayVisitors.map((data: any) => {
+                return <CardMembersComponent key={data} data={data} setSelectPerson={setSelectPerson} />;
+              })}
+          </ScrollView>
 
-        <S.Button>
-          <ButtonComponent title="Entregar relatório" onPress={handleOpenModalReport} />
-        </S.Button>
-      </S.Content>
+          <FooterInfoComponent />
+
+          <S.Button>
+            <ButtonComponent
+              title={ButtonsText.REPORT}
+              onPress={handleOpenModalReport}
+            />
+          </S.Button>
+        </S.Content>
+      )}
 
       <ModalComponent
         isVisible={isModalVisible}
         onBackdropPress={() => setModalVisible(false)}
       >
-        <ReportContentModalComponent handleCloseModal={handleCloseModalReport} />
+        <ReportContentModalComponent
+          handleCloseModal={setModalVisible}
+          visitorsPresent={newArrayVisitors}
+        />
       </ModalComponent>
 
       <ModalComponent
         isVisible={isAddVisible}
-        onBackdropPress={() => setisAddVisible(false)}
+        onBackdropPress={() => setIsAddVisible(false)}
       >
-        <VisitorContentModalComponent setisAddVisible={setisAddVisible} />
+        <DefaultContentModalComponent closeModal={setIsAddVisible}  />
       </ModalComponent>
     </>
   );

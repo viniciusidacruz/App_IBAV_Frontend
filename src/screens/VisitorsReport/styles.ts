@@ -1,7 +1,9 @@
+import { Image } from "react-native";
 import styled from "styled-components/native";
 
 export const Navigation = styled.Text`
   color: ${({ theme }) => theme.colors.light};
+  text-transform: capitalize;
 
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
 `;
@@ -30,9 +32,13 @@ export const FinishForm = styled.View`
   margin-bottom: 40;
 `
 
-export const Info = styled.Text``
+export const Info = styled.Text`
+  color: ${({ theme }) => theme.colors.red};
+`
 
 export const Button = styled.View`
   justify-content: flex-end;
   margin-bottom: 20px;
 `
+
+export const Loading = styled(Image)``

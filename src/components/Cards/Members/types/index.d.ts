@@ -8,8 +8,12 @@ export interface IDataPros {
       endereco?: string;
       estado?: string;
       telefone?: number;
+
     },
+    celula?:string;
+    culto?:string;
     nome: string;
     status: string;
-  }
+  },
+  setSelectPerson?: any
 }

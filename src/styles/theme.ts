@@ -7,6 +7,8 @@ export default {
     red: '#D30000',
 
     blue: '#000A3E',
+
+    gradient: ['#A60100', '#EA0000']
   },
   fonts: {
     fontSize: {
