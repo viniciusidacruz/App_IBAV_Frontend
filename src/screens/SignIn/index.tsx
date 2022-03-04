@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
@@ -16,8 +16,10 @@ import { TitleComponent } from "../../components/Title";
 import { ButtonComponent } from "../../components/Button";
 import { InputFieldComponent } from "../../components/InputField";
 
-import * as S from "./styles";
 import { AppProps } from "../../routes/types/app";
+import ButtonsText from "../../common/constants/buttons";
+
+import * as S from "./styles";
 
 export function SignInScreen({ navigation }: AppProps) {
   const [email, setEmail] = useState("");
@@ -112,7 +114,7 @@ export function SignInScreen({ navigation }: AppProps) {
             />
           </S.Field>
           <S.Buttons>
-            <ButtonComponent title="Entrar" onPress={handleSignIn} />
+            <ButtonComponent title={ButtonsText.ENTER} onPress={handleSignIn} />
           </S.Buttons>
         </S.Content>
       </S.Form>

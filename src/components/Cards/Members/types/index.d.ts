@@ -15,5 +15,5 @@ export interface IDataPros {
     nome: string;
     status: string;
   },
-  setSelectPerson: any
+  setSelectPerson?: any
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalComponent } from "../../components/Modal";
@@ -13,24 +13,31 @@ import { NotificationComponent } from "../../components/Notification";
 import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
-import { VisitorContentModalComponent } from "../../components/Modal/Visitor";
+import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 const loadingGif = require("../../assets/loader-two.gif");
+
+import { AppProps } from "../../routes/types/app";
+import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
-
-import { AppProps } from "../../routes/types/app";
+import MenuNavigation from "../../common/constants/navigation";
 
 import * as S from "./styles";
+import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
 export function VisitorsReportScreen({ navigation }: AppProps) {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isAddVisible, setisAddVisible] = useState(false);
+  const [isAddVisible, setIsAddVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [memberStorage, setMemberStorage] = useState<any>();
   const [membersPerPage, setMembersPerPage] = useState<any>();
+  const [visitorsIdentify, setVisitorsIdentify] = useState<any>();
+  const [selectPerson, setSelectPerson] = useState<
+    ISelectedUserProps | undefined
+  >(undefined);
 
   const { state, dispatch } = useFormReport();
 
@@ -38,28 +45,27 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
     setModalVisible(true);
   };
 
-  const handleCloseModalReport = () => {
-    setModalVisible(false);
-  };
-
-  const ID_CELULA = memberStorage && memberStorage.length > 0 && memberStorage[0][0];
+  const ID_CELULA =
+    memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
   const handleOpenModalAdd = () => {
     const nome = state.nameVisitor;
     const telefone = state.phoneVisitor;
-    const status = 'visitante'
+    const status = "visitante";
 
     if (state.phoneVisitor !== "") {
-      connectApi.post(`/celulas/${ID_CELULA}/membros.json`, {
-        nome,
-        telefone,
-        status
-      }).then(() => {
-        setisAddVisible(true)
-        setError('')
-      });
+      connectApi
+        .post(`/celulas/${ID_CELULA}/membros.json`, {
+          nome,
+          telefone,
+          status,
+        })
+        .then(() => {
+          setIsAddVisible(true);
+          setError("");
+        });
     } else {
-      setError("Campo obrigatório!")
+      setError("Campo obrigatório!");
     }
   };
 
@@ -78,9 +84,48 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
   }, [isAddVisible]);
 
   useEffect(() => {
-    connectApi.get(`/celulas/${ID_CELULA}/membros.json`)
-      .then((response) => setMembersPerPage(response.data));
+    connectApi.get(`/celulas/${ID_CELULA}/membros.json`).then((response) => {
+      setMembersPerPage(response.data);
+    });
   }, [isAddVisible]);
+
+  const newVisitorsList =
+    membersPerPage !== undefined && Object.values(membersPerPage);
+
+  const filterVisitorList =
+    newVisitorsList &&
+    newVisitorsList.filter(
+      (item: any) => item.status === "visitante" || item.status === "Visitante"
+    );
+
+  const newArrayVisitors = visitorsIdentify
+    ? visitorsIdentify
+    : filterVisitorList;
+
+  useEffect(() => {
+    const visitorsFilter =
+      newArrayVisitors &&
+      newArrayVisitors.filter((item: IDataUserProps) => {
+        if (item.nome !== selectPerson?.nome) {
+          return item;
+        }
+      });
+
+    if (selectPerson) {
+      const tratarFalta = visitorsFilter.map((item:any) =>{
+        return {nome: item.nome, status: item.status, celula: item.celula ? item.celula : "F", culto: item.culto ? item.culto : "F"}
+      })
+
+      const selectPersonFalta = {nome: selectPerson.nome, status: selectPerson.status, celula: selectPerson.celula ? selectPerson.celula : "F", culto: selectPerson.culto ? selectPerson.culto : "F"}
+
+      dispatch({
+        type: FormReportActions.setVisitors,
+        payload: [...tratarFalta, selectPersonFalta],
+      });
+
+      setVisitorsIdentify([...visitorsFilter, selectPerson]);
+    }
+  }, [selectPerson]);
 
   const handleNameVisitorChange = (value: string) => {
     dispatch({
@@ -96,12 +141,13 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
     });
   };
 
-  const newVisitorsList =
-    membersPerPage &&
-    membersPerPage !== undefined &&
-    Object.values(membersPerPage);
+  function compared(a: IDataUserProps, b: IDataUserProps) {
+    if (a.nome < b.nome) return -1;
+    if (a.nome > b.nome) return 1;
+    return 0;
+  }
 
-  console.log('Esse é o newVisitorsList ==========>', newVisitorsList && newVisitorsList);
+  newArrayVisitors && newArrayVisitors.sort(compared);
 
   return (
     <>
@@ -110,18 +156,18 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
           onPress={() => navigation.navigate("MembersReport")}
         />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation>Dados</S.Navigation>
+          <S.Navigation>{MenuNavigation.DATA}</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
-          <S.Navigation>Membros</S.Navigation>
+          <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
           <S.Navigation
             style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
           >
-            Visitantes
+            {MenuNavigation.VISITORS}
           </S.Navigation>
         </TouchableOpacity>
         <NotificationComponent />
@@ -152,7 +198,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
               <S.Info>{error !== "" && error}</S.Info>
 
               <ButtonComponent
-                title="Adicionar visitante"
+                title={ButtonsText.ADD_VISITOR}
                 onPress={handleOpenModalAdd}
                 small
               />
@@ -162,16 +208,17 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
           <HeadingPresentComponent />
 
           <ScrollView>
-            {/* {newVisitorsList && newVisitorsList.map((data: any) => {
-              return <CardMembersComponent key={data} data={data} />;
-            })} */}
+            {newArrayVisitors &&
+              newArrayVisitors.map((data: any) => {
+                return <CardMembersComponent key={data} data={data} setSelectPerson={setSelectPerson} />;
+              })}
           </ScrollView>
 
           <FooterInfoComponent />
 
           <S.Button>
             <ButtonComponent
-              title="Entregar relatório"
+              title={ButtonsText.REPORT}
               onPress={handleOpenModalReport}
             />
           </S.Button>
@@ -183,15 +230,16 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         onBackdropPress={() => setModalVisible(false)}
       >
         <ReportContentModalComponent
-          handleCloseModal={handleCloseModalReport}
+          handleCloseModal={setModalVisible}
+          visitorsPresent={newArrayVisitors}
         />
       </ModalComponent>
 
       <ModalComponent
         isVisible={isAddVisible}
-        onBackdropPress={() => setisAddVisible(false)}
+        onBackdropPress={() => setIsAddVisible(false)}
       >
-        <VisitorContentModalComponent setisAddVisible={setisAddVisible} />
+        <DefaultContentModalComponent closeModal={setIsAddVisible}  />
       </ModalComponent>
     </>
   );

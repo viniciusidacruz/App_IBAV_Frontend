@@ -13,8 +13,13 @@ import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 
 import { AppProps } from "../../routes/types/app";
-const loadingGif = require("../../assets/loader-two.gif");
+import ButtonsText from "../../common/constants/buttons";
+import { useFormReport } from "../../hooks/useFormReport";
+import { FormReportActions } from "../../contexts/FormReport";
 import { connectApi } from "../../common/services/ConnectApi";
+import MenuNavigation from "../../common/constants/navigation";
+
+const loadingGif = require("../../assets/loader-two.gif");
 
 import * as S from "./styles";
 import { IDataUserProps, ISelectedUserProps } from "./types";
@@ -25,15 +30,15 @@ export function MembersReportScreen({ navigation }: AppProps) {
   const [celulas, setCelulas] = useState<any>();
   const [members, setMembers] = useState<any>([]);
   const [membersIdentify, setMembersIdentify] = useState<any>();
-  const [selectPerson, setSelectPerson] = useState<ISelectedUserProps | undefined>(undefined);
+  const [selectPerson, setSelectPerson] = useState<
+    ISelectedUserProps | undefined
+  >(undefined);
   const [isModalVisible, setModalVisible] = useState(false);
+
+  const { state, dispatch } = useFormReport();
 
   const handleOpenModal = () => {
     setModalVisible(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalVisible(false);
   };
 
   useEffect(() => {
@@ -74,16 +79,11 @@ export function MembersReportScreen({ navigation }: AppProps) {
     celulas &&
     celulas.length > 0 &&
     Object.values(celulas[0][1].membros).filter(
-      (member: any) => member.status !== "visitante"
+      (member: any) =>
+        member.status !== "visitante" && member.status !== "Visitante"
     );
 
   const newArrayMembers = membersIdentify ? membersIdentify : newMembersList;
-
-  function compared(a: IDataUserProps, b: IDataUserProps) {
-    if (a.nome < b.nome) return -1;
-    if (a.nome > b.nome) return 1;
-    return 0;
-  }
 
   useEffect(() => {
     const memberFilter =
@@ -95,9 +95,26 @@ export function MembersReportScreen({ navigation }: AppProps) {
       });
 
     if (selectPerson) {
+      const tratarFalta = memberFilter.map((item:any) =>{
+        return {nome: item.nome, status: item.status, celula: item.celula ? item.celula : "F", culto: item.culto ? item.culto : "F"}
+      })
+
+      const selectPersonFalta = {nome: selectPerson.nome, status: selectPerson.status, celula: selectPerson.celula ? selectPerson.celula : "F", culto: selectPerson.culto ? selectPerson.culto : "F"}
+
+      dispatch({
+        type: FormReportActions.setMembers,
+        payload: [...tratarFalta, selectPersonFalta],
+      });
+
       setMembersIdentify([...memberFilter, selectPerson]);
     }
   }, [selectPerson]);
+
+  function compared(a: IDataUserProps, b: IDataUserProps) {
+    if (a.nome < b.nome) return -1;
+    if (a.nome > b.nome) return 1;
+    return 0;
+  }
 
   newArrayMembers && newArrayMembers.sort(compared);
 
@@ -106,19 +123,19 @@ export function MembersReportScreen({ navigation }: AppProps) {
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("SendReport")} />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation>Dados</S.Navigation>
+          <S.Navigation>{MenuNavigation.DATA}</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
           <S.Navigation
             style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
           >
-            Membros
+            {MenuNavigation.MEMBERS}
           </S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
-          <S.Navigation>Visitantes</S.Navigation>
+          <S.Navigation>{MenuNavigation.VISITORS}</S.Navigation>
         </TouchableOpacity>
         <NotificationComponent />
       </HeaderComponent>
@@ -131,21 +148,19 @@ export function MembersReportScreen({ navigation }: AppProps) {
             <HeadingPresentComponent />
             <ScrollView>
               {newArrayMembers &&
-                newArrayMembers.map((data: any) => {
-                  return (
+                newArrayMembers.map((data: any) => (
                     <CardMembersComponent
                       key={data}
                       data={data}
                       setSelectPerson={setSelectPerson}
                     />
-                  );
-                })}
+                ))}
             </ScrollView>
             <FooterInfoComponent />
 
             <S.Button>
               <ButtonComponent
-                title="Entregar relatório"
+                title={ButtonsText.REPORT}
                 onPress={handleOpenModal}
               />
             </S.Button>
@@ -158,8 +173,9 @@ export function MembersReportScreen({ navigation }: AppProps) {
         onBackdropPress={() => setModalVisible(false)}
       >
         <ReportContentModalComponent
-          handleCloseModal={handleCloseModal}
+          handleCloseModal={setModalVisible}
           data={user && user[1]}
+          membersPresent={newArrayMembers}
         />
       </ModalComponent>
     </>

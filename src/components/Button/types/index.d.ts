@@ -3,6 +3,7 @@ export interface IContentProps {
   onPress: () => void;
   small?: boolean;
   icon?: any;
+  disabled?: boolean;
 }
 
 export interface ISizeProps {

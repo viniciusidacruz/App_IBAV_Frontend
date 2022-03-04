@@ -7,16 +7,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
+import { NotificationComponent } from "../../components/Notification";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
-import { firebaseConfig } from "../../config/firebase";
 const loadingGif = require("../../assets/loader-two.gif");
-import { connectApi } from "../../common/services/ConnectApi";
 
 import { AppProps } from "../../routes/types/app";
+import { firebaseConfig } from "../../config/firebase";
+import { connectApi } from "../../common/services/ConnectApi";
 
 import * as S from "./styles";
-import { NotificationComponent } from "../../components/Notification";
+import { useNavigation } from "@react-navigation/native";
 
 export function HomeScreen({ navigation }: AppProps) {
   const [listUsers, setListUsers] = useState<any>();
