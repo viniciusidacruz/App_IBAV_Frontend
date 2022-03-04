@@ -2,68 +2,50 @@ import { Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { ModalComponent } from "..";
 import { TitleComponent } from "../../Title";
 import { ButtonComponent } from "../../Button";
+import { DefaultContentModalComponent } from "../Default";
 
 import { useFormReport } from "../../../hooks/useFormReport";
-
-import * as S from "./styles";
-import { IContentModal, IMemberOrVisitor } from "./types";
 import { connectApi } from "../../../common/services/ConnectApi";
-import { ModalComponent } from "..";
-import { DefaultContentModalComponent } from "../Default";
+
+import { IContentModal } from "./types";
+import * as S from "./styles";
 
 export function ReportContentModalComponent({
   handleCloseModal,
   data,
-  membersPresent,
-  visitorsPresent,
 }: IContentModal) {
   const [user, setUser] = useState<any>();
   const [sendModal, setSendModal] = useState(false);
 
-  console.log("user", user && user[0][1].numero_celula);
-
   const { state } = useFormReport();
 
-  const presentCLMembers =
-    membersPresent &&
-    membersPresent.filter((item: IMemberOrVisitor) => item.celula === "P");
-
-  const presentCTMembers =
-    membersPresent &&
-    membersPresent.filter((item: IMemberOrVisitor) => item.culto === "P");
-
-  const presentCLVisitors =
-    visitorsPresent &&
-    visitorsPresent.filter((item: IMemberOrVisitor) => item.celula === "P");
-
-  const presentCTVisitors =
-    visitorsPresent &&
-    visitorsPresent.filter((item: IMemberOrVisitor) => item.culto === "P");
+  const presentCLMembers = state.members.filter((item) => item.celula === 'P');
+  const presentCTMembers = state.members.filter((item) => item.culto === 'P');
+  const presentCLVisitors = state.visitors.filter((item) => item.celula === 'P');
+  const presentCTVisitors = state.visitors.filter((item) => item.culto === 'P');
 
   const handleSubmitForm = () => {
     try {
-      const celula = `${user && user[0][1].numero_celula}-${
-        user && user[0][1].rede
-      }`;
+      const numero_celula = user && user[0][1].numero_celula
       const oferta = state.offer;
       const data = state.textDate;
-      const presencas = {
-        celula_membros: presentCLMembers?.length,
-        culto_membros: presentCTMembers?.length,
-        celula_visitantes: presentCLVisitors?.length,
-        culto_visitantes: presentCTVisitors?.length,
-      };
+
+      let presencas = [...state.members, ...state.visitors];
+
       const observacoes = state.observations;
 
-      connectApi("/relatorios.json", {
-        celula,
-        oferta,
-        data,
-        presencas,
-        observacoes,
-      }).then(() => setSendModal(true));
+      connectApi
+        .post("/relatorios.json", {
+          data,
+          numero_celula,
+          observacoes,
+          oferta,
+          presencas
+        })
+        .then(() => setSendModal(true));
       handleCloseModal(false);
     } catch (err) {
       if (err) {
@@ -100,9 +82,7 @@ export function ReportContentModalComponent({
           />
 
           <TitleComponent
-            title={`Oferta: ${
-              state.offer ? state.offer : "Precisa selecionar uma data[E"
-            }`}
+            title={`Oferta: ${state.offer ? state.offer : "Nenhuma oferta!"}`}
             decoration
             primary
           />
@@ -114,28 +94,28 @@ export function ReportContentModalComponent({
           <TitleComponent title="Presença:" decoration primary />
           <TitleComponent
             title={`- ${
-              presentCLMembers && presentCLMembers.length
+              presentCLMembers ? presentCLMembers.length : 0
             } membros (célula)`}
             decoration
             primary
           />
           <TitleComponent
             title={`- ${
-              presentCTMembers && presentCTMembers.length
+              presentCTMembers ? presentCTMembers.length : 0
             } membros (culto)`}
             decoration
             primary
           />
           <TitleComponent
             title={`- ${
-              presentCLVisitors && presentCLVisitors.length
+              presentCLVisitors ? presentCLVisitors.length : 0
             } Visitantes (célula)`}
             decoration
             primary
           />
           <TitleComponent
             title={`- ${
-              presentCTVisitors && presentCTVisitors.length
+              presentCTVisitors ? presentCTVisitors.length : 0
             } Visitantes (culto)`}
             decoration
             primary
@@ -144,20 +124,25 @@ export function ReportContentModalComponent({
 
         <S.ObservationModal>
           <TitleComponent
-            title={`Observações: ${state.observations}`}
+            title={`Observações: ${
+              state.observations ? state.observations : "Nenhuma observação!"
+            }`}
             decoration
             primary
           />
         </S.ObservationModal>
 
-        <ButtonComponent title="Confirmar" onPress={handleCloseModal} />
+        <ButtonComponent title="Confirmar" onPress={handleSubmitForm} />
       </S.ContentModal>
 
       <ModalComponent
         isVisible={sendModal}
         onBackdropPress={() => setSendModal(false)}
       >
-        <DefaultContentModalComponent closeModal={setSendModal} type="sendReport" />
+        <DefaultContentModalComponent
+          closeModal={setSendModal}
+          type="sendReport"
+        />
       </ModalComponent>
     </>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalComponent } from "../../components/Modal";
@@ -13,14 +13,16 @@ import { NotificationComponent } from "../../components/Notification";
 import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
-import { VisitorContentModalComponent } from "../../components/Modal/Default";
+import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 const loadingGif = require("../../assets/loader-two.gif");
+
+import { AppProps } from "../../routes/types/app";
+import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
-
-import { AppProps } from "../../routes/types/app";
+import MenuNavigation from "../../common/constants/navigation";
 
 import * as S from "./styles";
 import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
@@ -101,7 +103,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
     : filterVisitorList;
 
   useEffect(() => {
-    const memberFilter =
+    const visitorsFilter =
       newArrayVisitors &&
       newArrayVisitors.filter((item: IDataUserProps) => {
         if (item.nome !== selectPerson?.nome) {
@@ -110,7 +112,18 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
       });
 
     if (selectPerson) {
-      setVisitorsIdentify([...memberFilter, selectPerson]);
+      const tratarFalta = visitorsFilter.map((item:any) =>{
+        return {nome: item.nome, status: item.status, celula: item.celula ? item.celula : "F", culto: item.culto ? item.culto : "F"}
+      })
+
+      const selectPersonFalta = {nome: selectPerson.nome, status: selectPerson.status, celula: selectPerson.celula ? selectPerson.celula : "F", culto: selectPerson.culto ? selectPerson.culto : "F"}
+
+      dispatch({
+        type: FormReportActions.setVisitors,
+        payload: [...tratarFalta, selectPersonFalta],
+      });
+
+      setVisitorsIdentify([...visitorsFilter, selectPerson]);
     }
   }, [selectPerson]);
 
@@ -136,9 +149,6 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
 
   newArrayVisitors && newArrayVisitors.sort(compared);
 
-  console.log('visitorsIdentify', visitorsIdentify);
-
-
   return (
     <>
       <HeaderComponent>
@@ -146,18 +156,18 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
           onPress={() => navigation.navigate("MembersReport")}
         />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation>Dados</S.Navigation>
+          <S.Navigation>{MenuNavigation.DATA}</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
-          <S.Navigation>Membros</S.Navigation>
+          <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
           <S.Navigation
             style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
           >
-            Visitantes
+            {MenuNavigation.VISITORS}
           </S.Navigation>
         </TouchableOpacity>
         <NotificationComponent />
@@ -188,7 +198,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
               <S.Info>{error !== "" && error}</S.Info>
 
               <ButtonComponent
-                title="Adicionar visitante"
+                title={ButtonsText.ADD_VISITOR}
                 onPress={handleOpenModalAdd}
                 small
               />
@@ -200,8 +210,6 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
           <ScrollView>
             {newArrayVisitors &&
               newArrayVisitors.map((data: any) => {
-                console.log('Dataaa', data);
-
                 return <CardMembersComponent key={data} data={data} setSelectPerson={setSelectPerson} />;
               })}
           </ScrollView>
@@ -210,7 +218,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
 
           <S.Button>
             <ButtonComponent
-              title="Entregar relatório"
+              title={ButtonsText.REPORT}
               onPress={handleOpenModalReport}
             />
           </S.Button>
@@ -231,7 +239,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         isVisible={isAddVisible}
         onBackdropPress={() => setIsAddVisible(false)}
       >
-        <VisitorContentModalComponent closeModal={setIsAddVisible}  />
+        <DefaultContentModalComponent closeModal={setIsAddVisible}  />
       </ModalComponent>
     </>
   );

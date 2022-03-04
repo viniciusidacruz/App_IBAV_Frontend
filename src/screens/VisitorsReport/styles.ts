@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 
 export const Navigation = styled.Text`
   color: ${({ theme }) => theme.colors.light};
+  text-transform: capitalize;
 
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
 `;

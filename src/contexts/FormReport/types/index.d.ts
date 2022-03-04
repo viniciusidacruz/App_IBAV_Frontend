@@ -11,8 +11,16 @@ export interface IState {
   visitorsCT: boolean;
   nameVisitor: string;
   phoneVisitor: string;
+  members: IContentMembers[];
+  visitors: IContentMembers[];
 }
 
+interface IContentMembers {
+  nome: string;
+  status: string;
+  culto?: string;
+  celula?: string;
+}
 export interface IActions {
     type: FormReportActions;
     payload: any;

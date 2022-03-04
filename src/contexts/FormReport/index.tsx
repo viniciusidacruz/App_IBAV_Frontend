@@ -6,12 +6,14 @@ const initialData: IState = {
   date: new Date(),
   textDate: "Selecione uma data",
   observations: "",
-  membersCL: 'F',
-  membersCT: 'F',
+  membersCL: "F",
+  membersCT: "F",
   visitorsCL: false,
   visitorsCT: false,
   nameVisitor: "",
   phoneVisitor: "",
+  members: [],
+  visitors: [],
 };
 
 export const FormReportContext = createContext<IContextType | undefined>(
@@ -20,15 +22,17 @@ export const FormReportContext = createContext<IContextType | undefined>(
 
 //Reducer
 export enum FormReportActions {
-  setOffer,
   setDate,
+  setOffer,
+  setMembers,
+  setVisitors,
   setTextDate,
-  setObservations,
   setMembersCL,
   setMembersCT,
   setVisitorsCL,
   setVisitorsCT,
   setNameVisitor,
+  setObservations,
   setPhoneVisitor,
 }
 
@@ -63,6 +67,12 @@ const formReportReducer = (state: IState, action: IActions) => {
 
     case FormReportActions.setPhoneVisitor:
       return { ...state, phoneVisitor: action.payload };
+
+    case FormReportActions.setMembers:
+      return { ...state, members: action.payload };
+
+    case FormReportActions.setVisitors:
+      return { ...state, visitors: action.payload };
 
     default:
       return state;

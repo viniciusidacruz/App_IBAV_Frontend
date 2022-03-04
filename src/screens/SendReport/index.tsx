@@ -12,10 +12,14 @@ import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 
-import { AppProps } from "../../routes/types/app";
 const loadingGif = require("../../assets/loader-two.gif");
+
+import { AppProps } from "../../routes/types/app";
+import FormFields from "../../common/constants/form";
+import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { FormReportActions } from "../../contexts/FormReport";
+import MenuNavigation from "../../common/constants/navigation";
 
 import * as S from "./styles";
 
@@ -69,16 +73,16 @@ export function SendReportScreen({ navigation }: AppProps) {
           <S.Navigation
             style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
           >
-            Dados
+            {MenuNavigation.DATA}
           </S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
-          <S.Navigation>Membros</S.Navigation>
+          <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
-          <S.Navigation>Visitantes</S.Navigation>
+          <S.Navigation>{MenuNavigation.VISITORS}</S.Navigation>
         </TouchableOpacity>
         <NotificationComponent />
       </HeaderComponent>
@@ -91,7 +95,7 @@ export function SendReportScreen({ navigation }: AppProps) {
             <>
               <S.Content>
                 <S.Grid>
-                  <TitleComponent title="Célula:" small primary />
+                  <TitleComponent title={`${FormFields.CELULA}:`} small primary />
                   <S.ContentC>
                     <S.IconC name="user-friends" />
                     <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
@@ -101,7 +105,7 @@ export function SendReportScreen({ navigation }: AppProps) {
                 </S.Grid>
 
                 <S.Grid>
-                  <TitleComponent title="Oferta R$:" small primary />
+                  <TitleComponent title={`${FormFields.OFFER}R$:`} small primary />
                   <S.ContentC>
                     <S.IconC name="file-invoice-dollar" />
                     <InputFieldComponent
@@ -114,14 +118,14 @@ export function SendReportScreen({ navigation }: AppProps) {
                 </S.Grid>
 
                 <S.Grid>
-                  <TitleComponent title="Data:" small primary />
+                  <TitleComponent title={`${FormFields.DATE}:`} small primary />
                   <S.ContentC>
                     <DateComponent />
                   </S.ContentC>
                 </S.Grid>
 
                 <S.Grid>
-                  <TitleComponent title="Observações:" small primary />
+                  <TitleComponent title={`${FormFields.OBSERVATIONS}:`} small primary />
                   <S.Observations
                     multiline={true}
                     numberOfLines={5}
@@ -130,12 +134,10 @@ export function SendReportScreen({ navigation }: AppProps) {
                   />
                 </S.Grid>
 
-                <S.Button>
                   <ButtonComponent
-                    title="Entregar relatório"
+                    title={ButtonsText.REPORT}
                     onPress={handleOpenModal}
                   />
-                </S.Button>
               </S.Content>
 
               <ModalComponent
