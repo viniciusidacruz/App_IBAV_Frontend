@@ -38,3 +38,5 @@ export const Hide = styled(Entypo)`
 
   color: ${({ theme }) => theme.colors.light};
 `;
+
+export const Icon = styled.View``;

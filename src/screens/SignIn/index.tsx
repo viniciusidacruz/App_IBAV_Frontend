@@ -106,7 +106,7 @@ export function SignInScreen({ navigation }: AppProps) {
           <S.Field>
             <InputFieldComponent
               placeholder="Senha"
-              icon
+              iconPassword
               secureTextEntry
               placeholderTextColor="white"
               value={password}
