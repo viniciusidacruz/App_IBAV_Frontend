@@ -240,7 +240,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         isVisible={isAddVisible}
         onBackdropPress={() => setIsAddVisible(false)}
       >
-        <DefaultContentModalComponent closeModal={setIsAddVisible} />
+        <DefaultContentModalComponent closeModal={setIsAddVisible} type="addVisitor" />
       </ModalComponent>
     </>
   );

@@ -3,9 +3,11 @@ import React, { useEffect } from "react";
 import { useFormReport } from "../../../hooks/useFormReport";
 import { FormReportActions } from "../../../contexts/FormReport";
 
+import { IModalInfosProps } from "./types";
+
 import * as S from "./styles";
 
-export function DefaultContentModalComponent({ closeModal, type }: any) {
+export function DefaultContentModalComponent({ closeModal, type, data }: IModalInfosProps) {
   const { state, dispatch } = useFormReport();
 
   useEffect(() => {
@@ -28,6 +30,12 @@ export function DefaultContentModalComponent({ closeModal, type }: any) {
       )}
       {type === "sendReport" && (
         <S.Description>Relatório entregue com sucesso</S.Description>
+      )}
+      {type === "register" && (
+        <S.InfoModal>
+        <S.Description>Cadastro de <S.Name>{data}</S.Name> efetuado com sucesso.</S.Description>
+        <S.SubDescription>O cadastro foi para aprovação.</S.SubDescription>
+        </S.InfoModal>
       )}
       <S.Success name="verified" />
     </S.ContentModal>

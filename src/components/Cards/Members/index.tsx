@@ -25,6 +25,7 @@ export function CardMembersComponent({ data, setSelectPerson }: IDataPros) {
           selectedValue={data.celula}
           style={{ height: 50, width: 80 }}
           onValueChange={handlePresentCelula}
+          mode="dropdown"
         >
           <Picker.Item label="F" value="F" />
           <Picker.Item label="P" value="P" />
