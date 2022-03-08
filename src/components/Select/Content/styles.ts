@@ -1,0 +1,36 @@
+import styled from "styled-components/native";
+
+export const Content = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+`;
+
+export const Container = styled.View`
+  background-color: white;
+  width: 100%;
+
+  padding-top: 15;
+  padding-bottom: 15;
+`;
+
+export const ContentOptions = styled.View`
+  padding-left: 15;
+  padding-right: 15;
+`;
+
+export const Options = styled.TouchableOpacity`
+`;
+
+export const OptionSelect = styled.Text`
+  font-size: ${({ theme }) => theme.fonts.fontSize.small};
+
+  padding-top: 5;
+  padding-bottom: 5;
+  margin-bottom: 5;
+
+  text-align: center;
+
+  width: 100%;
+`;
