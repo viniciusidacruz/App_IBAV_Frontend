@@ -1,23 +1,20 @@
-import React, { useState } from "react";
-import DateTimePicker, { Event } from "@react-native-community/datetimepicker";
-
-import { useFormReport } from "../../hooks/useFormReport";
-import { FormReportActions } from "../../contexts/FormReport";
+import React from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import * as S from "./styles";
+import { IContentProps } from "./types";
 
-interface Props {
-  text: string;
-  dataDados: any;
-  showCalender: boolean;
-  onChange: any;
-  open: any;
-}
-
-export function DateComponent({ dataDados, showCalender, onChange, open, text }: Props) {
-  
+export function DateComponent({
+  dataDados,
+  showCalender,
+  onChange,
+  open,
+  text,
+  label,
+}: IContentProps) {
   return (
-    <>
+    <S.Date>
+      <S.Label>{label}</S.Label>
       <S.Content onPress={open}>
         <S.TextSelect>{text}</S.TextSelect>
         <S.SelectDate>
@@ -26,6 +23,6 @@ export function DateComponent({ dataDados, showCalender, onChange, open, text }:
       </S.Content>
 
       {showCalender && <DateTimePicker value={dataDados} onChange={onChange} />}
-    </>
+    </S.Date>
   );
 }
