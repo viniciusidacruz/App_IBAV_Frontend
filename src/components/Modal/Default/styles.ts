@@ -20,9 +20,15 @@ export const Description = styled.Text`
     font-size: ${({ theme }) => theme.fonts.fontSize.small};
 `
 
+export const SubDescription = styled.Text`
+  color: ${({ theme }) => theme.colors.red};
+`;
+
 export const Name = styled.Text`
     color: ${({ theme }) => theme.colors.blue};
     font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+
+    text-transform: uppercase;
 `
 
 export const Success = styled(MaterialIcons)`
@@ -33,3 +39,8 @@ export const Success = styled(MaterialIcons)`
 
     text-align: center;
 `
+
+export const InfoModal = styled.View`
+  flex-direction: column;
+  align-items: center;
+`;

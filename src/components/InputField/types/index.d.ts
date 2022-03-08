@@ -1,5 +1,6 @@
 export interface IContentProps {
-  icon?: boolean;
+  icon?: any;
+  iconPassword?: boolean;
   secureTextEntry?: boolean;
   placeholder?: string;
   placeholderTextColor?: 'white' | 'grey';
