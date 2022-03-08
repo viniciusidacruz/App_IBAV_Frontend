@@ -3,7 +3,9 @@ import { FormReportActions } from "..";
 export interface IState {
   offer: string;
   date: any;
+  dateRegister: any;
   textDate: string;
+  textRegister: string;
   observations: string;
   membersCL: 'F' | 'P' | 'D' | 'T' | 'V';
   membersCT:  'F' | 'P' | 'D' | 'T' | 'V';

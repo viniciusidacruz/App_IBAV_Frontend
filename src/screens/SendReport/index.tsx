@@ -48,6 +48,34 @@ export function SendReportScreen({ navigation }: AppProps) {
     });
   };
 
+  const [showCalender, setShowCalender] = useState(false);
+  const handleDateChange = (event: Event, selectedDate: any) => {
+    const currentDate = selectedDate || state.date;
+
+    setShowCalender(false);
+
+    const tempDate = new Date(currentDate);
+    const newDate =
+      tempDate.getDate() +
+      "/" +
+      (tempDate.getMonth() + 1) +
+      "/" +
+      tempDate.getFullYear();
+
+    dispatch({
+      type: FormReportActions.setDate,
+      payload: currentDate
+    })
+    dispatch({
+      type: FormReportActions.setTextDate,
+      payload: newDate
+    })
+  }
+
+  const showMode = () => {
+    setShowCalender(true);
+  };
+
   useEffect(() => {
     setLoading(true);
     const checkUser = async () => {
@@ -120,7 +148,13 @@ export function SendReportScreen({ navigation }: AppProps) {
                 <S.Grid>
                   <TitleComponent title={`${FormFields.DATE}:`} small primary />
                   <S.ContentC>
-                    <DateComponent />
+                      <DateComponent
+                        text={state.textDate}
+                        open={showMode}
+                        showCalender={showCalender}
+                        dataDados={state.date}
+                        onChange={handleDateChange}
+                      />
                   </S.ContentC>
                 </S.Grid>
 
