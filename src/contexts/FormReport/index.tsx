@@ -4,7 +4,9 @@ import { IActions, IContextType, IProvider, IState } from "./types";
 const initialData: IState = {
   offer: "",
   date: new Date(),
+  dateRegister: new Date(),
   textDate: "Selecione uma data",
+  textRegister: "Selecione uma data",
   observations: "",
   membersCL: "F",
   membersCT: "F",
@@ -23,10 +25,12 @@ export const FormReportContext = createContext<IContextType | undefined>(
 //Reducer
 export enum FormReportActions {
   setDate,
+  setDateRegister,
   setOffer,
   setMembers,
   setVisitors,
   setTextDate,
+  setTextRegister,
   setMembersCL,
   setMembersCT,
   setVisitorsCL,
@@ -43,9 +47,15 @@ const formReportReducer = (state: IState, action: IActions) => {
 
     case FormReportActions.setDate:
       return { ...state, date: action.payload };
+    
+    case FormReportActions.setDateRegister:
+      return { ...state, date: action.payload}
 
     case FormReportActions.setTextDate:
       return { ...state, textDate: action.payload };
+
+    case FormReportActions.setTextDate:
+      return { ...state, textRegister: action.payload };
 
     case FormReportActions.setObservations:
       return { ...state, observations: action.payload };
