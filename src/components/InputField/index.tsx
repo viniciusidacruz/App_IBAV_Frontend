@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import * as S from './styles';
+import * as S from "./styles";
 
-import { IContentProps } from './types';
+import { IContentProps } from "./types";
 
 export function InputFieldComponent({
   icon,
-  placeholder,
-  placeholderTextColor,
-  secureTextEntry,
-  onChangeText,
-  autoCorrect,
   primary,
+  placeholder,
+  autoCorrect,
+  iconPassword,
+  onChangeText,
+  secureTextEntry,
+  placeholderTextColor,
 }: IContentProps) {
   const [show, setShow] = useState(false);
 
@@ -40,11 +41,13 @@ export function InputFieldComponent({
         />
       )}
 
-      {icon && (
+      {iconPassword && (
         <S.Icons onPress={handleShowPassword}>
           {show ? <S.Hide name="eye-with-line" /> : <S.Show name="eye" />}
         </S.Icons>
       )}
+
+      {icon && <S.Icon>{icon}</S.Icon>}
     </S.Field>
   );
 }
