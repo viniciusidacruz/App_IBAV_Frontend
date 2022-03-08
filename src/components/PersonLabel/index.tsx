@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import * as S from './styles';
 import { IPersonProps } from './types';
 
-export function PersonLabelComponent({nome, status, categoria}: IPersonProps) {
-
+export function PersonLabelComponent({
+  nome,
+  status, 
+  categoria, 
+  onPress
+}: IPersonProps) {
   return (
     <S.Box>
-        <S.ContainerPerson>
+        <S.ContainerPerson onPress={onPress}>
                 <S.TextName>{nome}</S.TextName>
                 <S.BoxStatus status={status}>
                   <S.TextStatus >{categoria}</S.TextStatus>

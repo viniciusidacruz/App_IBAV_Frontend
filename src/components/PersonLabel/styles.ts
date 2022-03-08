@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
 
 interface props {
     status: string
@@ -35,14 +36,14 @@ export const Box = styled.View`
     justify-content: space-between;
     flex-direction: row;
     padding: 2px 5px;
-    margin: 5px 0;
+    margin: 10px 0;
 
     border-bottom-color: ${({ theme }) => theme.colors.grey};
     border-bottom-width: 0.5px;
 
 `
 
-export const ContainerPerson =  styled.View`
+export const ContainerPerson =  styled(TouchableOpacity)`
     flex-direction: column;
     align-items: flex-start;
 
