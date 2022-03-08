@@ -24,8 +24,9 @@ import MenuNavigation from "../../common/constants/navigation";
 import * as S from "./styles";
 
 export function SendReportScreen({ navigation }: AppProps) {
-  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>();
+  const [loading, setLoading] = useState(false)
+  const [showCalender, setShowCalender] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const { state, dispatch } = useFormReport();
@@ -48,7 +49,6 @@ export function SendReportScreen({ navigation }: AppProps) {
     });
   };
 
-  const [showCalender, setShowCalender] = useState(false);
   const handleDateChange = (event: Event, selectedDate: any) => {
     const currentDate = selectedDate || state.date;
 

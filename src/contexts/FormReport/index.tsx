@@ -3,19 +3,19 @@ import { IActions, IContextType, IProvider, IState } from "./types";
 
 const initialData: IState = {
   offer: "",
+  members: [],
+  visitors: [],
+  membersCL: "F",
+  membersCT: "F",
+  nameVisitor: "",
   date: new Date(),
+  phoneVisitor: "",
+  observations: "",
+  visitorsCL: false,
+  visitorsCT: false,
   dateRegister: new Date(),
   textDate: "Selecione uma data",
   textRegister: "Selecione uma data",
-  observations: "",
-  membersCL: "F",
-  membersCT: "F",
-  visitorsCL: false,
-  visitorsCT: false,
-  nameVisitor: "",
-  phoneVisitor: "",
-  members: [],
-  visitors: [],
 };
 
 export const FormReportContext = createContext<IContextType | undefined>(
@@ -25,12 +25,10 @@ export const FormReportContext = createContext<IContextType | undefined>(
 //Reducer
 export enum FormReportActions {
   setDate,
-  setDateRegister,
   setOffer,
   setMembers,
   setVisitors,
   setTextDate,
-  setTextRegister,
   setMembersCL,
   setMembersCT,
   setVisitorsCL,
@@ -38,6 +36,8 @@ export enum FormReportActions {
   setNameVisitor,
   setObservations,
   setPhoneVisitor,
+  setDateRegister,
+  setTextRegister,
 }
 
 const formReportReducer = (state: IState, action: IActions) => {
@@ -47,14 +47,14 @@ const formReportReducer = (state: IState, action: IActions) => {
 
     case FormReportActions.setDate:
       return { ...state, date: action.payload };
-    
+
     case FormReportActions.setDateRegister:
-      return { ...state, date: action.payload}
+      return { ...state, dateRegister: action.payload};
 
     case FormReportActions.setTextDate:
       return { ...state, textDate: action.payload };
 
-    case FormReportActions.setTextDate:
+    case FormReportActions.setTextRegister:
       return { ...state, textRegister: action.payload };
 
     case FormReportActions.setObservations:

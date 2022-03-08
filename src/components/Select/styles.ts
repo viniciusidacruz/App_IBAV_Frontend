@@ -29,6 +29,8 @@ export const Field = styled.View``;
 
 export const Label = styled.Text`
   padding-left: 15;
+
+  color: ${({ theme }) => theme.colors.grey};
 `;
 
 export const Icons = styled.View`

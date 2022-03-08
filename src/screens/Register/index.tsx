@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Text } from "react-native";
 
+import { DateComponent } from "../../components/Date";
 import { ModalComponent } from "../../components/Modal";
 import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
@@ -14,6 +14,9 @@ import { DefaultContentModalComponent } from "../../components/Modal/Default";
 import { AppProps } from "../../routes/types/app";
 import FormFields from "../../common/constants/form";
 
+import { useFormReport } from "../../hooks/useFormReport";
+import { FormReportActions } from "../../contexts/FormReport";
+
 import * as S from "./styles";
 
 export function RegisterScreen({ navigation }: AppProps) {
@@ -24,12 +27,42 @@ export function RegisterScreen({ navigation }: AppProps) {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [district, setDistrict] = useState("");
+  const [showCalender, setShowCalender] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+
+  const { state, dispatch } = useFormReport();
 
   const submitRegister = () => {
     try {
       setSuccessModal(true);
     } catch (err) {}
+  };
+
+  const handleDateChange = (event: Event, selectedDate: any) => {
+    const currentDate = selectedDate || state.dateRegister;
+
+    setShowCalender(false);
+
+    const tempDate = new Date(currentDate);
+    const newDate =
+      tempDate.getDate() +
+      "/" +
+      (tempDate.getMonth() + 1) +
+      "/" +
+      tempDate.getFullYear();
+
+    dispatch({
+      type: FormReportActions.setDateRegister,
+      payload: currentDate,
+    });
+    dispatch({
+      type: FormReportActions.setTextRegister,
+      payload: newDate,
+    });
+  };
+
+  const showMode = () => {
+    setShowCalender(true);
   };
 
   return (
@@ -110,13 +143,21 @@ export function RegisterScreen({ navigation }: AppProps) {
 
           <S.GridForm>
             <S.GridItem>
-            <SelectComponent label="Estado Civil" />
+              <DateComponent
+                text={state.textRegister}
+                open={showMode}
+                showCalender={showCalender}
+                dataDados={state.dateRegister}
+                onChange={handleDateChange}
+                label="Data de Nascimento"
+              />
             </S.GridItem>
 
             <S.GridItem>
-              <SelectComponent label="Categoria" />
+              <SelectComponent label="Estado Civil" />
             </S.GridItem>
           </S.GridForm>
+          <SelectComponent label="Categoria" />
         </S.Form>
 
         <S.FooterFields>
