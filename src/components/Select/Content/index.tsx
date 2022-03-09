@@ -5,11 +5,12 @@ import { IContentSelect } from "./types";
 
 import * as S from "./styles";
 
-export function ContentSelect({ changeModalVisibility, setData }: IContentSelect) {
+export function ContentSelect({ changeModalVisibility, onChange, selectedOption }: IContentSelect) {
 
   const selectOption = (option: any) => {
     changeModalVisibility(false);
-    setData(option)
+    onChange(option)
+    selectedOption(option)
   };
 
   const data = ["red", "blue", "yellow", "green", "orange"];

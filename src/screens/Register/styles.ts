@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import { Image } from 'react-native';
 
 export const ComeBack = styled.View`
   flex-direction: row;
@@ -40,3 +41,5 @@ export const FooterFields = styled.View`
 `;
 
 export const Required = styled.Text``;
+
+export const Loading = styled(Image)``

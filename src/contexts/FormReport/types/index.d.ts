@@ -3,18 +3,20 @@ import { FormReportActions } from "..";
 export interface IState {
   offer: string;
   date: any;
-  dateRegister: any;
   textDate: string;
+  dateRegister: any;
+  stateSelect: string;
+  nameVisitor: string;
   textRegister: string;
   observations: string;
-  membersCL: 'F' | 'P' | 'D' | 'T' | 'V';
-  membersCT:  'F' | 'P' | 'D' | 'T' | 'V';
-  visitorsCL: boolean;
-  visitorsCT: boolean;
-  nameVisitor: string;
   phoneVisitor: string;
+  categorySelect: string;
+  textSelectState: string;
+  civilStatusSelect: string;
+  textSelectCategory: string;
   members: IContentMembers[];
   visitors: IContentMembers[];
+  textSelectCivilStatus: string;
 }
 
 interface IContentMembers {

@@ -21,8 +21,9 @@ import MenuNavigation from "../../common/constants/navigation";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
-import * as S from "./styles";
 import { IDataUserProps, ISelectedUserProps } from "./types";
+
+import * as S from "./styles";
 
 export function MembersReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();
@@ -35,7 +36,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
   >(undefined);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const { state, dispatch } = useFormReport();
+  const { dispatch } = useFormReport();
 
   const handleOpenModal = () => {
     setModalVisible(true);
