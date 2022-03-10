@@ -7,25 +7,25 @@ interface props {
 }
 
 const typeStatus = (props: any) => {
-    if(props.status === 1) {
+    if(props.status === 'membro') {
         return {
         Background: '#000A3E'
         }
     }
 
-    if(props.status === 2) {
+    if(props.status === 'FA') {
         return {
         Background: '#00C637'
         }
     }
 
-    if(props.status === 3) {
+    if(props.status === 'visitante') {
         return {
         Background: '#FF7E06'
         }
     }
 
-    if(props.status === 4) {
+    if(props.status === 'aa') {
         return {
         Background: '#D30000'
         }
@@ -69,6 +69,7 @@ export const TextStatus = styled.Text`
     line-height: 9px;
     color: #FFFFFF;
     padding: 2px 5px;
+    text-transform: uppercase;
 `
 
 export const Icon = styled(FontAwesome5)`
