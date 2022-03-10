@@ -5,7 +5,7 @@ export const ComeBack = styled.View`
   flex-direction: row;
 `;
 
-export const Container = styled.TouchableOpacity`
+export const Container = styled.KeyboardAvoidingView`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;

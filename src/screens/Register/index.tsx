@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DateComponent } from "../../components/Date";
@@ -21,17 +22,28 @@ import { FormReportActions } from "../../contexts/FormReport";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
+import { IAddress } from "./types";
+
 import * as S from "./styles";
 
 export function RegisterScreen({ navigation }: AppProps) {
-  const [cep, setCep] = useState("");
-  const [city, setCity] = useState("");
+  const [address, setAddress] = useState<IAddress>({
+    uf: '',
+    cep: '',
+    ddd: '',
+    gia: '',
+    ibge: '',
+    siafi: '',
+    bairro: '',
+    logradouro: '',
+    localidade: '',
+    complemento: '',
+  });
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [user, setUser] = useState<any>();
-  const [address, setAddress] = useState("");
-  const [district, setDistrict] = useState("");
   const [members, setMembers] = useState<any>();
   const [celulas, setCelulas] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -74,20 +86,20 @@ export function RegisterScreen({ navigation }: AppProps) {
     });
   }, []);
 
-  console.log(celulas && celulas[0][0]);
-
   const submitRegister = () => {
     const ID_CELULAS = celulas && celulas[0][0];
+    const { cep, bairro, localidade, logradouro } = address;
+
     try {
       connectApi.post(`/celulas/${ID_CELULAS}/membros.json`, {
         nome: name,
         status: "membro",
         telefone: phone,
         email,
-        endereco: address,
+        endereco: logradouro,
         cep,
-        bairro: district,
-        cidade: city,
+        bairro,
+        cidade: localidade,
         estado: state.stateSelect,
         data_de_nascimento: state.dateRegister,
         estado_civil: state.civilStatusSelect,
@@ -165,6 +177,24 @@ export function RegisterScreen({ navigation }: AppProps) {
     });
   };
 
+  const getAddressFromApi = useCallback(() => {
+    axios.get(`https://viacep.com.br/ws/${address.cep}/json/`)
+    .then(response => response.data)
+    .then((data: IAddress) => {
+      setAddress({
+        uf: data.uf,
+        ddd: data.ddd,
+        gia: data.gia,
+        ibge: data.ibge,
+        siafi: data.siafi,
+        bairro: data.bairro,
+        logradouro: data.logradouro,
+        localidade: data.localidade,
+        complemento: data.complemento,
+      })
+  }).catch(err => console.log('Erro:', err))
+  }, [address.cep]);
+
   return (
     <>
       <HeaderComponent>
@@ -206,27 +236,39 @@ export function RegisterScreen({ navigation }: AppProps) {
 
             <InputFieldComponent
               primary
-              value={address}
-              placeholder={FormFields.ADDRESS}
-              onChangeText={(value) => setAddress(value)}
+              value={address.logradouro}
+              placeholder={address.logradouro !== '' ? address.logradouro : FormFields.ADDRESS}
+              onChangeText={(value) => setAddress((old) => ({
+                ...old,
+                logradouro: value
+              }))}
+              editable={address.logradouro === ''}
             />
 
             <S.GridForm>
               <S.GridItem>
                 <InputFieldComponent
                   primary
-                  value={district}
-                  placeholder={FormFields.DISTRICT}
-                  onChangeText={(value) => setDistrict(value)}
+                  value={address.bairro}
+                  placeholder={address.bairro !== '' ? address.bairro : FormFields.DISTRICT}
+                  onChangeText={(value) => setAddress((old) => ({
+                    ...old,
+                    bairro: value
+                  }))}
+                  editable={address.bairro === ''}
                 />
               </S.GridItem>
 
               <S.GridItem>
                 <InputFieldComponent
                   primary
-                  value={cep}
+                  value={address.cep}
                   placeholder={FormFields.CEP}
-                  onChangeText={(value) => setCep(value)}
+                  onEndEditing={() => getAddressFromApi()}
+                  onChangeText={(value) => setAddress((old) => ({
+                    ...old,
+                    cep: value
+                  }))}
                 />
               </S.GridItem>
             </S.GridForm>
@@ -235,9 +277,13 @@ export function RegisterScreen({ navigation }: AppProps) {
               <S.GridItem>
                 <InputFieldComponent
                   primary
-                  value={city}
-                  placeholder={FormFields.CITY}
-                  onChangeText={(value) => setCity(value)}
+                  value={address.localidade}
+                  placeholder={address.localidade !== '' ? address.localidade : FormFields.CITY}
+                  onChangeText={(value) => setAddress((old) => ({
+                    ...old,
+                    localidade: value
+                  }))}
+                  editable={address.localidade === ''}
                 />
               </S.GridItem>
 

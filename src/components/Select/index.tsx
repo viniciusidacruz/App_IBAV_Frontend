@@ -3,8 +3,6 @@ import Modal from "react-native-modal";
 
 import { ContentSelect } from "./Content";
 
-import { useFormReport } from "../../hooks/useFormReport";
-
 import { IContentProps } from "./types";
 
 import * as S from "./styles";
