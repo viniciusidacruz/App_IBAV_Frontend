@@ -15,7 +15,8 @@ const FormFields = {
   CATEGORY: 'Categoria',
   CIVIL_STATUS: 'Estado Civil',
   DISCIPLESHIP: 'Discipulado',
-  REDE: 'Rede'
+  REDE: 'Rede',
+  NUMBER: 'Nº'
 }
 
 export default FormFields;

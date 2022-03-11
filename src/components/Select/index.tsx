@@ -7,11 +7,13 @@ import { IContentProps } from "./types";
 
 import * as S from "./styles";
 
-export function SelectComponent({ label, onChange, selectedOption, labelSelect }: IContentProps) {
+export function SelectComponent({ label, onChange, selectedOption, labelSelect, dataOptions, disabled }: IContentProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const changeModalVisibility = (prev: boolean) => {
-    setIsModalVisible(prev);
+    if(!disabled) {
+      setIsModalVisible(prev);
+    }
   };
 
   return (
@@ -21,7 +23,7 @@ export function SelectComponent({ label, onChange, selectedOption, labelSelect }
         <S.Field>
           <S.Label>{labelSelect}</S.Label>
         </S.Field>
-        <S.Icons>
+        <S.Icons disabled={disabled}>
           {isModalVisible ? (
             <S.Icon name="arrow-drop-up" />
           ) : (
@@ -38,6 +40,7 @@ export function SelectComponent({ label, onChange, selectedOption, labelSelect }
           changeModalVisibility={changeModalVisibility}
           selectedOption={selectedOption}
           onChange={onChange}
+          dataOptions={dataOptions}
         />
       </Modal>
     </S.Content>

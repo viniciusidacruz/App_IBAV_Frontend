@@ -19,6 +19,11 @@ import FormFields from "../../common/constants/form";
 import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
+import {
+  selectCivilStatus,
+  selectState,
+  selectCategory,
+} from "../../common/utils/selects";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -28,16 +33,16 @@ import * as S from "./styles";
 
 export function RegisterScreen({ navigation }: AppProps) {
   const [address, setAddress] = useState<IAddress>({
-    uf: '',
-    cep: '',
-    ddd: '',
-    gia: '',
-    ibge: '',
-    siafi: '',
-    bairro: '',
-    logradouro: '',
-    localidade: '',
-    complemento: '',
+    uf: "",
+    cep: "",
+    ddd: "",
+    gia: "",
+    ibge: "",
+    siafi: "",
+    bairro: "",
+    logradouro: "",
+    localidade: "",
+    complemento: "",
   });
 
   const [name, setName] = useState("");
@@ -47,6 +52,7 @@ export function RegisterScreen({ navigation }: AppProps) {
   const [members, setMembers] = useState<any>();
   const [celulas, setCelulas] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [numberHouse, setNumberHouse] = useState("");
   const [showCalender, setShowCalender] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
@@ -87,24 +93,65 @@ export function RegisterScreen({ navigation }: AppProps) {
   }, []);
 
   const submitRegister = () => {
-    const ID_CELULAS = celulas && celulas[0][0];
     const { cep, bairro, localidade, logradouro } = address;
 
+    const ID_CELULAS = celulas && celulas[0][0];
+    const endereco = `${logradouro} ${numberHouse}`;
+
     try {
-      connectApi.post(`/celulas/${ID_CELULAS}/membros.json`, {
-        nome: name,
-        status: "membro",
-        telefone: phone,
-        email,
-        endereco: logradouro,
-        cep,
-        bairro,
-        cidade: localidade,
-        estado: state.stateSelect,
-        data_de_nascimento: state.dateRegister,
-        estado_civil: state.civilStatusSelect,
-      });
-      setSuccessModal(true);
+      connectApi
+        .post(`/celulas/${ID_CELULAS}/membros.json`, {
+          nome: name,
+          status: state.categorySelect,
+          telefone: phone,
+          email,
+          endereco,
+          cep,
+          bairro,
+          cidade: localidade,
+          estado: state.stateSelect,
+          data_de_nascimento: state.dateRegister,
+          estado_civil: state.civilStatusSelect,
+        })
+        .then(() => {
+          setSuccessModal(true);
+
+          setAddress({
+            uf: "",
+            ddd: "",
+            gia: "",
+            ibge: "",
+            siafi: "",
+            bairro: "",
+            logradouro: "",
+            localidade: "",
+            complemento: "",
+          });
+          setName("");
+          setEmail("");
+          setPhone("");
+          setNumberHouse("");
+
+          dispatch({
+            type: FormReportActions.setTextSelectCivilStatus,
+            payload: "Selecione",
+          });
+
+          dispatch({
+            type: FormReportActions.setTextSelectState,
+            payload: "Selecione",
+          });
+
+          dispatch({
+            type: FormReportActions.setTextSelectCategory,
+            payload: "Selecione",
+          });
+
+          dispatch({
+            type: FormReportActions.setTextRegister,
+            payload: "Selecione uma data",
+          });
+        });
     } catch (err) {}
   };
 
@@ -178,21 +225,23 @@ export function RegisterScreen({ navigation }: AppProps) {
   };
 
   const getAddressFromApi = useCallback(() => {
-    axios.get(`https://viacep.com.br/ws/${address.cep}/json/`)
-    .then(response => response.data)
-    .then((data: IAddress) => {
-      setAddress({
-        uf: data.uf,
-        ddd: data.ddd,
-        gia: data.gia,
-        ibge: data.ibge,
-        siafi: data.siafi,
-        bairro: data.bairro,
-        logradouro: data.logradouro,
-        localidade: data.localidade,
-        complemento: data.complemento,
+    axios
+      .get(`https://viacep.com.br/ws/${address.cep}/json/`)
+      .then((response) => response.data)
+      .then((data: IAddress) => {
+        setAddress({
+          uf: data.uf,
+          ddd: data.ddd,
+          gia: data.gia,
+          ibge: data.ibge,
+          siafi: data.siafi,
+          bairro: data.bairro,
+          logradouro: data.logradouro,
+          localidade: data.localidade,
+          complemento: data.complemento,
+        });
       })
-  }).catch(err => console.log('Erro:', err))
+      .catch((err) => console.log("Erro:", err));
   }, [address.cep]);
 
   return (
@@ -236,63 +285,104 @@ export function RegisterScreen({ navigation }: AppProps) {
 
             <InputFieldComponent
               primary
-              value={address.logradouro}
-              placeholder={address.logradouro !== '' ? address.logradouro : FormFields.ADDRESS}
-              onChangeText={(value) => setAddress((old) => ({
-                ...old,
-                logradouro: value
-              }))}
-              editable={address.logradouro === ''}
+              value={address.cep}
+              placeholder={FormFields.CEP}
+              onEndEditing={() => getAddressFromApi()}
+              onChangeText={(value) =>
+                setAddress((old) => ({
+                  ...old,
+                  cep: value,
+                }))
+              }
             />
 
             <S.GridForm>
-              <S.GridItem>
+              <S.GridItemLarge>
                 <InputFieldComponent
                   primary
-                  value={address.bairro}
-                  placeholder={address.bairro !== '' ? address.bairro : FormFields.DISTRICT}
-                  onChangeText={(value) => setAddress((old) => ({
-                    ...old,
-                    bairro: value
-                  }))}
-                  editable={address.bairro === ''}
+                  value={address.logradouro}
+                  placeholder={
+                    address.logradouro !== ""
+                      ? address.logradouro
+                      : FormFields.ADDRESS
+                  }
+                  onChangeText={(value) =>
+                    setAddress((old) => ({
+                      ...old,
+                      logradouro: value,
+                    }))
+                  }
+                  editable={address.logradouro === ""}
                 />
-              </S.GridItem>
+              </S.GridItemLarge>
 
-              <S.GridItem>
+              <S.GridItemSmall>
                 <InputFieldComponent
                   primary
-                  value={address.cep}
-                  placeholder={FormFields.CEP}
-                  onEndEditing={() => getAddressFromApi()}
-                  onChangeText={(value) => setAddress((old) => ({
-                    ...old,
-                    cep: value
-                  }))}
+                  value={numberHouse}
+                  placeholder={FormFields.NUMBER}
+                  onChangeText={(value) => setNumberHouse(value)}
                 />
-              </S.GridItem>
+              </S.GridItemSmall>
             </S.GridForm>
 
             <S.GridForm>
               <S.GridItem>
                 <InputFieldComponent
                   primary
-                  value={address.localidade}
-                  placeholder={address.localidade !== '' ? address.localidade : FormFields.CITY}
-                  onChangeText={(value) => setAddress((old) => ({
-                    ...old,
-                    localidade: value
-                  }))}
-                  editable={address.localidade === ''}
+                  value={address.bairro}
+                  placeholder={
+                    address.bairro !== "" ? address.bairro : FormFields.DISTRICT
+                  }
+                  onChangeText={(value) =>
+                    setAddress((old) => ({
+                      ...old,
+                      bairro: value,
+                    }))
+                  }
+                  editable={address.bairro === ""}
                 />
               </S.GridItem>
 
+              <S.GridItem>
+                <InputFieldComponent
+                  primary
+                  value={address.localidade}
+                  placeholder={
+                    address.localidade !== ""
+                      ? address.localidade
+                      : FormFields.CITY
+                  }
+                  onChangeText={(value) =>
+                    setAddress((old) => ({
+                      ...old,
+                      localidade: value,
+                    }))
+                  }
+                  editable={address.localidade === ""}
+                />
+              </S.GridItem>
+            </S.GridForm>
+
+            <S.GridForm>
               <S.GridItem>
                 <SelectComponent
                   label="Estado"
                   onChange={handleStateChange}
                   selectedOption={selectedOptionState}
-                  labelSelect={state.textSelectState}
+                  labelSelect={address.uf ? address.uf : state.textSelectState}
+                  dataOptions={selectState}
+                  disabled={address.uf !== ""}
+                />
+              </S.GridItem>
+
+              <S.GridItem>
+                <SelectComponent
+                  label="Estado Civil"
+                  onChange={handleCivilStatusChange}
+                  selectedOption={selectedOptionCivilStatus}
+                  labelSelect={state.textSelectCivilStatus}
+                  dataOptions={selectCivilStatus}
                 />
               </S.GridItem>
             </S.GridForm>
@@ -311,19 +401,14 @@ export function RegisterScreen({ navigation }: AppProps) {
 
               <S.GridItem>
                 <SelectComponent
-                  label="Estado Civil"
-                  onChange={handleCivilStatusChange}
-                  selectedOption={selectedOptionCivilStatus}
-                  labelSelect={state.textSelectCivilStatus}
+                  label="Categoria"
+                  onChange={handleCategoryChange}
+                  selectedOption={selectedOptionCategory}
+                  labelSelect={state.textSelectCategory}
+                  dataOptions={selectCategory}
                 />
               </S.GridItem>
             </S.GridForm>
-            <SelectComponent
-              label="Categoria"
-              onChange={handleCategoryChange}
-              selectedOption={selectedOptionCategory}
-              labelSelect={state.textSelectCategory}
-            />
           </S.Form>
 
           <S.FooterFields>

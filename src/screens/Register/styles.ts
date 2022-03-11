@@ -30,6 +30,14 @@ export const GridItem = styled.View`
   width: 48%;
 `;
 
+export const GridItemLarge = styled.View`
+  width: 73%;
+`;
+
+export const GridItemSmall = styled.View`
+  width: 25%;
+`;
+
 export const FooterFields = styled.View`
   flex-direction: row;
   justify-content: space-between;
