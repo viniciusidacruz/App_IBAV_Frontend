@@ -1,6 +1,8 @@
 import styled from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import { IStyledDisabled } from "./types";
+
 export const Content = styled.View`
   flex-direction: column;
 `;
@@ -33,8 +35,8 @@ export const Label = styled.Text`
   color: ${({ theme }) => theme.colors.grey};
 `;
 
-export const Icons = styled.View`
-  background-color: ${({ theme }) => theme.colors.red};
+export const Icons = styled.View<IStyledDisabled>`
+  background-color: ${({ theme, disabled }) => disabled ? theme.colors.grey : theme.colors.red};
 
   align-items: center;
   justify-content: center;

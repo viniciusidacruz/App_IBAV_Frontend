@@ -13,6 +13,8 @@ export function InputFieldComponent({
   onChangeText,
   secureTextEntry,
   placeholderTextColor,
+  onEndEditing,
+  editable
 }: IContentProps) {
   const [show, setShow] = useState(false);
 
@@ -30,6 +32,8 @@ export function InputFieldComponent({
           onChangeText={onChangeText}
           autoCorrect={autoCorrect}
           primary={primary}
+          onEndEditing={onEndEditing}
+          editable={editable}
         />
       ) : (
         <S.Input
@@ -38,6 +42,8 @@ export function InputFieldComponent({
           onChangeText={onChangeText}
           autoCorrect={autoCorrect}
           primary={primary}
+          onEndEditing={onEndEditing}
+          editable={editable}
         />
       )}
 

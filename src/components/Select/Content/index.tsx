@@ -5,16 +5,15 @@ import { IContentSelect } from "./types";
 
 import * as S from "./styles";
 
-export function ContentSelect({ changeModalVisibility, setData }: IContentSelect) {
+export function ContentSelect({ changeModalVisibility, onChange, selectedOption, dataOptions }: IContentSelect) {
 
   const selectOption = (option: any) => {
     changeModalVisibility(false);
-    setData(option)
+    onChange(option)
+    selectedOption(option)
   };
 
-  const data = ["red", "blue", "yellow", "green", "orange"];
-
-  const option = data.map((item, index) => {
+  const option = dataOptions.map((item, index) => {
     return (
       <S.Options key={index} onPress={() => selectOption(item)}>
         <S.OptionSelect>{item}</S.OptionSelect>
