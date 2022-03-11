@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { TouchableOpacity } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
@@ -28,10 +28,10 @@ export function HomeScreen({ navigation }: AppProps) {
   const auth = getAuth(app);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setLoading(false)
+        setLoading(false);
       } else {
         navigation.replace("SignIn");
       }
@@ -41,13 +41,11 @@ export function HomeScreen({ navigation }: AppProps) {
   }, []);
 
   useEffect(() => {
-    setLoading(true)
-    connectApi
-      .get("/users.json")
-      .then((response) => {
-        setListUsers(Object.entries(response.data))
-        setLoading(false)
-      });
+    setLoading(true);
+    connectApi.get("/users.json").then((response) => {
+      setListUsers(Object.entries(response.data));
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -64,7 +62,6 @@ export function HomeScreen({ navigation }: AppProps) {
     }
   }, [listUsers]);
 
-
   const logout = () => {
     auth.signOut().then(() => alert("Você está deslogado"));
     AsyncStorage.removeItem("@storage_User");
@@ -73,6 +70,17 @@ export function HomeScreen({ navigation }: AppProps) {
   };
 
   const dataUser = user && user[0][1];
+  const isDisciple = dataUser.cargo;
+
+  const office = () => {
+    switch (isDisciple) {
+      case "lider":
+        return <TitleComponent title="lider de Célula" decoration red />;
+
+      case "discipulador":
+        return <TitleComponent title="Discipulador" decoration red />;
+    }
+  };
 
   return (
     <>
@@ -90,56 +98,59 @@ export function HomeScreen({ navigation }: AppProps) {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-
-      <S.Content>
-        {dataUser && (
-          <>
-            <S.Names>
-              <TitleComponent
-                title={dataUser.nome}
-                medium
-                uppercase
-                primary
-                weight
-              />
-              {dataUser.cargo === "lider" && (
+        <S.Content>
+          {dataUser && (
+            <Fragment>
+              <S.Names>
                 <TitleComponent
-                  title={`${dataUser.cargo} de Célula`}
-                  decoration
-                  red
+                  title={dataUser.nome}
+                  medium
+                  uppercase
+                  primary
+                  weight
                 />
-              )}
-            </S.Names>
-            <S.Info>
-              <TitleComponent title="Célula" decoration red weight uppercase />
-              <TitleComponent
-                title={`${dataUser.numero_celula} - ${dataUser.rede}`}
-                small
-                uppercase
-                primary
-              />
-            </S.Info>
 
-            <S.ContentOptions>
-              <SelectedMenuComponent
-                icon={<S.SendReportIcon name="document-text-sharp" />}
-                title="Entregar Relatório"
-                onPress={() => navigation.navigate("SendReport")}
-              />
-              <SelectedMenuComponent
-                icon={<S.MembersIcon name="user-friends" />}
-                title="Membros"
-                onPress={() => navigation.navigate("Members")}
-              />
-              <SelectedMenuComponent
-                icon={<S.RegisterIcon name="user-plus" />}
-                title="Cadastrar"
-                onPress={() => navigation.navigate("Register")}
-              />
-            </S.ContentOptions>
-          </>
-        )}
-      </S.Content>
+                {office()}
+              </S.Names>
+
+              {isDisciple === "lider" && (
+                <S.Info>
+                  <TitleComponent
+                    title="Célula"
+                    decoration
+                    red
+                    weight
+                    uppercase
+                  />
+                  <TitleComponent
+                    title={`${dataUser.numero_celula} - ${dataUser.rede}`}
+                    small
+                    uppercase
+                    primary
+                  />
+                </S.Info>
+              )}
+
+              <S.ContentOptions>
+                <SelectedMenuComponent
+                  icon={<S.SendReportIcon name="document-text-sharp" />}
+                  title="Entregar Relatório"
+                  onPress={() => navigation.navigate("SendReport")}
+                />
+                <SelectedMenuComponent
+                  icon={<S.MembersIcon name="user-friends" />}
+                  title="Membros"
+                  onPress={() => navigation.navigate("Members")}
+                />
+                <SelectedMenuComponent
+                  icon={<S.RegisterIcon name="user-plus" />}
+                  title="Cadastrar"
+                  onPress={() => navigation.navigate("Register")}
+                />
+              </S.ContentOptions>
+            </Fragment>
+          )}
+        </S.Content>
       )}
     </>
   );
