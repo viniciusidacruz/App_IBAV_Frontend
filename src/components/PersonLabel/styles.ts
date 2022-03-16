@@ -13,7 +13,7 @@ const typeStatus = (props: any) => {
         }
     }
 
-    if(props.status === 'FA') {
+    if(props.status === 'frequentador assiduo') {
         return {
         Background: '#00C637'
         }
@@ -60,7 +60,7 @@ export const TextName = styled.Text`
 `
 
 export const BoxStatus = styled.View<props>`
-    background: ${(props) => typeStatus(props)?.Background ? typeStatus(props)?.Background : ''}
+    background: ${(props) => typeStatus(props)?.Background ? typeStatus(props)?.Background : props.theme.colors.light}
 
 `
 

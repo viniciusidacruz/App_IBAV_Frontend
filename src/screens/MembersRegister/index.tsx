@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { ScrollView, TouchableOpacity, View, Text } from "react-native";
 
 import { ModalComponent } from "../../components/Modal";
 import { ButtonComponent } from '../../components/Button';
@@ -17,7 +18,7 @@ import { AppProps } from '../../routes/types/app';
 import * as S from './styles';
 import { DateComponent } from '../../components/Date';
 
-export function MembersRegister(this: any, { navigation }: AppProps) {
+export function MembersRegister(this: any, { navigation, route }: AppProps) {
     const [cep, setCep] = useState("");
     const [city, setCity] = useState("");
     const [name, setName] = useState("");
@@ -26,6 +27,8 @@ export function MembersRegister(this: any, { navigation }: AppProps) {
     const [address, setAddress] = useState("");
     const [district, setDistrict] = useState("");
     const [successModal, setSuccessModal] = useState(false);
+
+    console.log(route, '--------------------Informações Usuario----------------------')
 
     const submitRegister = () => {
         try {
@@ -121,7 +124,6 @@ export function MembersRegister(this: any, { navigation }: AppProps) {
                             <SelectComponent label="Categoria" />
                         </S.GridItem>
                     </S.GridForm>
-
                 </S.Form>
 
 
@@ -129,6 +131,7 @@ export function MembersRegister(this: any, { navigation }: AppProps) {
                     <S.Required>* Campos obrigatórios</S.Required>
                     <ButtonComponent title="Cadastrar" onPress={submitRegister} small />
                 </S.FooterFields>
+                
 
             </S.Container>
 
