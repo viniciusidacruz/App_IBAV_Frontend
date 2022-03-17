@@ -3,17 +3,21 @@ import { IActions, IContextType, IProvider, IState } from "./types";
 
 const initialData: IState = {
   offer: "",
-  date: new Date(),
-  textDate: "Selecione uma data",
-  observations: "",
-  membersCL: "F",
-  membersCT: "F",
-  visitorsCL: false,
-  visitorsCT: false,
-  nameVisitor: "",
-  phoneVisitor: "",
   members: [],
   visitors: [],
+  nameVisitor: "",
+  date: new Date(),
+  phoneVisitor: "",
+  observations: "",
+  stateSelect: "Selecione",
+  dateRegister: new Date(),
+  categorySelect: "Selecione",
+  textSelectState: "Selecione",
+  textDate: "Selecione uma data",
+  civilStatusSelect: "Selecione",
+  textSelectCategory: "Selecione",
+  textSelectCivilStatus: "Selecione",
+  textRegister: "Selecione uma data",
 };
 
 export const FormReportContext = createContext<IContextType | undefined>(
@@ -27,13 +31,17 @@ export enum FormReportActions {
   setMembers,
   setVisitors,
   setTextDate,
-  setMembersCL,
-  setMembersCT,
-  setVisitorsCL,
-  setVisitorsCT,
+  setStateSelect,
   setNameVisitor,
+  setTextRegister,
   setObservations,
   setPhoneVisitor,
+  setDateRegister,
+  setCategorySelect,
+  setTextSelectState,
+  setCivilStatusSelect,
+  setTextSelectCategory,
+  setTextSelectCivilStatus,
 }
 
 const formReportReducer = (state: IState, action: IActions) => {
@@ -44,23 +52,26 @@ const formReportReducer = (state: IState, action: IActions) => {
     case FormReportActions.setDate:
       return { ...state, date: action.payload };
 
+    case FormReportActions.setDateRegister:
+      return { ...state, dateRegister: action.payload };
+
     case FormReportActions.setTextDate:
       return { ...state, textDate: action.payload };
+
+    case FormReportActions.setTextRegister:
+      return { ...state, textRegister: action.payload };
 
     case FormReportActions.setObservations:
       return { ...state, observations: action.payload };
 
-    case FormReportActions.setMembersCL:
-      return { ...state, membersCL: action.payload };
+    case FormReportActions.setCategorySelect:
+      return { ...state, categorySelect: action.payload };
 
-    case FormReportActions.setMembersCT:
-      return { ...state, membersCT: action.payload };
+    case FormReportActions.setCivilStatusSelect:
+      return { ...state, civilStatusSelect: action.payload };
 
-    case FormReportActions.setVisitorsCL:
-      return { ...state, visitorsCL: action.payload };
-
-    case FormReportActions.setVisitorsCT:
-      return { ...state, visitorsCT: action.payload };
+    case FormReportActions.setStateSelect:
+      return { ...state, stateSelect: action.payload };
 
     case FormReportActions.setNameVisitor:
       return { ...state, nameVisitor: action.payload };
@@ -73,6 +84,15 @@ const formReportReducer = (state: IState, action: IActions) => {
 
     case FormReportActions.setVisitors:
       return { ...state, visitors: action.payload };
+
+    case FormReportActions.setTextSelectState:
+      return { ...state, textSelectState: action.payload };
+
+    case FormReportActions.setTextSelectCivilStatus:
+      return { ...state, textSelectCivilStatus: action.payload };
+
+    case FormReportActions.setTextSelectCategory:
+      return { ...state, textSelectCategory: action.payload };
 
     default:
       return state;

@@ -7,7 +7,9 @@ export interface IContentProps {
   onChangeText: (value) => void;
   autoCorrect?: boolean;
   primary?: boolean;
-  value: string | undefined;
+  value?: string | undefined;
+  onEndEditing?: (event) => void;
+  editable?:boolean;
 }
 
 export interface IColorsProps {

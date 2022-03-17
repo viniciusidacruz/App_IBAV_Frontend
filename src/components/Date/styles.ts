@@ -1,6 +1,18 @@
 import styled from "styled-components/native";
 import { AntDesign } from "@expo/vector-icons";
 
+export const Date = styled.View`
+  flex-direction: column;
+`;
+
+export const Label = styled.Text`
+  color: ${({ theme }) => theme.colors.grey};
+
+  font-size: 12;
+
+  margin-bottom: 5;
+`;
+
 export const Content = styled.TouchableOpacity`
   height: 32;
 
@@ -10,7 +22,7 @@ export const Content = styled.TouchableOpacity`
 
   border-color: ${({ theme }) => theme.colors.grey};
   border-width: 1px;
-`
+`;
 
 export const TextSelect = styled.Text`
   color: ${({ theme }) => theme.colors.grey};
@@ -22,20 +34,14 @@ export const TextSelect = styled.Text`
 export const SelectDate = styled.View`
   background-color: ${({ theme }) => theme.colors.red};
 
-  height: 100%;
-
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  padding-left: 10;
-  padding-right: 10;
+  height: 100%;
+  width: 15%;
 `;
 
 export const Icon = styled(AntDesign)`
+  font-size: 16;
   color: ${({ theme }) => theme.colors.light};
-
-  height: 100%;
-  justify-content: center;
-
-  font-size: 24;
 `;

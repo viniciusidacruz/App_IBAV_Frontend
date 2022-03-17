@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -24,8 +24,9 @@ import MenuNavigation from "../../common/constants/navigation";
 import * as S from "./styles";
 
 export function SendReportScreen({ navigation }: AppProps) {
-  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>();
+  const [loading, setLoading] = useState(false)
+  const [showCalender, setShowCalender] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const { state, dispatch } = useFormReport();
@@ -48,6 +49,33 @@ export function SendReportScreen({ navigation }: AppProps) {
     });
   };
 
+  const handleDateChange = (event: Event, selectedDate: any) => {
+    const currentDate = selectedDate || state.date;
+
+    setShowCalender(false);
+
+    const tempDate = new Date(currentDate);
+    const newDate =
+      tempDate.getDate() +
+      "/" +
+      (tempDate.getMonth() + 1) +
+      "/" +
+      tempDate.getFullYear();
+
+    dispatch({
+      type: FormReportActions.setDate,
+      payload: currentDate
+    })
+    dispatch({
+      type: FormReportActions.setTextDate,
+      payload: newDate
+    })
+  }
+
+  const showMode = () => {
+    setShowCalender(true);
+  };
+
   useEffect(() => {
     setLoading(true);
     const checkUser = async () => {
@@ -66,7 +94,7 @@ export function SendReportScreen({ navigation }: AppProps) {
   const userInfo = user && user[0][1];
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("Home")} />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
@@ -90,9 +118,9 @@ export function SendReportScreen({ navigation }: AppProps) {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <>
+        <Fragment>
           {userInfo && (
-            <>
+            <Fragment>
               <S.Content>
                 <S.Grid>
                   <TitleComponent title={`${FormFields.CELULA}:`} small primary />
@@ -120,7 +148,13 @@ export function SendReportScreen({ navigation }: AppProps) {
                 <S.Grid>
                   <TitleComponent title={`${FormFields.DATE}:`} small primary />
                   <S.ContentC>
-                    <DateComponent />
+                      <DateComponent
+                        text={state.textDate}
+                        open={showMode}
+                        showCalender={showCalender}
+                        dataDados={state.date}
+                        onChange={handleDateChange}
+                      />
                   </S.ContentC>
                 </S.Grid>
 
@@ -149,10 +183,10 @@ export function SendReportScreen({ navigation }: AppProps) {
                   data={user}
                 />
               </ModalComponent>
-            </>
+            </Fragment>
           )}
-        </>
+        </Fragment>
       )}
-    </>
+    </Fragment>
   );
 }

@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, TouchableOpacity, View, Text } from "react-native";
+import React, { useState, useEffect, Fragment } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import MenuNavigation from '../../common/constants/navigation'
 
 import { HeaderComponent } from '../../components/Header';
 import { ComeBackComponent } from "../../components/ComeBack";
@@ -10,10 +8,12 @@ import { ButtonComponent } from '../../components/Button';
 import { NotificationComponent } from '../../components/Notification';
 import { PersonLabelComponent } from '../../components/PersonLabel';
 
+const loadingGif = require("../../assets/loader-two.gif");
+import { connectApi } from '../../common/services/ConnectApi';
+import MenuNavigation from '../../common/constants/navigation'
+
 import { AppProps } from '../../routes/types/app';
 import * as S from './styles';
-import { connectApi } from '../../common/services/ConnectApi';
-const loadingGif = require("../../assets/loader-two.gif");
 
 export function MembersScreen(this: any, { navigation }: AppProps) {
   const [user, setUser] = useState<any>();
@@ -56,7 +56,7 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
   }, []);
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("Home")} />
         <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
@@ -76,7 +76,6 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
         </>
         )}
       </S.Container>
-
-    </>
+    </Fragment>
   );
 }

@@ -3,20 +3,17 @@ import Modal from "react-native-modal";
 
 import { ContentSelect } from "./Content";
 
-import { ILabelProps } from "./types";
+import { IContentProps } from "./types";
 
 import * as S from "./styles";
 
-export function SelectComponent({ label }: ILabelProps) {
-  const [chooseData, setChooseData] = useState("Selecione");
+export function SelectComponent({ label, onChange, selectedOption, labelSelect, dataOptions, disabled }: IContentProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const changeModalVisibility = (prev: boolean) => {
-    setIsModalVisible(prev);
-  };
-
-  const setData = (option: string) => {
-    setChooseData(option);
+    if(!disabled) {
+      setIsModalVisible(prev);
+    }
   };
 
   return (
@@ -24,9 +21,9 @@ export function SelectComponent({ label }: ILabelProps) {
       <S.LabelField>{label}</S.LabelField>
       <S.Container onPress={() => changeModalVisibility(true)}>
         <S.Field>
-          <S.Label>{chooseData}</S.Label>
+          <S.Label>{labelSelect}</S.Label>
         </S.Field>
-        <S.Icons>
+        <S.Icons disabled={disabled}>
           {isModalVisible ? (
             <S.Icon name="arrow-drop-up" />
           ) : (
@@ -41,7 +38,9 @@ export function SelectComponent({ label }: ILabelProps) {
       >
         <ContentSelect
           changeModalVisibility={changeModalVisibility}
-          setData={setData}
+          selectedOption={selectedOption}
+          onChange={onChange}
+          dataOptions={dataOptions}
         />
       </Modal>
     </S.Content>
