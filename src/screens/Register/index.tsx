@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -245,7 +245,7 @@ export function RegisterScreen({ navigation }: AppProps) {
   }, [address.cep]);
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <S.ComeBack>
           <ComeBackComponent onPress={() => navigation.navigate("Home")} />
@@ -428,6 +428,6 @@ export function RegisterScreen({ navigation }: AppProps) {
           type="register"
         />
       </ModalComponent>
-    </>
+    </Fragment>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -94,7 +94,7 @@ export function SendReportScreen({ navigation }: AppProps) {
   const userInfo = user && user[0][1];
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("Home")} />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
@@ -118,9 +118,9 @@ export function SendReportScreen({ navigation }: AppProps) {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <>
+        <Fragment>
           {userInfo && (
-            <>
+            <Fragment>
               <S.Content>
                 <S.Grid>
                   <TitleComponent title={`${FormFields.CELULA}:`} small primary />
@@ -183,10 +183,10 @@ export function SendReportScreen({ navigation }: AppProps) {
                   data={user}
                 />
               </ModalComponent>
-            </>
+            </Fragment>
           )}
-        </>
+        </Fragment>
       )}
-    </>
+    </Fragment>
   );
 }

@@ -1,5 +1,4 @@
-import React from 'react';
-import { ScrollView, TouchableOpacity } from "react-native";
+import React, { Fragment } from 'react';
 import { Text } from 'react-native';
 
 import { HeaderComponent } from '../../components/Header';
@@ -14,16 +13,13 @@ import * as S from './styles';
 export function MembersScreen({ navigation }: AppProps) {
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("Home")} />
         <S.Navigation>Membros</S.Navigation>
         <ButtonComponent title="Cadastrar" onPress={()=>{}} small icon={<S.RegisterIcon name="user-plus" />}/>
         <NotificationComponent />
       </HeaderComponent>
-      <>
-       <Text>Members</Text>
-      </>
-    </>
+    </Fragment>
   );
 }
