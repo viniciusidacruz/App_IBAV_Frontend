@@ -8,6 +8,7 @@ import { RegisterScreen } from "../screens/Register";
 import { SendReportScreen } from "../screens/SendReport";
 import { MembersReportScreen } from "../screens/MembersReport";
 import { VisitorsReportScreen } from "../screens/VisitorsReport";
+import { MembersRegister } from "../screens/MembersRegister";
 
 import { AppStackParamsList } from "./types/app";
 
@@ -49,6 +50,11 @@ export function AppRoutes() {
       <Screen
         name="Members"
         component={MembersScreen}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="MembersRegister"
+        component={MembersRegister}
         options={{ headerShown: false }}
       />
       <Screen

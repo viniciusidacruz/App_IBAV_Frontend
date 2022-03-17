@@ -1,4 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useEffect,
+  useState
+} from "react";
 import { initializeApp } from "firebase/app";
 import { TouchableOpacity } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
@@ -17,7 +21,6 @@ import { firebaseConfig } from "../../config/firebase";
 import { connectApi } from "../../common/services/ConnectApi";
 
 import * as S from "./styles";
-import { useNavigation } from "@react-navigation/native";
 
 export function HomeScreen({ navigation }: AppProps) {
   const [listUsers, setListUsers] = useState<any>();
@@ -70,7 +73,7 @@ export function HomeScreen({ navigation }: AppProps) {
   };
 
   const dataUser = user && user[0][1];
-  const isDisciple = dataUser.cargo;
+  const isDisciple = dataUser && dataUser.cargo;
 
   const office = () => {
     switch (isDisciple) {
@@ -83,7 +86,7 @@ export function HomeScreen({ navigation }: AppProps) {
   };
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <LogoComponent full />
 
@@ -152,6 +155,6 @@ export function HomeScreen({ navigation }: AppProps) {
           )}
         </S.Content>
       )}
-    </>
+    </Fragment>
   );
 }

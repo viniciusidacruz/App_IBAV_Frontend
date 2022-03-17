@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -30,6 +30,7 @@ const loadingGif = require("../../assets/loader-two.gif");
 import { IAddress } from "./types";
 
 import * as S from "./styles";
+import MenuNavigation from "../../common/constants/navigation";
 
 export function RegisterScreen({ navigation }: AppProps) {
   const [address, setAddress] = useState<IAddress>({
@@ -45,6 +46,7 @@ export function RegisterScreen({ navigation }: AppProps) {
     complemento: "",
   });
 
+  const [cep, setCep] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -93,10 +95,9 @@ export function RegisterScreen({ navigation }: AppProps) {
   }, []);
 
   const submitRegister = () => {
-    const { cep, bairro, localidade, logradouro } = address;
+    const { bairro, localidade, logradouro } = address;
 
     const ID_CELULAS = celulas && celulas[0][0];
-    const endereco = `${logradouro} ${numberHouse}`;
 
     try {
       connectApi
@@ -105,13 +106,15 @@ export function RegisterScreen({ navigation }: AppProps) {
           status: state.categorySelect,
           telefone: phone,
           email,
-          endereco,
+          endereco: logradouro,
+          numero_casa: numberHouse,
           cep,
           bairro,
           cidade: localidade,
-          estado: state.stateSelect,
-          data_de_nascimento: state.dateRegister,
-          estado_civil: state.civilStatusSelect,
+          estado: state.textSelectState,
+          data_de_nascimento: state.textRegister,
+          estado_civil: state.textSelectCivilStatus,
+          categoria: state.textSelectCategory
         })
         .then(() => {
           setSuccessModal(true);
@@ -226,7 +229,7 @@ export function RegisterScreen({ navigation }: AppProps) {
 
   const getAddressFromApi = useCallback(() => {
     axios
-      .get(`https://viacep.com.br/ws/${address.cep}/json/`)
+      .get(`https://viacep.com.br/ws/${cep}/json/`)
       .then((response) => response.data)
       .then((data: IAddress) => {
         setAddress({
@@ -242,14 +245,14 @@ export function RegisterScreen({ navigation }: AppProps) {
         });
       })
       .catch((err) => console.log("Erro:", err));
-  }, [address.cep]);
+  }, [cep]);
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <S.ComeBack>
           <ComeBackComponent onPress={() => navigation.navigate("Home")} />
-          <TitleComponent title="Cadastro" small />
+          <TitleComponent title={MenuNavigation.REGISTER} small />
         </S.ComeBack>
 
         <NotificationComponent />
@@ -285,15 +288,10 @@ export function RegisterScreen({ navigation }: AppProps) {
 
             <InputFieldComponent
               primary
-              value={address.cep}
+              value={cep}
               placeholder={FormFields.CEP}
               onEndEditing={() => getAddressFromApi()}
-              onChangeText={(value) =>
-                setAddress((old) => ({
-                  ...old,
-                  cep: value,
-                }))
-              }
+              onChangeText={(value) => setCep(value)}
             />
 
             <S.GridForm>
@@ -428,6 +426,6 @@ export function RegisterScreen({ navigation }: AppProps) {
           type="register"
         />
       </ModalComponent>
-    </>
+    </Fragment>
   );
 }
