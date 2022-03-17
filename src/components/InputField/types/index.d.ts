@@ -10,6 +10,7 @@ export interface IContentProps {
   value?: string | undefined;
   onEndEditing?: (event) => void;
   editable?:boolean;
+  label?: string;
 }
 
 export interface IColorsProps {

@@ -37,10 +37,6 @@ export const Form = styled.View`
   margin-top: 15;
 `;
 
-export const GridItem = styled.View`
-  width: 48%;
-`;
-
 export const GridDate = styled.View`
   width: 48%;
   height: 58%;
@@ -51,8 +47,30 @@ export const GridForm = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
+`;
+
+export const GridItem = styled.View`
+  width: 48%;
 
   margin-bottom: 12;
+`;
+
+export const GridItemFull = styled.View`
+  width: 100%;
+
+  margin-bottom: 5;
+`;
+
+export const GridItemLarge = styled.View`
+  width: 73%;
+
+  margin-bottom: 12;
+`;
+
+export const GridItemSmall = styled.View`
+  width: 25%;
+  margin-bottom: 12;
+
 `;
 
 export const FooterFields = styled.View`
