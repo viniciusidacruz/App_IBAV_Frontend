@@ -73,7 +73,7 @@ export function HomeScreen({ navigation }: AppProps) {
   };
 
   const dataUser = user && user[0][1];
-  const isDisciple = dataUser.cargo;
+  const isDisciple = dataUser && dataUser.cargo;
 
   const office = () => {
     switch (isDisciple) {
