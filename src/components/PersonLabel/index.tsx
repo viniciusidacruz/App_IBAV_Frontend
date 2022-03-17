@@ -16,7 +16,7 @@ export function PersonLabelComponent({
                   <S.TextStatus >{status}</S.TextStatus>
                 </S.BoxStatus>
         </S.ContainerPerson>
-        <S.Icon name="trash"/>
+        <S.Icon name="trash" onClick={() => ("/")}/>
     </S.Box>
   );
 }

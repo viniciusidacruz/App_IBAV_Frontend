@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from '@react-navigation/native';
 
 
 import { HeaderComponent } from '../../components/Header';
@@ -13,6 +14,7 @@ import { connectApi } from '../../common/services/ConnectApi';
 import MenuNavigation from '../../common/constants/navigation'
 
 import { AppProps } from '../../routes/types/app';
+
 import * as S from './styles';
 
 export function MembersScreen(this: any, { navigation }: AppProps) {
@@ -55,6 +57,10 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
     });
   }, []);
 
+  function sendInformation() {
+    navigation.navigate("MembersRegister")
+  }
+
   return (
     <Fragment>
       <HeaderComponent>
@@ -70,7 +76,19 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
         <>
         {celulas && celulas.length > 0 && Object.values(celulas[0][1].membros).map((item: any) => (
           <>
-            <PersonLabelComponent nome={item.nome} status={item.status} onPress={() => navigation.navigate("MembersRegister")} />
+          {console.log(item, 'item')}
+            <PersonLabelComponent
+              nome={item.nome}
+              status={item.status}
+              onPress={() => navigation.navigate('MembersRegister', {
+                nome: `${item.nome}`,
+                telefone: `${item.telefone}`,
+                email: `${item.email}`,
+                endereco: `${item.endereco}`,
+                bairro: `${item.bairro}`,
+                cep: `${item.cep}`,
+                cidade: `${item.cidade}`
+                })}/>
           </>
         ))}
         </>
