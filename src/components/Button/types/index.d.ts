@@ -4,6 +4,7 @@ export interface IContentProps {
   small?: boolean;
   icon?: any;
   disabled?: boolean;
+  onChange?: any;
 }
 
 export interface ISizeProps {
