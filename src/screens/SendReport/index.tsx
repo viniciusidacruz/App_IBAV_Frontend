@@ -11,6 +11,7 @@ import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
+import { DefaultContentModalComponent } from "../../components/Modal/Default"
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -28,12 +29,17 @@ export function SendReportScreen({ navigation }: AppProps) {
   const [loading, setLoading] = useState(false)
   const [showCalender, setShowCalender] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [modalSucess, setModalsucess] = useState(false);
 
   const { state, dispatch } = useFormReport();
 
   const handleOpenModal = () => {
     setModalVisible(true);
   };
+
+  const openModalSucess = () => {
+    setModalsucess(true);
+  }
 
   const handleOfferChange = (value: string) => {
     dispatch({
@@ -126,9 +132,8 @@ export function SendReportScreen({ navigation }: AppProps) {
                   <TitleComponent title={`${FormFields.CELULA}:`} small primary />
                   <S.ContentC>
                     <S.IconC name="user-friends" />
-                    <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
-                      userInfo && userInfo.rede
-                    }`}</S.DescriptionC>
+                    <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${userInfo && userInfo.rede
+                      }`}</S.DescriptionC>
                   </S.ContentC>
                 </S.Grid>
 
@@ -148,13 +153,13 @@ export function SendReportScreen({ navigation }: AppProps) {
                 <S.Grid>
                   <TitleComponent title={`${FormFields.DATE}:`} small primary />
                   <S.ContentC>
-                      <DateComponent
-                        text={state.textDate}
-                        open={showMode}
-                        showCalender={showCalender}
-                        dataDados={state.date}
-                        onChange={handleDateChange}
-                      />
+                    <DateComponent
+                      text={state.textDate}
+                      open={showMode}
+                      showCalender={showCalender}
+                      dataDados={state.date}
+                      onChange={handleDateChange}
+                    />
                   </S.ContentC>
                 </S.Grid>
 
@@ -168,10 +173,10 @@ export function SendReportScreen({ navigation }: AppProps) {
                   />
                 </S.Grid>
 
-                  <ButtonComponent
-                    title={ButtonsText.REPORT}
-                    onPress={handleOpenModal}
-                  />
+                <ButtonComponent
+                  title={ButtonsText.REPORT}
+                  onPress={handleOpenModal}
+                />
               </S.Content>
 
               <ModalComponent
@@ -180,7 +185,18 @@ export function SendReportScreen({ navigation }: AppProps) {
               >
                 <ReportContentModalComponent
                   handleCloseModal={setModalVisible}
-                  data={user}
+                    data={user}
+                    openModal={openModalSucess}
+                />
+              </ModalComponent>
+
+              <ModalComponent
+                isVisible={modalSucess}
+                onBackdropPress={() => setModalsucess(false)}
+              >
+                <DefaultContentModalComponent
+                  closeModal={setModalsucess}
+                  type="sendReport"
                 />
               </ModalComponent>
             </>

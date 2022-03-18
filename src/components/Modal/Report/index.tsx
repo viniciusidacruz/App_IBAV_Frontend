@@ -2,10 +2,8 @@ import { Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { ModalComponent } from "..";
 import { TitleComponent } from "../../Title";
 import { ButtonComponent } from "../../Button";
-import { DefaultContentModalComponent } from "../Default";
 
 import { useFormReport } from "../../../hooks/useFormReport";
 import { connectApi } from "../../../common/services/ConnectApi";
@@ -16,6 +14,7 @@ import * as S from "./styles";
 export function ReportContentModalComponent({
   handleCloseModal,
   data,
+  openModal,
 }: IContentModal) {
   const [user, setUser] = useState<any>();
   const [sendModal, setSendModal] = useState(false);
@@ -45,7 +44,7 @@ export function ReportContentModalComponent({
           oferta,
           presencas
         })
-        .then(() => setSendModal(true));
+        .then(() => setSendModal(!sendModal));
       handleCloseModal(false);
     } catch (err) {
       if (err) {
@@ -74,9 +73,8 @@ export function ReportContentModalComponent({
 
         <S.ListModal>
           <TitleComponent
-            title={`Célula: ${data && data[0][1].numero_celula} - ${
-              data && data[0][1].rede
-            }`}
+            title={`Célula: ${data && data[0][1].numero_celula} - ${data && data[0][1].rede
+              }`}
             decoration
             primary
           />
@@ -93,30 +91,26 @@ export function ReportContentModalComponent({
           />
           <TitleComponent title="Presença:" decoration primary />
           <TitleComponent
-            title={`- ${
-              presentCLMembers ? presentCLMembers.length : 0
-            } membros (célula)`}
+            title={`- ${presentCLMembers ? presentCLMembers.length : 0
+              } membros (célula)`}
             decoration
             primary
           />
           <TitleComponent
-            title={`- ${
-              presentCTMembers ? presentCTMembers.length : 0
-            } membros (culto)`}
+            title={`- ${presentCTMembers ? presentCTMembers.length : 0
+              } membros (culto)`}
             decoration
             primary
           />
           <TitleComponent
-            title={`- ${
-              presentCLVisitors ? presentCLVisitors.length : 0
-            } Visitantes (célula)`}
+            title={`- ${presentCLVisitors ? presentCLVisitors.length : 0
+              } Visitantes (célula)`}
             decoration
             primary
           />
           <TitleComponent
-            title={`- ${
-              presentCTVisitors ? presentCTVisitors.length : 0
-            } Visitantes (culto)`}
+            title={`- ${presentCTVisitors ? presentCTVisitors.length : 0
+              } Visitantes (culto)`}
             decoration
             primary
           />
@@ -124,26 +118,15 @@ export function ReportContentModalComponent({
 
         <S.ObservationModal>
           <TitleComponent
-            title={`Observações: ${
-              state.observations ? state.observations : "Nenhuma observação!"
-            }`}
+            title={`Observações: ${state.observations ? state.observations : "Nenhuma observação!"
+              }`}
             decoration
             primary
           />
         </S.ObservationModal>
 
-        <ButtonComponent title="Confirmar" onPress={handleSubmitForm} />
+        <ButtonComponent title="Confirmar" onPress={handleSubmitForm} onChange={openModal}/>
       </S.ContentModal>
-
-      <ModalComponent
-        isVisible={sendModal}
-        onBackdropPress={() => setSendModal(false)}
-      >
-        <DefaultContentModalComponent
-          closeModal={setSendModal}
-          type="sendReport"
-        />
-      </ModalComponent>
     </>
   );
 }
