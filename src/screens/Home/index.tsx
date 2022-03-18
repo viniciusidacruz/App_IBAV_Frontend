@@ -73,10 +73,10 @@ export function HomeScreen({ navigation }: AppProps) {
   };
 
   const dataUser = user && user[0][1];
-  const isDisciple = dataUser && dataUser.cargo;
+  const whatOffice = dataUser && dataUser.cargo;
 
   const office = () => {
-    switch (isDisciple) {
+    switch (whatOffice) {
       case "lider":
         return <TitleComponent title="lider de Célula" decoration red />;
 
@@ -116,7 +116,7 @@ export function HomeScreen({ navigation }: AppProps) {
                 {office()}
               </S.Names>
 
-              {isDisciple === "lider" && (
+              {whatOffice === "lider" && (
                 <S.Info>
                   <TitleComponent
                     title="Célula"

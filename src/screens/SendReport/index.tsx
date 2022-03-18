@@ -22,12 +22,18 @@ import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 
 import * as S from "./styles";
+import { SelectComponent } from "../../components/Select";
+import { connectApi } from "../../common/services/ConnectApi";
+import { IContentProps } from "./types";
 
 export function SendReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();
-  const [loading, setLoading] = useState(false)
+  const [celulas, setCelulas] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectCelula, setSelectCelula] = useState("");
   const [showCalender, setShowCalender] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [selectLabelCelula, setSelectLabelCelula] = useState("");
 
   const { state, dispatch } = useFormReport();
 
@@ -64,13 +70,13 @@ export function SendReportScreen({ navigation }: AppProps) {
 
     dispatch({
       type: FormReportActions.setDate,
-      payload: currentDate
-    })
+      payload: currentDate,
+    });
     dispatch({
       type: FormReportActions.setTextDate,
-      payload: newDate
-    })
-  }
+      payload: newDate,
+    });
+  };
 
   const showMode = () => {
     setShowCalender(true);
@@ -92,6 +98,72 @@ export function SendReportScreen({ navigation }: AppProps) {
   }, []);
 
   const userInfo = user && user[0][1];
+  const whatOffice = userInfo && userInfo.cargo;
+
+  console.log('Esse é o userinfo => ', userInfo && userInfo);
+  console.log('Esse é o celulas => ', celulas && celulas);
+
+  useEffect(() => {
+    if (whatOffice !== "lider") {
+      const getCelulas = async () => {
+        const response = await connectApi.get("/celulas.json");
+
+        setCelulas(Object.values(response.data));
+      };
+      getCelulas();
+    }
+  }, []);
+
+  const handleCelula = (value: string) => {
+    setSelectCelula(value)
+  }
+
+  const selectedOptionCelula = (value: string) => {
+   setSelectLabelCelula(value)
+  };
+
+  const filterCelulas = celulas && celulas.filter((celulaFiltrada: IContentProps) => {
+    return celulaFiltrada.discipulador === userInfo && userInfo.nome
+  })
+
+  console.log('Esse é o filterCelulas => ', filterCelulas && filterCelulas);
+
+
+  const optionsCelula = celulas && celulas.map((celulaIdentify: IContentProps) => {
+    return {
+      value: celulaIdentify?.celula + celulaIdentify.discipulador
+    }
+  })
+
+  const office = () => {
+    switch (whatOffice) {
+      case "lider":
+        return (
+          <S.Grid>
+            <TitleComponent title={`${FormFields.CELULA}:`} small primary />
+            <S.ContentC>
+              <S.IconC name="user-friends" />
+              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
+                userInfo && userInfo.rede
+              }`}</S.DescriptionC>
+            </S.ContentC>
+          </S.Grid>
+        );
+
+      case "discipulador":
+        return (
+          <S.Grid>
+            <TitleComponent title={`${FormFields.CELULA}:`} small primary />
+            <SelectComponent
+              labelSelect={selectLabelCelula}
+              dataOptions={optionsCelula && optionsCelula}
+              onChange={handleCelula}
+              selectedOption={selectedOptionCelula}
+            />
+          </S.Grid>
+        );
+    }
+  };
 
   return (
     <Fragment>
@@ -122,18 +194,14 @@ export function SendReportScreen({ navigation }: AppProps) {
           {userInfo && (
             <Fragment>
               <S.Content>
-                <S.Grid>
-                  <TitleComponent title={`${FormFields.CELULA}:`} small primary />
-                  <S.ContentC>
-                    <S.IconC name="user-friends" />
-                    <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
-                      userInfo && userInfo.rede
-                    }`}</S.DescriptionC>
-                  </S.ContentC>
-                </S.Grid>
+                {office()}
 
                 <S.Grid>
-                  <TitleComponent title={`${FormFields.OFFER}R$:`} small primary />
+                  <TitleComponent
+                    title={`${FormFields.OFFER}R$:`}
+                    small
+                    primary
+                  />
                   <S.ContentC>
                     <S.IconC name="file-invoice-dollar" />
                     <InputFieldComponent
@@ -148,18 +216,22 @@ export function SendReportScreen({ navigation }: AppProps) {
                 <S.Grid>
                   <TitleComponent title={`${FormFields.DATE}:`} small primary />
                   <S.ContentC>
-                      <DateComponent
-                        text={state.textDate}
-                        open={showMode}
-                        showCalender={showCalender}
-                        dataDados={state.date}
-                        onChange={handleDateChange}
-                      />
+                    <DateComponent
+                      text={state.textDate}
+                      open={showMode}
+                      showCalender={showCalender}
+                      dataDados={state.date}
+                      onChange={handleDateChange}
+                    />
                   </S.ContentC>
                 </S.Grid>
 
                 <S.Grid>
-                  <TitleComponent title={`${FormFields.OBSERVATIONS}:`} small primary />
+                  <TitleComponent
+                    title={`${FormFields.OBSERVATIONS}:`}
+                    small
+                    primary
+                  />
                   <S.Observations
                     multiline={true}
                     numberOfLines={5}
@@ -168,10 +240,10 @@ export function SendReportScreen({ navigation }: AppProps) {
                   />
                 </S.Grid>
 
-                  <ButtonComponent
-                    title={ButtonsText.REPORT}
-                    onPress={handleOpenModal}
-                  />
+                <ButtonComponent
+                  title={ButtonsText.REPORT}
+                  onPress={handleOpenModal}
+                />
               </S.Content>
 
               <ModalComponent

@@ -15,8 +15,8 @@ export function ContentSelect({ changeModalVisibility, onChange, selectedOption,
 
   const option = dataOptions.map((item, index) => {
     return (
-      <S.Options key={index} onPress={() => selectOption(item)}>
-        <S.OptionSelect>{item}</S.OptionSelect>
+      <S.Options key={index} onPress={() => selectOption(item.value)}>
+        <S.OptionSelect>{item.value}</S.OptionSelect>
       </S.Options>
     );
   });
