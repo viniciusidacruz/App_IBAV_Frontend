@@ -3,6 +3,11 @@ import { Entypo } from '@expo/vector-icons';
 
 import { IColorsProps } from './types';
 
+export const Label = styled.Text`
+  font-size: 12;
+  color: ${({ theme }) => theme.colors.grey};
+`;
+
 export const Field = styled.View<IColorsProps>`
   border-bottom-color: ${(props) =>
     props.primary ? props?.theme?.colors?.grey : props?.theme?.colors?.light};

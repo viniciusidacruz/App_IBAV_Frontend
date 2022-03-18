@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from '@expo/vector-icons';
@@ -151,7 +151,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
   newArrayVisitors && newArrayVisitors.sort(compared);
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <ComeBackComponent
           onPress={() => navigation.navigate("MembersReport")}
@@ -242,6 +242,6 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
       >
         <DefaultContentModalComponent closeModal={setIsAddVisible} type="addVisitor" />
       </ModalComponent>
-    </>
+    </Fragment>
   );
 }
