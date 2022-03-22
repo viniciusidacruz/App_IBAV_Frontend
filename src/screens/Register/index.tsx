@@ -272,6 +272,8 @@ export function RegisterScreen({ navigation }: AppProps) {
               onChangeText={(value) => setName(value)}
             />
 
+            <S.TextAlert>Caso você queira editar o nome, o cadastro vai novamente para aprovação</S.TextAlert>
+
             <InputMaskComponent
               value={phone}
               mask="phone"
