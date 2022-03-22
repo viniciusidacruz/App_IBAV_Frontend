@@ -11,6 +11,7 @@ import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
+import { DefaultContentModalComponent } from "../../components/Modal/Default"
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -34,12 +35,17 @@ export function SendReportScreen({ navigation }: AppProps) {
   const [showCalender, setShowCalender] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectLabelCelula, setSelectLabelCelula] = useState("");
+  const [modalSucess, setModalsucess] = useState(false);
 
   const { state, dispatch } = useFormReport();
 
   const handleOpenModal = () => {
     setModalVisible(true);
   };
+
+  const openModalSucess = () => {
+    setModalsucess(true);
+  }
 
   const handleOfferChange = (value: string) => {
     dispatch({
@@ -252,7 +258,18 @@ export function SendReportScreen({ navigation }: AppProps) {
               >
                 <ReportContentModalComponent
                   handleCloseModal={setModalVisible}
-                  data={user}
+                    data={user}
+                    onPressIn={openModalSucess}
+                />
+              </ModalComponent>
+
+              <ModalComponent
+                isVisible={modalSucess}
+                onBackdropPress={() => setModalsucess(false)}
+              >
+                <DefaultContentModalComponent
+                  closeModal={setModalsucess}
+                  type="sendReport"
                 />
               </ModalComponent>
             </Fragment>

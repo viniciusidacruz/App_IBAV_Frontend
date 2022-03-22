@@ -13,6 +13,7 @@ import { InputMaskComponent } from "../../components/InputMask";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
+import { maskCep } from "../../common/utils/masks";
 
 import { AppProps } from "../../routes/types/app";
 import FormFields from "../../common/constants/form";
@@ -134,6 +135,7 @@ export function RegisterScreen({ navigation }: AppProps) {
           setEmail("");
           setPhone("");
           setNumberHouse("");
+          setCep("");
 
           dispatch({
             type: FormReportActions.setTextSelectCivilStatus,
@@ -270,6 +272,8 @@ export function RegisterScreen({ navigation }: AppProps) {
               onChangeText={(value) => setName(value)}
             />
 
+            <S.TextAlert>Caso você queira editar o nome, o cadastro vai novamente para aprovação</S.TextAlert>
+
             <InputMaskComponent
               value={phone}
               mask="phone"
@@ -288,7 +292,7 @@ export function RegisterScreen({ navigation }: AppProps) {
 
             <InputFieldComponent
               primary
-              value={cep}
+              value={maskCep(cep)}
               placeholder={FormFields.CEP}
               onEndEditing={() => getAddressFromApi()}
               onChangeText={(value) => setCep(value)}

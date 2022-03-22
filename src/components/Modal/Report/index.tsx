@@ -2,10 +2,8 @@ import { Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { ModalComponent } from "..";
 import { TitleComponent } from "../../Title";
 import { ButtonComponent } from "../../Button";
-import { DefaultContentModalComponent } from "../Default";
 
 import { useFormReport } from "../../../hooks/useFormReport";
 import { connectApi } from "../../../common/services/ConnectApi";
@@ -16,20 +14,23 @@ import * as S from "./styles";
 export function ReportContentModalComponent({
   handleCloseModal,
   data,
+  onPressIn,
 }: IContentModal) {
   const [user, setUser] = useState<any>();
   const [sendModal, setSendModal] = useState(false);
 
   const { state } = useFormReport();
 
-  const presentCLMembers = state.members.filter((item) => item.celula === 'P');
-  const presentCTMembers = state.members.filter((item) => item.culto === 'P');
-  const presentCLVisitors = state.visitors.filter((item) => item.celula === 'P');
-  const presentCTVisitors = state.visitors.filter((item) => item.culto === 'P');
+  const presentCLMembers = state.members.filter((item) => item.celula === "P");
+  const presentCTMembers = state.members.filter((item) => item.culto === "P");
+  const presentCLVisitors = state.visitors.filter(
+    (item) => item.celula === "P"
+  );
+  const presentCTVisitors = state.visitors.filter((item) => item.culto === "P");
 
   const handleSubmitForm = () => {
     try {
-      const numero_celula = user && user[0][1].numero_celula
+      const numero_celula = user && user[0][1].numero_celula;
       const oferta = state.offer;
       const data = state.textDate;
 
@@ -43,9 +44,9 @@ export function ReportContentModalComponent({
           numero_celula,
           observacoes,
           oferta,
-          presencas
+          presencas,
         })
-        .then(() => setSendModal(true));
+        .then(() => setSendModal(!sendModal));
       handleCloseModal(false);
     } catch (err) {
       if (err) {
@@ -132,18 +133,12 @@ export function ReportContentModalComponent({
           />
         </S.ObservationModal>
 
-        <ButtonComponent title="Confirmar" onPress={handleSubmitForm} />
-      </S.ContentModal>
-
-      <ModalComponent
-        isVisible={sendModal}
-        onBackdropPress={() => setSendModal(false)}
-      >
-        <DefaultContentModalComponent
-          closeModal={setSendModal}
-          type="sendReport"
+        <ButtonComponent
+          title="Confirmar"
+          onPress={handleSubmitForm}
+          onPressIn={onPressIn}
         />
-      </ModalComponent>
+      </S.ContentModal>
     </>
   );
 }

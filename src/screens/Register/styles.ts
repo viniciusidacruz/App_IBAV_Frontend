@@ -48,6 +48,11 @@ export const FooterFields = styled.View`
   margin-bottom: 15;
 `;
 
+export const TextAlert = styled.Text`
+  font-size: 10;
+  color: #999999;
+`;
+
 export const Required = styled.Text``;
 
 export const Loading = styled(Image)``

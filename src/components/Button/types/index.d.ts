@@ -4,6 +4,7 @@ export interface IContentProps {
   small?: boolean;
   icon?: any;
   disabled?: boolean;
+  onPressIn?: () => void;
 }
 
 export interface ISizeProps {
@@ -13,4 +14,3 @@ export interface ISizeProps {
 export interface ISvgProps {
   icon?: any;
 }
-
