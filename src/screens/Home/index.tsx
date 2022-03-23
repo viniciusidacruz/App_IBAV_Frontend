@@ -83,7 +83,7 @@ export function HomeScreen({ navigation }: AppProps) {
   };
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <LogoComponent full />
 
@@ -152,6 +152,6 @@ export function HomeScreen({ navigation }: AppProps) {
           )}
         </S.Content>
       )}
-    </>
+    </Fragment>
   );
 }
