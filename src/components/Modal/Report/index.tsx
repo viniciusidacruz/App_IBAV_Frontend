@@ -2,8 +2,10 @@ import { Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { ModalComponent } from "..";
 import { TitleComponent } from "../../Title";
 import { ButtonComponent } from "../../Button";
+import { DefaultContentModalComponent } from "../Default";
 
 import { useFormReport } from "../../../hooks/useFormReport";
 import { connectApi } from "../../../common/services/ConnectApi";
@@ -46,7 +48,7 @@ export function ReportContentModalComponent({
           oferta,
           presencas,
         })
-        .then(() => setSendModal(!sendModal));
+        .then(() => setSendModal(true));
       handleCloseModal(false);
     } catch (err) {
       if (err) {
@@ -139,6 +141,16 @@ export function ReportContentModalComponent({
           onPressIn={onPressIn}
         />
       </S.ContentModal>
+
+      <ModalComponent
+        isVisible={sendModal}
+        onBackdropPress={() => setSendModal(false)}
+      >
+        <DefaultContentModalComponent
+          closeModal={setSendModal}
+          type="sendReport"
+        />
+      </ModalComponent>
     </>
   );
 }

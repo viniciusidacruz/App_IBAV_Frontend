@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -13,7 +13,6 @@ import { InputMaskComponent } from "../../components/InputMask";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
-import { maskCep } from "../../common/utils/masks";
 
 import { AppProps } from "../../routes/types/app";
 import FormFields from "../../common/constants/form";
@@ -31,7 +30,6 @@ const loadingGif = require("../../assets/loader-two.gif");
 import { IAddress } from "./types";
 
 import * as S from "./styles";
-import MenuNavigation from "../../common/constants/navigation";
 
 export function RegisterScreen({ navigation }: AppProps) {
   const [address, setAddress] = useState<IAddress>({
@@ -47,7 +45,6 @@ export function RegisterScreen({ navigation }: AppProps) {
     complemento: "",
   });
 
-  const [cep, setCep] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -96,9 +93,10 @@ export function RegisterScreen({ navigation }: AppProps) {
   }, []);
 
   const submitRegister = () => {
-    const { bairro, localidade, logradouro } = address;
+    const { cep, bairro, localidade, logradouro } = address;
 
     const ID_CELULAS = celulas && celulas[0][0];
+    const endereco = `${logradouro} ${numberHouse}`;
 
     try {
       connectApi
@@ -107,15 +105,13 @@ export function RegisterScreen({ navigation }: AppProps) {
           status: state.categorySelect,
           telefone: phone,
           email,
-          endereco: logradouro,
-          numero_casa: numberHouse,
+          endereco,
           cep,
           bairro,
           cidade: localidade,
-          estado: state.textSelectState,
-          data_de_nascimento: state.textRegister,
-          estado_civil: state.textSelectCivilStatus,
-          categoria: state.textSelectCategory
+          estado: state.stateSelect,
+          data_de_nascimento: state.dateRegister,
+          estado_civil: state.civilStatusSelect,
         })
         .then(() => {
           setSuccessModal(true);
@@ -135,7 +131,6 @@ export function RegisterScreen({ navigation }: AppProps) {
           setEmail("");
           setPhone("");
           setNumberHouse("");
-          setCep("");
 
           dispatch({
             type: FormReportActions.setTextSelectCivilStatus,
@@ -231,7 +226,7 @@ export function RegisterScreen({ navigation }: AppProps) {
 
   const getAddressFromApi = useCallback(() => {
     axios
-      .get(`https://viacep.com.br/ws/${cep}/json/`)
+      .get(`https://viacep.com.br/ws/${address.cep}/json/`)
       .then((response) => response.data)
       .then((data: IAddress) => {
         setAddress({
@@ -247,14 +242,14 @@ export function RegisterScreen({ navigation }: AppProps) {
         });
       })
       .catch((err) => console.log("Erro:", err));
-  }, [cep]);
+  }, [address.cep]);
 
   return (
-    <Fragment>
+    <>
       <HeaderComponent>
         <S.ComeBack>
           <ComeBackComponent onPress={() => navigation.navigate("Home")} />
-          <TitleComponent title={MenuNavigation.REGISTER} small />
+          <TitleComponent title="Cadastro" small />
         </S.ComeBack>
 
         <NotificationComponent />
@@ -271,8 +266,6 @@ export function RegisterScreen({ navigation }: AppProps) {
               placeholder={`* ${FormFields.FULL_NAME}`}
               onChangeText={(value) => setName(value)}
             />
-
-            <S.TextAlert>Caso você queira editar o nome, o cadastro vai novamente para aprovação</S.TextAlert>
 
             <InputMaskComponent
               value={phone}
@@ -292,10 +285,15 @@ export function RegisterScreen({ navigation }: AppProps) {
 
             <InputFieldComponent
               primary
-              value={maskCep(cep)}
+              value={address.cep}
               placeholder={FormFields.CEP}
               onEndEditing={() => getAddressFromApi()}
-              onChangeText={(value) => setCep(value)}
+              onChangeText={(value) =>
+                setAddress((old) => ({
+                  ...old,
+                  cep: value,
+                }))
+              }
             />
 
             <S.GridForm>
@@ -430,6 +428,6 @@ export function RegisterScreen({ navigation }: AppProps) {
           type="register"
         />
       </ModalComponent>
-    </Fragment>
+    </>
   );
 }

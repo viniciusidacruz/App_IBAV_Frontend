@@ -6,7 +6,6 @@ export type AppStackParamsList = {
   MembersReport: undefined;
   VisitorsReport: undefined;
   Members: undefined;
-  MembersRegister: any;
   Register: undefined;
   SignIn: undefined;
   Preload: undefined;

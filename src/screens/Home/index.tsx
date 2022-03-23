@@ -17,6 +17,7 @@ import { firebaseConfig } from "../../config/firebase";
 import { connectApi } from "../../common/services/ConnectApi";
 
 import * as S from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 export function HomeScreen({ navigation }: AppProps) {
   const [listUsers, setListUsers] = useState<any>();
@@ -82,7 +83,7 @@ export function HomeScreen({ navigation }: AppProps) {
   };
 
   return (
-    <Fragment>
+    <>
       <HeaderComponent>
         <LogoComponent full />
 
@@ -151,6 +152,6 @@ export function HomeScreen({ navigation }: AppProps) {
           )}
         </S.Content>
       )}
-    </Fragment>
+    </>
   );
 }

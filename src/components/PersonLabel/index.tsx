@@ -4,7 +4,7 @@ import { IPersonProps } from './types';
 
 export function PersonLabelComponent({
   nome,
-  status, 
+  status,
   onPress
 }: IPersonProps) {
 
