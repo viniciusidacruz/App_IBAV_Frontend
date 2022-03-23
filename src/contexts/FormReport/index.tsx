@@ -10,9 +10,11 @@ const initialData: IState = {
   phoneVisitor: "",
   observations: "",
   stateSelect: "Selecione",
+  celulaSelect: "Selecione",
   dateRegister: new Date(),
   categorySelect: "Selecione",
   textSelectState: "Selecione",
+  textSelectCelula: "Selecione",
   textDate: "Selecione uma data",
   civilStatusSelect: "Selecione",
   textSelectCategory: "Selecione",
@@ -33,12 +35,14 @@ export enum FormReportActions {
   setTextDate,
   setStateSelect,
   setNameVisitor,
+  setCelulaSelect,
   setTextRegister,
   setObservations,
   setPhoneVisitor,
   setDateRegister,
   setCategorySelect,
   setTextSelectState,
+  setTextSelectCelula,
   setCivilStatusSelect,
   setTextSelectCategory,
   setTextSelectCivilStatus,
@@ -93,6 +97,12 @@ const formReportReducer = (state: IState, action: IActions) => {
 
     case FormReportActions.setTextSelectCategory:
       return { ...state, textSelectCategory: action.payload };
+
+    case FormReportActions.setTextSelectCelula:
+      return { ...state, textSelectCelula: action.payload };
+
+    case FormReportActions.setCelulaSelect:
+      return { ...state, celulaSelect: action.payload };
 
     default:
       return state;

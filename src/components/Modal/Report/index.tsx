@@ -16,6 +16,7 @@ import * as S from "./styles";
 export function ReportContentModalComponent({
   handleCloseModal,
   data,
+  onPressIn,
 }: IContentModal) {
   const [user, setUser] = useState<any>();
   const [sendModal, setSendModal] = useState(false);
@@ -134,7 +135,11 @@ export function ReportContentModalComponent({
           />
         </S.ObservationModal>
 
-        <ButtonComponent title="Confirmar" onPress={handleSubmitForm} />
+        <ButtonComponent
+          title="Confirmar"
+          onPress={handleSubmitForm}
+          onPressIn={onPressIn}
+        />
       </S.ContentModal>
 
       <ModalComponent

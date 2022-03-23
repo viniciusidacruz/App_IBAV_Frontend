@@ -7,11 +7,13 @@ export interface IState {
   dateRegister: any;
   stateSelect: string;
   nameVisitor: string;
+  celulaSelect: string;
   textRegister: string;
   observations: string;
   phoneVisitor: string;
   categorySelect: string;
   textSelectState: string;
+  textSelectCelula: string;
   civilStatusSelect: string;
   textSelectCategory: string;
   members: IContentMembers[];

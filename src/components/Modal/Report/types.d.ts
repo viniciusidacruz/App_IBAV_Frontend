@@ -1,6 +1,7 @@
 export interface IContentModal {
   handleCloseModal: any;
   data?: any;
+  onPressIn?: any;
   membersPresent?: IMemberOrVisitor[] | undefined;
   visitorsPresent?: IMemberOrVisitor[] | undefined;
 }

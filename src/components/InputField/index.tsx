@@ -9,13 +9,17 @@ export function InputFieldComponent({
   icon,
   value,
   primary,
+  label,
   ...rest
 }: IContentInputProps) {
   return (
-    <S.Field primary={primary}>
-      <S.Input value={value} {...rest} />
+    <>
+      {label && <S.Label>{label}</S.Label>}
+      <S.Field primary={primary}>
+        <S.Input value={value} {...rest} />
 
-      {icon && <Feather name={icon} size={24} color="#000A3E" />}
-    </S.Field>
+        {icon && <Feather name={icon} size={24} color="#000A3E" />}
+      </S.Field>
+    </>
   );
 }

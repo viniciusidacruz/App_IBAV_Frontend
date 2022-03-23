@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AntDesign } from "@expo/vector-icons";
 
 import { ModalComponent } from "../../components/Modal";
 import { ButtonComponent } from "../../components/Button";

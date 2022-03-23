@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
 import { ModalComponent } from "../../components/Modal";
-import { SelectComponent } from "../../components/Select";
 import { HeaderComponent } from "../../components/Header";
+import { SelectComponent } from "../../components/Select";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
+import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -23,19 +24,27 @@ import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 
+import { IContentProps } from "./types";
+
 import * as S from "./styles";
 
 export function SendReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
-  const [celulas, setCelulas] = useState<any>({});
+  const [celulas, setCelulas] = useState<any>([]);
   const [showCalender, setShowCalender] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [celulaFiltered, setCelulaFiltered] = useState<any>([]);
 
   const { state, dispatch } = useFormReport();
 
   const handleOpenModal = () => {
     setModalVisible(true);
+  };
+
+  const openModalSuccess = () => {
+    setModalSuccess(true);
   };
 
   const handleOfferChange = (value: string) => {
@@ -79,6 +88,20 @@ export function SendReportScreen({ navigation }: AppProps) {
     setShowCalender(true);
   };
 
+  const selectedOptionCelula = (value: string) => {
+    dispatch({
+      type: FormReportActions.setTextSelectCelula,
+      payload: value,
+    });
+  };
+
+  const handleCelulaChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: value,
+    });
+  };
+
   useEffect(() => {
     setLoading(true);
     const checkUser = async () => {
@@ -103,19 +126,39 @@ export function SendReportScreen({ navigation }: AppProps) {
   }, []);
 
   const userInfo = user && user[0][1];
+  const whatOffice = userInfo && userInfo.cargo;
+
+  useEffect(() => {
+    if (whatOffice !== "lider") {
+      const getCelulas = async () => {
+        const response = await connectApi.get("/celulas.json");
+
+        setCelulas(Object.values(response.data));
+      };
+      getCelulas();
+    }
+  }, []);
 
   useEffect(() => {
     const filterCelulas =
       celulas &&
-      celulas[0].filter((item: any) => {
-        console.log("item =>", item.discipulador === userInfo.nome);
+      celulas.filter((celula: any) => {
+        return celula.discipulador === userInfo.nome;
       });
+
+    setCelulaFiltered(filterCelulas);
   }, [celulas]);
 
-  const whatIsOffice = userInfo && userInfo.cargo;
+  const optionsCelula =
+    celulaFiltered &&
+    celulaFiltered.map((celulaIdentify: IContentProps) => {
+      return {
+        value: `${celulaIdentify?.celula} - ${celulaIdentify.lider}`,
+      };
+    });
 
   const office = () => {
-    switch (whatIsOffice) {
+    switch (whatOffice) {
       case "lider":
         return (
           <S.Grid>
@@ -132,12 +175,12 @@ export function SendReportScreen({ navigation }: AppProps) {
       case "discipulador":
         return (
           <S.Grid>
-            <TitleComponent title="Célula:" small primary />
+            <TitleComponent title={`${FormFields.CELULA}:`} small primary />
             <SelectComponent
-              onChange={() => {}}
-              selectedOption={() => {}}
-              labelSelect="Selecione"
-              dataOptions={["ola"]}
+              onChange={handleCelulaChange}
+              labelSelect={state.textSelectCelula}
+              dataOptions={optionsCelula && optionsCelula}
+              selectedOption={selectedOptionCelula}
             />
           </S.Grid>
         );
@@ -145,7 +188,7 @@ export function SendReportScreen({ navigation }: AppProps) {
   };
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("Home")} />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
@@ -169,9 +212,9 @@ export function SendReportScreen({ navigation }: AppProps) {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <>
+        <Fragment>
           {userInfo && (
-            <>
+            <Fragment>
               <S.Content>
                 {office()}
 
@@ -232,12 +275,23 @@ export function SendReportScreen({ navigation }: AppProps) {
                 <ReportContentModalComponent
                   handleCloseModal={setModalVisible}
                   data={user}
+                  onPressIn={openModalSuccess}
                 />
               </ModalComponent>
-            </>
+
+              <ModalComponent
+                isVisible={modalSuccess}
+                onBackdropPress={() => setModalSuccess(false)}
+              >
+                <DefaultContentModalComponent
+                  closeModal={setModalSuccess}
+                  type="sendReport"
+                />
+              </ModalComponent>
+            </Fragment>
           )}
-        </>
+        </Fragment>
       )}
-    </>
+    </Fragment>
   );
 }
