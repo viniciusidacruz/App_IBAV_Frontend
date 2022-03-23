@@ -28,7 +28,7 @@ export function SelectComponent({
       <S.LabelField>{label}</S.LabelField>
       <S.Container onPress={() => changeModalVisibility(true)}>
         <S.Field>
-          <S.Label>{labelSelect ?? 'Selecione'}</S.Label>
+          <S.Label>{labelSelect ? labelSelect : 'Selecione'}</S.Label>
         </S.Field>
         <S.Icons disabled={disabled}>
           {isModalVisible ? (

@@ -6,6 +6,7 @@ import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
 import { ModalComponent } from "../../components/Modal";
 import { HeaderComponent } from "../../components/Header";
+import { SelectComponent } from "../../components/Select";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
@@ -23,19 +24,18 @@ import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 
-import * as S from "./styles";
-import { SelectComponent } from "../../components/Select";
 import { IContentProps } from "./types";
+
+import * as S from "./styles";
 
 export function SendReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();
-  const [celulas, setCelulas] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectCelula, setSelectCelula] = useState("");
+  const [celulas, setCelulas] = useState<any>([]);
   const [showCalender, setShowCalender] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectLabelCelula, setSelectLabelCelula] = useState("");
-  const [modalSucess, setModalsucess] = useState(false);
+  const [celulaFiltered, setCelulaFiltered] = useState<any>([]);
 
   const { state, dispatch } = useFormReport();
 
@@ -43,8 +43,8 @@ export function SendReportScreen({ navigation }: AppProps) {
     setModalVisible(true);
   };
 
-  const openModalSucess = () => {
-    setModalsucess(true);
+  const openModalSuccess = () => {
+    setModalSuccess(true);
   };
 
   const handleOfferChange = (value: string) => {
@@ -88,6 +88,20 @@ export function SendReportScreen({ navigation }: AppProps) {
     setShowCalender(true);
   };
 
+  const selectedOptionCelula = (value: string) => {
+    dispatch({
+      type: FormReportActions.setTextSelectCelula,
+      payload: value,
+    });
+  };
+
+  const handleCelulaChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: value,
+    });
+  };
+
   useEffect(() => {
     setLoading(true);
     const checkUser = async () => {
@@ -114,9 +128,6 @@ export function SendReportScreen({ navigation }: AppProps) {
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
 
-  console.log("Esse é o userinfo => ", userInfo && userInfo);
-  console.log("Esse é o celulas => ", celulas && celulas);
-
   useEffect(() => {
     if (whatOffice !== "lider") {
       const getCelulas = async () => {
@@ -128,27 +139,21 @@ export function SendReportScreen({ navigation }: AppProps) {
     }
   }, []);
 
-  const handleCelula = (value: string) => {
-    setSelectCelula(value);
-  };
+  useEffect(() => {
+    const filterCelulas =
+      celulas &&
+      celulas.filter((celula: any) => {
+        return celula.discipulador === userInfo.nome;
+      });
 
-  const selectedOptionCelula = (value: string) => {
-    setSelectLabelCelula(value);
-  };
-
-  const filterCelulas =
-    celulas &&
-    celulas.filter((celulaFiltrada: IContentProps) => {
-      return celulaFiltrada.discipulador === userInfo && userInfo.nome;
-    });
-
-  console.log("Esse é o filterCelulas => ", filterCelulas && filterCelulas);
+    setCelulaFiltered(filterCelulas);
+  }, [celulas]);
 
   const optionsCelula =
-    celulas &&
-    celulas.map((celulaIdentify: IContentProps) => {
+    celulaFiltered &&
+    celulaFiltered.map((celulaIdentify: IContentProps) => {
       return {
-        value: celulaIdentify?.celula + celulaIdentify.discipulador,
+        value: `${celulaIdentify?.celula} - ${celulaIdentify.lider}`,
       };
     });
 
@@ -172,50 +177,10 @@ export function SendReportScreen({ navigation }: AppProps) {
           <S.Grid>
             <TitleComponent title={`${FormFields.CELULA}:`} small primary />
             <SelectComponent
-              labelSelect={selectLabelCelula}
+              onChange={handleCelulaChange}
+              labelSelect={state.textSelectCelula}
               dataOptions={optionsCelula && optionsCelula}
-              onChange={handleCelula}
               selectedOption={selectedOptionCelula}
-            />
-          </S.Grid>
-        );
-    }
-  };
-
-  useEffect(() => {
-    const filterCelulas =
-      celulas &&
-      celulas[0].filter((item: any) => {
-        console.log("item =>", item.discipulador === userInfo.nome);
-      });
-  }, [celulas]);
-
-  const whatIsOffice = userInfo && userInfo.cargo;
-
-  const office = () => {
-    switch (whatIsOffice) {
-      case "lider":
-        return (
-          <S.Grid>
-            <TitleComponent title={`${FormFields.CELULA}:`} small primary />
-            <S.ContentC>
-              <S.IconC name="user-friends" />
-              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
-                userInfo && userInfo.rede
-              }`}</S.DescriptionC>
-            </S.ContentC>
-          </S.Grid>
-        );
-
-      case "discipulador":
-        return (
-          <S.Grid>
-            <TitleComponent title="Célula:" small primary />
-            <SelectComponent
-              onChange={() => {}}
-              selectedOption={() => {}}
-              labelSelect="Selecione"
-              dataOptions={["ola"]}
             />
           </S.Grid>
         );
@@ -310,16 +275,16 @@ export function SendReportScreen({ navigation }: AppProps) {
                 <ReportContentModalComponent
                   handleCloseModal={setModalVisible}
                   data={user}
-                  onPressIn={openModalSucess}
+                  onPressIn={openModalSuccess}
                 />
               </ModalComponent>
 
               <ModalComponent
-                isVisible={modalSucess}
-                onBackdropPress={() => setModalsucess(false)}
+                isVisible={modalSuccess}
+                onBackdropPress={() => setModalSuccess(false)}
               >
                 <DefaultContentModalComponent
-                  closeModal={setModalsucess}
+                  closeModal={setModalSuccess}
                   type="sendReport"
                 />
               </ModalComponent>
