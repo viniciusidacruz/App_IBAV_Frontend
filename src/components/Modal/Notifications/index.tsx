@@ -1,5 +1,4 @@
 import React from "react";
-import { Text } from "react-native";
 
 import { TitleComponent } from "../../Title";
 
@@ -7,7 +6,7 @@ import * as S from "./styles";
 
 export default function NotificationContentModalComponent({
   setShowNotification,
-  data
+  data,
 }: any) {
   return (
     <S.Background>

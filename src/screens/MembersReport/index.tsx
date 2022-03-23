@@ -96,11 +96,21 @@ export function MembersReportScreen({ navigation }: AppProps) {
       });
 
     if (selectPerson) {
-      const tratarFalta = memberFilter.map((item:any) =>{
-        return {nome: item.nome, status: item.status, celula: item.celula ? item.celula : "F", culto: item.culto ? item.culto : "F"}
-      })
+      const tratarFalta = memberFilter.map((item: any) => {
+        return {
+          nome: item.nome,
+          status: item.status,
+          celula: item.celula ? item.celula : "F",
+          culto: item.culto ? item.culto : "F",
+        };
+      });
 
-      const selectPersonFalta = {nome: selectPerson.nome, status: selectPerson.status, celula: selectPerson.celula ? selectPerson.celula : "F", culto: selectPerson.culto ? selectPerson.culto : "F"}
+      const selectPersonFalta = {
+        nome: selectPerson.nome,
+        status: selectPerson.status,
+        celula: selectPerson.celula ? selectPerson.celula : "F",
+        culto: selectPerson.culto ? selectPerson.culto : "F",
+      };
 
       dispatch({
         type: FormReportActions.setMembers,
@@ -150,11 +160,11 @@ export function MembersReportScreen({ navigation }: AppProps) {
             <ScrollView>
               {newArrayMembers &&
                 newArrayMembers.map((data: any) => (
-                    <CardMembersComponent
-                      key={data}
-                      data={data}
-                      setSelectPerson={setSelectPerson}
-                    />
+                  <CardMembersComponent
+                    key={data}
+                    data={data}
+                    setSelectPerson={setSelectPerson}
+                  />
                 ))}
             </ScrollView>
             <FooterInfoComponent />

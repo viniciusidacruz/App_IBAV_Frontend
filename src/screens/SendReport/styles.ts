@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Image } from 'react-native';
+import styled from "styled-components/native";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Image } from "react-native";
 
 export const Navigation = styled.Text`
   color: ${({ theme }) => theme.colors.light};
@@ -64,6 +64,6 @@ export const Observations = styled.TextInput`
 export const Button = styled.View`
   justify-content: flex-end;
   height: 170;
-`
+`;
 
-export const Loading = styled(Image)``
+export const Loading = styled(Image)``;

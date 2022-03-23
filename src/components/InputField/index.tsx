@@ -1,59 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
+import { Feather } from "@expo/vector-icons";
+
+import { IContentInputProps } from "./types";
 
 import * as S from "./styles";
 
-import { IContentProps } from "./types";
-
 export function InputFieldComponent({
   icon,
+  value,
   primary,
-  placeholder,
-  autoCorrect,
-  iconPassword,
-  onChangeText,
-  secureTextEntry,
-  placeholderTextColor,
-  onEndEditing,
-  editable
-}: IContentProps) {
-  const [show, setShow] = useState(false);
-
-  const handleShowPassword = () => {
-    setShow(!show);
-  };
-
+  ...rest
+}: IContentInputProps) {
   return (
     <S.Field primary={primary}>
-      {secureTextEntry ? (
-        <S.Input
-          placeholder={placeholder}
-          placeholderTextColor={placeholderTextColor}
-          secureTextEntry={show ? false : true}
-          onChangeText={onChangeText}
-          autoCorrect={autoCorrect}
-          primary={primary}
-          onEndEditing={onEndEditing}
-          editable={editable}
-        />
-      ) : (
-        <S.Input
-          placeholder={placeholder}
-          placeholderTextColor={placeholderTextColor}
-          onChangeText={onChangeText}
-          autoCorrect={autoCorrect}
-          primary={primary}
-          onEndEditing={onEndEditing}
-          editable={editable}
-        />
-      )}
+      <S.Input value={value} {...rest} />
 
-      {iconPassword && (
-        <S.Icons onPress={handleShowPassword}>
-          {show ? <S.Hide name="eye-with-line" /> : <S.Show name="eye" />}
-        </S.Icons>
-      )}
-
-      {icon && <S.Icon>{icon}</S.Icon>}
+      {icon && <Feather name={icon} size={24} color="#000A3E" />}
     </S.Field>
   );
 }

@@ -11,7 +11,6 @@ export const Field = styled.View<IColorsProps>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
 `;
 
 export const Input = styled.TextInput<IColorsProps>`

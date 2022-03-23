@@ -1,5 +1,5 @@
-import { Image } from 'react-native';
-import styled from 'styled-components/native';
+import { Image } from "react-native";
+import styled from "styled-components/native";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -7,8 +7,6 @@ export const Container = styled.SafeAreaView`
   justify-content: center;
 
   background-color: ${({ theme }) => theme.colors.blue};
-`
+`;
 
-export const Loading = styled(Image)`
-  
-`
+export const Loading = styled(Image)``;

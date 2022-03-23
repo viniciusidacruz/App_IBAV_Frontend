@@ -1,16 +1,16 @@
-import styled from 'styled-components/native'
+import styled from "styled-components/native";
 
 export const Heading = styled.View`
   align-items: flex-end;
 
   border-bottom-color: ${({ theme }) => theme.colors.red};
   border-bottom-width: 1px;
-`
+`;
 
 export const Titles = styled.View`
   flex-direction: row;
   width: 40%;
-`
+`;
 
 export const Title = styled.Text`
   margin-left: 10;
@@ -19,4 +19,4 @@ export const Title = styled.Text`
   text-transform: uppercase;
 
   color: ${({ theme }) => theme.colors.blue};
-`
+`;

@@ -31,4 +31,3 @@ export const ContainerSelect = styled.View`
 `;
 
 export const ContentPresent = styled.View``;
-

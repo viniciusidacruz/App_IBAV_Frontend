@@ -1,7 +1,7 @@
-import styled from 'styled-components/native';
-import { Entypo } from '@expo/vector-icons';
+import styled from "styled-components/native";
+import { Entypo } from "@expo/vector-icons";
 
-import { IColorsProps } from './types';
+import { IColorsProps } from "./types";
 
 export const Field = styled.View<IColorsProps>`
   border-bottom-color: ${(props) =>

@@ -7,11 +7,18 @@ import { IContentProps } from "./types";
 
 import * as S from "./styles";
 
-export function SelectComponent({ label, onChange, selectedOption, labelSelect, dataOptions, disabled }: IContentProps) {
+export function SelectComponent({
+  label,
+  onChange,
+  selectedOption,
+  labelSelect,
+  dataOptions,
+  disabled,
+}: IContentProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const changeModalVisibility = (prev: boolean) => {
-    if(!disabled) {
+    if (!disabled) {
       setIsModalVisible(prev);
     }
   };

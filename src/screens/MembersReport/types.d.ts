@@ -2,7 +2,7 @@ export type IDataUserProps = {
   nome: string;
   status: string;
   phone: string;
-}
+};
 
 export type ISelectedUserProps = {
   celula: string;
@@ -10,4 +10,4 @@ export type ISelectedUserProps = {
   phone?: string;
   status: string;
   culto: string;
-}
+};

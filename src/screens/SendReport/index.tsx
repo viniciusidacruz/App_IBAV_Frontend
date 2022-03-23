@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
 import { ModalComponent } from "../../components/Modal";
+import { SelectComponent } from "../../components/Select";
 import { HeaderComponent } from "../../components/Header";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
@@ -18,6 +19,7 @@ import { AppProps } from "../../routes/types/app";
 import FormFields from "../../common/constants/form";
 import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
+import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 
@@ -25,7 +27,8 @@ import * as S from "./styles";
 
 export function SendReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [celulas, setCelulas] = useState<any>({});
   const [showCalender, setShowCalender] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -64,13 +67,13 @@ export function SendReportScreen({ navigation }: AppProps) {
 
     dispatch({
       type: FormReportActions.setDate,
-      payload: currentDate
-    })
+      payload: currentDate,
+    });
     dispatch({
       type: FormReportActions.setTextDate,
-      payload: newDate
-    })
-  }
+      payload: newDate,
+    });
+  };
 
   const showMode = () => {
     setShowCalender(true);
@@ -91,7 +94,55 @@ export function SendReportScreen({ navigation }: AppProps) {
     checkUser();
   }, []);
 
+  useEffect(() => {
+    setLoading(true);
+    connectApi.get("celulas.json").then((response) => {
+      setLoading(false);
+      setCelulas(Object.entries(response.data));
+    });
+  }, []);
+
   const userInfo = user && user[0][1];
+
+  useEffect(() => {
+    const filterCelulas =
+      celulas &&
+      celulas[0].filter((item: any) => {
+        console.log("item =>", item.discipulador === userInfo.nome);
+      });
+  }, [celulas]);
+
+  const whatIsOffice = userInfo && userInfo.cargo;
+
+  const office = () => {
+    switch (whatIsOffice) {
+      case "lider":
+        return (
+          <S.Grid>
+            <TitleComponent title={`${FormFields.CELULA}:`} small primary />
+            <S.ContentC>
+              <S.IconC name="user-friends" />
+              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
+                userInfo && userInfo.rede
+              }`}</S.DescriptionC>
+            </S.ContentC>
+          </S.Grid>
+        );
+
+      case "discipulador":
+        return (
+          <S.Grid>
+            <TitleComponent title="Célula:" small primary />
+            <SelectComponent
+              onChange={() => {}}
+              selectedOption={() => {}}
+              labelSelect="Selecione"
+              dataOptions={["ola"]}
+            />
+          </S.Grid>
+        );
+    }
+  };
 
   return (
     <>
@@ -122,18 +173,14 @@ export function SendReportScreen({ navigation }: AppProps) {
           {userInfo && (
             <>
               <S.Content>
-                <S.Grid>
-                  <TitleComponent title={`${FormFields.CELULA}:`} small primary />
-                  <S.ContentC>
-                    <S.IconC name="user-friends" />
-                    <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
-                      userInfo && userInfo.rede
-                    }`}</S.DescriptionC>
-                  </S.ContentC>
-                </S.Grid>
+                {office()}
 
                 <S.Grid>
-                  <TitleComponent title={`${FormFields.OFFER}R$:`} small primary />
+                  <TitleComponent
+                    title={`${FormFields.OFFER}R$:`}
+                    small
+                    primary
+                  />
                   <S.ContentC>
                     <S.IconC name="file-invoice-dollar" />
                     <InputFieldComponent
@@ -148,18 +195,22 @@ export function SendReportScreen({ navigation }: AppProps) {
                 <S.Grid>
                   <TitleComponent title={`${FormFields.DATE}:`} small primary />
                   <S.ContentC>
-                      <DateComponent
-                        text={state.textDate}
-                        open={showMode}
-                        showCalender={showCalender}
-                        dataDados={state.date}
-                        onChange={handleDateChange}
-                      />
+                    <DateComponent
+                      text={state.textDate}
+                      open={showMode}
+                      showCalender={showCalender}
+                      dataDados={state.date}
+                      onChange={handleDateChange}
+                    />
                   </S.ContentC>
                 </S.Grid>
 
                 <S.Grid>
-                  <TitleComponent title={`${FormFields.OBSERVATIONS}:`} small primary />
+                  <TitleComponent
+                    title={`${FormFields.OBSERVATIONS}:`}
+                    small
+                    primary
+                  />
                   <S.Observations
                     multiline={true}
                     numberOfLines={5}
@@ -168,10 +219,10 @@ export function SendReportScreen({ navigation }: AppProps) {
                   />
                 </S.Grid>
 
-                  <ButtonComponent
-                    title={ButtonsText.REPORT}
-                    onPress={handleOpenModal}
-                  />
+                <ButtonComponent
+                  title={ButtonsText.REPORT}
+                  onPress={handleOpenModal}
+                />
               </S.Content>
 
               <ModalComponent

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 
 import { ModalComponent } from "../../components/Modal";
 import { ButtonComponent } from "../../components/Button";
@@ -114,10 +114,20 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
 
     if (selectPerson) {
       const tratarFalta = visitorsFilter.map((item: any) => {
-        return { nome: item.nome, status: item.status, celula: item.celula ? item.celula : "F", culto: item.culto ? item.culto : "F" }
-      })
+        return {
+          nome: item.nome,
+          status: item.status,
+          celula: item.celula ? item.celula : "F",
+          culto: item.culto ? item.culto : "F",
+        };
+      });
 
-      const selectPersonFalta = { nome: selectPerson.nome, status: selectPerson.status, celula: selectPerson.celula ? selectPerson.celula : "F", culto: selectPerson.culto ? selectPerson.culto : "F" }
+      const selectPersonFalta = {
+        nome: selectPerson.nome,
+        status: selectPerson.status,
+        celula: selectPerson.celula ? selectPerson.celula : "F",
+        culto: selectPerson.culto ? selectPerson.culto : "F",
+      };
 
       dispatch({
         type: FormReportActions.setVisitors,
@@ -211,7 +221,13 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
           <ScrollView>
             {newArrayVisitors &&
               newArrayVisitors.map((data: any) => {
-                return <CardMembersComponent key={data} data={data} setSelectPerson={setSelectPerson} />;
+                return (
+                  <CardMembersComponent
+                    key={data}
+                    data={data}
+                    setSelectPerson={setSelectPerson}
+                  />
+                );
               })}
           </ScrollView>
 
@@ -240,7 +256,10 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         isVisible={isAddVisible}
         onBackdropPress={() => setIsAddVisible(false)}
       >
-        <DefaultContentModalComponent closeModal={setIsAddVisible} type="addVisitor" />
+        <DefaultContentModalComponent
+          closeModal={setIsAddVisible}
+          type="addVisitor"
+        />
       </ModalComponent>
     </>
   );

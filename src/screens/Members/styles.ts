@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export const Logout = styled(MaterialIcons)`
   font-size: ${({ theme }) => theme.fonts.fontSize.medium};

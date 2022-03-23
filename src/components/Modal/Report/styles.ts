@@ -1,16 +1,16 @@
 import styled from "styled-components/native";
 
 export const ContentModal = styled.View`
-    background-color: ${({ theme }) => theme.colors.light};
-    width: 100%;
+  background-color: ${({ theme }) => theme.colors.light};
+  width: 100%;
 
-    padding-left: 20;
-    padding-right: 20;
-    padding-bottom: 20;
-    padding-top: 20;
+  padding-left: 20;
+  padding-right: 20;
+  padding-bottom: 20;
+  padding-top: 20;
 
-    border-radius: 5;
-`
+  border-radius: 5;
+`;
 
 export const TitleModal = styled.Text`
   margin-bottom: 10;
@@ -22,11 +22,11 @@ export const TitleModal = styled.Text`
   color: ${({ theme }) => theme.colors.blue};
 
   text-align: center;
-`
+`;
 
-export const ListModal = styled.View``
+export const ListModal = styled.View``;
 
 export const ObservationModal = styled.View`
-    margin-top: 20;
-    margin-bottom: 20;
-`
+  margin-top: 20;
+  margin-bottom: 20;
+`;

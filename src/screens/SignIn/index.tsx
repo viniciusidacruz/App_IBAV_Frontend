@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
@@ -8,16 +9,15 @@ import {
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
+import { AppProps } from "../../routes/types/app";
 import { firebaseConfig } from "../../config/firebase";
+import ButtonsText from "../../common/constants/buttons";
 import { connectApi } from "../../common/services/ConnectApi";
 
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { ButtonComponent } from "../../components/Button";
 import { InputFieldComponent } from "../../components/InputField";
-
-import { AppProps } from "../../routes/types/app";
-import ButtonsText from "../../common/constants/buttons";
 
 import * as S from "./styles";
 
@@ -32,26 +32,20 @@ export function SignInScreen({ navigation }: AppProps) {
     createUserWithEmailAndPassword(auth, email, password)
       .then((response) => {
         const user = response.user;
-        createUser(user.uid)
+        createUser(user.uid);
         alert("Conta criada com sucesso!");
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
-          alert(
-            "Este e-mail já está em uso. Cadastre um novo email!"
-          );
+          alert("Este e-mail já está em uso. Cadastre um novo email!");
         }
 
         if (error.code === "auth/invalid-email") {
-          alert(
-            "Este e-mail está invalido!"
-          );
+          alert("Este e-mail está invalido!");
         }
 
         if (error.code === "auth/weak-password") {
-          alert(
-            "Esta senha está invalida!"
-          );
+          alert("Esta senha está invalida!");
         }
       });
   };
@@ -65,59 +59,67 @@ export function SignInScreen({ navigation }: AppProps) {
         AsyncStorage.setItem("@storage_User", userStore);
 
         if (userStore) {
-          navigation.navigate('Home')
-        };
+          navigation.navigate("Home");
+        }
       })
       .catch((error) => {
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-          alert('Email/Senha não encontrado!');
+        if (
+          error.code === "auth/user-not-found" ||
+          error.code === "auth/wrong-password"
+        ) {
+          alert("Email/Senha não encontrado!");
         }
-
       });
   };
 
   const createUser = (id: string) => {
-    connectApi.post('/users.json', {
+    connectApi.post("/users.json", {
       email,
       password,
-      id
-    })
-  }
+      id,
+    });
+  };
 
   return (
     <S.Container source={require("../../assets/background.png")}>
-      <S.Form>
-        <LogoComponent />
-
-        <S.Content>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <S.Form behavior="position" enabled>
           <S.Heading>
-            <TitleComponent title="Login" uppercase large weight />
+            <LogoComponent />
           </S.Heading>
 
-          <S.Field>
-            <InputFieldComponent
-              placeholder="Usuário"
-              placeholderTextColor="white"
-              onChangeText={(value) => setEmail(value)}
-              value={email}
-            />
-          </S.Field>
+          <S.Content>
+            <S.Heading>
+              <TitleComponent title="Login" uppercase large weight />
+            </S.Heading>
 
-          <S.Field>
-            <InputFieldComponent
-              placeholder="Senha"
-              iconPassword
-              secureTextEntry
-              placeholderTextColor="white"
-              value={password}
-              onChangeText={(value) => setPassword(value)}
-            />
-          </S.Field>
-          <S.Buttons>
-            <ButtonComponent title={ButtonsText.ENTER} onPress={handleSignIn} />
-          </S.Buttons>
-        </S.Content>
-      </S.Form>
+            <S.Field>
+              <InputFieldComponent
+                placeholder="Usuário"
+                placeholderTextColor="white"
+                onChangeText={(value) => setEmail(value)}
+                value={email}
+              />
+            </S.Field>
+
+            <S.Field>
+              <InputFieldComponent
+                placeholder="Senha"
+                secureTextEntry
+                placeholderTextColor="white"
+                value={password}
+                onChangeText={(value) => setPassword(value)}
+              />
+            </S.Field>
+            <S.Buttons>
+              <ButtonComponent
+                title={ButtonsText.ENTER}
+                onPress={handleSignIn}
+              />
+            </S.Buttons>
+          </S.Content>
+        </S.Form>
+      </TouchableWithoutFeedback>
     </S.Container>
   );
 }

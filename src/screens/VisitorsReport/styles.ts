@@ -21,7 +21,7 @@ export const Content = styled.View`
 
 export const HeadingForm = styled.View`
   margin-bottom: 20;
-`
+`;
 
 export const FinishForm = styled.View`
   flex-direction: row;
@@ -30,15 +30,15 @@ export const FinishForm = styled.View`
 
   margin-top: 10;
   margin-bottom: 40;
-`
+`;
 
 export const Info = styled.Text`
   color: ${({ theme }) => theme.colors.red};
-`
+`;
 
 export const Button = styled.View`
   justify-content: flex-end;
   margin-bottom: 20px;
-`
+`;
 
-export const Loading = styled(Image)``
+export const Loading = styled(Image)``;
