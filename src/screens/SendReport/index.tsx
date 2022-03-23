@@ -11,7 +11,7 @@ import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
-import { DefaultContentModalComponent } from "../../components/Modal/Default"
+import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -19,12 +19,12 @@ import { AppProps } from "../../routes/types/app";
 import FormFields from "../../common/constants/form";
 import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
+import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 
 import * as S from "./styles";
 import { SelectComponent } from "../../components/Select";
-import { connectApi } from "../../common/services/ConnectApi";
 import { IContentProps } from "./types";
 
 export function SendReportScreen({ navigation }: AppProps) {
@@ -45,7 +45,7 @@ export function SendReportScreen({ navigation }: AppProps) {
 
   const openModalSucess = () => {
     setModalsucess(true);
-  }
+  };
 
   const handleOfferChange = (value: string) => {
     dispatch({
@@ -103,11 +103,19 @@ export function SendReportScreen({ navigation }: AppProps) {
     checkUser();
   }, []);
 
+  useEffect(() => {
+    setLoading(true);
+    connectApi.get("celulas.json").then((response) => {
+      setLoading(false);
+      setCelulas(Object.entries(response.data));
+    });
+  }, []);
+
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
 
-  console.log('Esse é o userinfo => ', userInfo && userInfo);
-  console.log('Esse é o celulas => ', celulas && celulas);
+  console.log("Esse é o userinfo => ", userInfo && userInfo);
+  console.log("Esse é o celulas => ", celulas && celulas);
 
   useEffect(() => {
     if (whatOffice !== "lider") {
@@ -121,25 +129,28 @@ export function SendReportScreen({ navigation }: AppProps) {
   }, []);
 
   const handleCelula = (value: string) => {
-    setSelectCelula(value)
-  }
-
-  const selectedOptionCelula = (value: string) => {
-   setSelectLabelCelula(value)
+    setSelectCelula(value);
   };
 
-  const filterCelulas = celulas && celulas.filter((celulaFiltrada: IContentProps) => {
-    return celulaFiltrada.discipulador === userInfo && userInfo.nome
-  })
+  const selectedOptionCelula = (value: string) => {
+    setSelectLabelCelula(value);
+  };
 
-  console.log('Esse é o filterCelulas => ', filterCelulas && filterCelulas);
+  const filterCelulas =
+    celulas &&
+    celulas.filter((celulaFiltrada: IContentProps) => {
+      return celulaFiltrada.discipulador === userInfo && userInfo.nome;
+    });
 
+  console.log("Esse é o filterCelulas => ", filterCelulas && filterCelulas);
 
-  const optionsCelula = celulas && celulas.map((celulaIdentify: IContentProps) => {
-    return {
-      value: celulaIdentify?.celula + celulaIdentify.discipulador
-    }
-  })
+  const optionsCelula =
+    celulas &&
+    celulas.map((celulaIdentify: IContentProps) => {
+      return {
+        value: celulaIdentify?.celula + celulaIdentify.discipulador,
+      };
+    });
 
   const office = () => {
     switch (whatOffice) {
@@ -165,6 +176,46 @@ export function SendReportScreen({ navigation }: AppProps) {
               dataOptions={optionsCelula && optionsCelula}
               onChange={handleCelula}
               selectedOption={selectedOptionCelula}
+            />
+          </S.Grid>
+        );
+    }
+  };
+
+  useEffect(() => {
+    const filterCelulas =
+      celulas &&
+      celulas[0].filter((item: any) => {
+        console.log("item =>", item.discipulador === userInfo.nome);
+      });
+  }, [celulas]);
+
+  const whatIsOffice = userInfo && userInfo.cargo;
+
+  const office = () => {
+    switch (whatIsOffice) {
+      case "lider":
+        return (
+          <S.Grid>
+            <TitleComponent title={`${FormFields.CELULA}:`} small primary />
+            <S.ContentC>
+              <S.IconC name="user-friends" />
+              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
+                userInfo && userInfo.rede
+              }`}</S.DescriptionC>
+            </S.ContentC>
+          </S.Grid>
+        );
+
+      case "discipulador":
+        return (
+          <S.Grid>
+            <TitleComponent title="Célula:" small primary />
+            <SelectComponent
+              onChange={() => {}}
+              selectedOption={() => {}}
+              labelSelect="Selecione"
+              dataOptions={["ola"]}
             />
           </S.Grid>
         );
@@ -258,8 +309,8 @@ export function SendReportScreen({ navigation }: AppProps) {
               >
                 <ReportContentModalComponent
                   handleCloseModal={setModalVisible}
-                    data={user}
-                    onPressIn={openModalSucess}
+                  data={user}
+                  onPressIn={openModalSucess}
                 />
               </ModalComponent>
 

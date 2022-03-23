@@ -26,15 +26,15 @@ interface IContentMembers {
   celula?: string;
 }
 export interface IActions {
-    type: FormReportActions;
-    payload: any;
+  type: FormReportActions;
+  payload: any;
 }
 
 export interface IContextType {
-    state: IState;
-    dispatch: (action: IActions) => void;
+  state: IState;
+  dispatch: (action: IActions) => void;
 }
 
 export interface IProvider {
-    children: any
+  children: any;
 }

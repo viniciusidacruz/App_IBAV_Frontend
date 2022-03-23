@@ -13,11 +13,11 @@ export function PreloadScreen({ navigation }: AppProps) {
       const user = await AsyncStorage.getItem("@storage_User");
 
       if (user) {
-        navigation.navigate('Home')
+        navigation.navigate("Home");
       } else {
-        navigation.navigate('SignIn')
+        navigation.navigate("SignIn");
       }
-    }
+    };
 
     checkUser();
   }, []);

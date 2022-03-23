@@ -13,7 +13,8 @@ import { MembersRegister } from "../screens/MembersRegister";
 import { AppStackParamsList } from "./types/app";
 
 export function AppRoutes() {
-  const { Navigator, Screen } = createNativeStackNavigator<AppStackParamsList>();
+  const { Navigator, Screen } =
+    createNativeStackNavigator<AppStackParamsList>();
 
   return (
     <Navigator initialRouteName="Preload">

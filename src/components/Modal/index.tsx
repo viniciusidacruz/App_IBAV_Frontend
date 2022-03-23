@@ -1,19 +1,16 @@
-import React from 'react'
+import React from "react";
 import Modal from "react-native-modal";
 
-import { IContentProps } from './types';
+import { IContentProps } from "./types";
 
 export function ModalComponent({
   isVisible,
   onBackdropPress,
-  children
+  children,
 }: IContentProps) {
   return (
-    <Modal
-      isVisible={isVisible}
-      onBackdropPress={onBackdropPress}
-    >
+    <Modal isVisible={isVisible} onBackdropPress={onBackdropPress}>
       {children}
     </Modal>
-  )
+  );
 }

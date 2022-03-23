@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
 
 import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
@@ -56,10 +55,6 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
     });
   }, []);
 
-  function sendInformation() {
-    navigation.navigate("MembersRegister");
-  }
-
   return (
     <Fragment>
       <HeaderComponent>
@@ -77,11 +72,11 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
         {loading ? (
           <S.Loading source={loadingGif} />
         ) : (
-          <>
+          <Fragment>
             {celulas &&
               celulas.length > 0 &&
               Object.values(celulas[0][1].membros).map((item: any) => (
-                <>
+                <Fragment>
                   <PersonLabelComponent
                     nome={item.nome}
                     status={item.status}
@@ -102,9 +97,9 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
                       })
                     }
                   />
-                </>
+                </Fragment>
               ))}
-          </>
+          </Fragment>
         )}
       </S.Container>
     </Fragment>

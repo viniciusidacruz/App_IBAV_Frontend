@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
 export const Container = styled.ImageBackground`
   flex: 1;
@@ -17,7 +17,7 @@ export const Form = styled.KeyboardAvoidingView`
 export const Content = styled.View`
   margin-top: 48;
 
-  max-width: 300px;
+  max-width: 400px;
   width: 100%;
 `;
 

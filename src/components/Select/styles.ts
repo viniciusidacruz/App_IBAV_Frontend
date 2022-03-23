@@ -36,7 +36,8 @@ export const Label = styled.Text`
 `;
 
 export const Icons = styled.View<IStyledDisabled>`
-  background-color: ${({ theme, disabled }) => disabled ? theme.colors.grey : theme.colors.red};
+  background-color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.grey : theme.colors.red};
 
   align-items: center;
   justify-content: center;

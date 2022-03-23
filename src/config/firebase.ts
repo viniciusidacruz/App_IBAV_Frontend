@@ -5,5 +5,5 @@ export const firebaseConfig = {
   projectId: "app-ibav-f06f4",
   storageBucket: "app-ibav-f06f4.appspot.com",
   messagingSenderId: "924421424445",
-  appId: "1:924421424445:web:2079d39c0e428380dd3154"
+  appId: "1:924421424445:web:2079d39c0e428380dd3154",
 };

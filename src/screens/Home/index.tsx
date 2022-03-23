@@ -1,8 +1,4 @@
-import React, {
-  Fragment,
-  useEffect,
-  useState
-} from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { TouchableOpacity } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
@@ -73,10 +69,10 @@ export function HomeScreen({ navigation }: AppProps) {
   };
 
   const dataUser = user && user[0][1];
-  const whatOffice = dataUser && dataUser.cargo;
+  const whatIsOffice = dataUser && dataUser.cargo;
 
   const office = () => {
-    switch (whatOffice) {
+    switch (whatIsOffice) {
       case "lider":
         return <TitleComponent title="lider de Célula" decoration red />;
 
@@ -116,7 +112,7 @@ export function HomeScreen({ navigation }: AppProps) {
                 {office()}
               </S.Names>
 
-              {whatOffice === "lider" && (
+              {whatIsOffice === "lider" && (
                 <S.Info>
                   <TitleComponent
                     title="Célula"

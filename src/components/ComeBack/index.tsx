@@ -1,8 +1,11 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React from "react";
+import { TouchableOpacity } from "react-native";
 
-import { ArrowLeft } from './styles';
-import { IBackActionProps } from './types';
+import { ArrowLeft } from "./styles";
+
+interface IBackActionProps {
+  onPress: () => void;
+}
 
 export function ComeBackComponent({ onPress }: IBackActionProps) {
   return (

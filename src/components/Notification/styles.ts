@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 export const Notification = styled.TouchableOpacity`
   position: relative;
@@ -26,10 +26,10 @@ export const Count = styled.View`
 
   align-items: center;
   justify-content: center;
-`
+`;
 
 export const Number = styled.Text`
   color: ${({ theme }) => theme.colors.light};
 
   font-size: 10;
-`
+`;

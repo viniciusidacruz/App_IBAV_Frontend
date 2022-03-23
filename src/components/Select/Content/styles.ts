@@ -21,6 +21,7 @@ export const ContentOptions = styled.View`
 `;
 
 export const Options = styled.TouchableOpacity`
+  margin-bottom: 5;
 `;
 
 export const OptionSelect = styled.Text`
@@ -28,7 +29,6 @@ export const OptionSelect = styled.Text`
 
   padding-top: 5;
   padding-bottom: 5;
-  margin-bottom: 5;
 
   text-align: center;
 

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-import * as S from './styles'
+import * as S from "./styles";
 
 export function FooterInfoComponent() {
   const infos = [
@@ -15,12 +15,10 @@ export function FooterInfoComponent() {
     <S.Footer>
       {infos.map((info) => (
         <S.Info key={info.lettring}>
-          <S.Decoration>
-            {info.lettring}
-          </S.Decoration>
+          <S.Decoration>{info.lettring}</S.Decoration>
           {info.text}
         </S.Info>
       ))}
     </S.Footer>
-  )
+  );
 }
