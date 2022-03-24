@@ -69,7 +69,7 @@ export function HomeScreen({ navigation }: AppProps) {
     AsyncStorage.removeItem("@storage_members");
   };
 
-  const dataUser = user && user[0][1];
+  const dataUser = user && user[0] && user[0][1];
   const whatIsOffice = dataUser && dataUser.cargo;
 
   const office = () => {

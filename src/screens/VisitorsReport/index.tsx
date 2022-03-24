@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -24,11 +24,13 @@ import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 
-import * as S from "./styles";
 import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
+
+import * as S from "./styles";
 
 export function VisitorsReportScreen({ navigation }: AppProps) {
   const [error, setError] = useState("");
+  const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -89,8 +91,23 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
     });
   }, [isAddVisible]);
 
-  const newVisitorsList =
-    membersPerPage !== undefined && Object.values(membersPerPage);
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await AsyncStorage.getItem("@storage_dataUser");
+
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+    };
+    checkUser();
+  }, []);
+
+  const dataUser = user && user[0] && user[0][1];
+  const whatIsOffice = dataUser && dataUser.cargo;
+
+  console.log("whatIsOffice =>", whatIsOffice);
+
+  const newVisitorsList = membersPerPage && Object.values(membersPerPage);
 
   const filterVisitorList =
     newVisitorsList &&
@@ -160,7 +177,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
   newArrayVisitors && newArrayVisitors.sort(compared);
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <ComeBackComponent
           onPress={() => navigation.navigate("MembersReport")}
@@ -187,6 +204,13 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         <S.Loading source={loadingGif} />
       ) : (
         <S.Content>
+          {whatIsOffice && whatIsOffice !== "lider" && (
+            <S.Heading>
+              <S.Title>Célula</S.Title>
+              <S.Subtitle>{state.celulaSelect}</S.Subtitle>
+            </S.Heading>
+          )}
+
           <S.HeadingForm>
             <InputFieldComponent
               primary
@@ -260,6 +284,6 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
           type="addVisitor"
         />
       </ModalComponent>
-    </>
+    </Fragment>
   );
 }

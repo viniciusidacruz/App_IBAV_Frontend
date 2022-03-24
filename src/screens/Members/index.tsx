@@ -7,7 +7,9 @@ import { ButtonComponent } from "../../components/Button";
 import { NotificationComponent } from "../../components/Notification";
 import { PersonLabelComponent } from "../../components/PersonLabel";
 
+import { useFormReport } from "../../hooks/useFormReport";
 const loadingGif = require("../../assets/loader-two.gif");
+import { FormReportActions } from "../../contexts/FormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import MenuNavigation from "../../common/constants/navigation";
 
@@ -20,6 +22,22 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
   const [members, setMembers] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [celulas, setCelulas] = useState<any>();
+
+  const { state, dispatch } = useFormReport();
+
+  const selectedOptionCelula = (value: string) => {
+    dispatch({
+      type: FormReportActions.setTextSelectCelula,
+      payload: value,
+    });
+  };
+
+  const handleCelulaChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: value,
+    });
+  };
 
   useEffect(() => {
     const checkUser = async () => {

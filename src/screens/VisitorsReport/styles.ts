@@ -19,6 +19,30 @@ export const Content = styled.View`
   margin-right: auto;
 `;
 
+export const Heading = styled.View`
+  align-items: center;
+
+  margin-bottom: 20;
+`;
+
+export const Title = styled.Text`
+  font-size: ${({ theme }) => theme.fonts.fontSize.medium};
+  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+
+  text-transform: uppercase;
+
+  color: ${({ theme }) => theme.colors.blue};
+`;
+
+export const Subtitle = styled.Text`
+  font-size: ${({ theme }) => theme.fonts.fontSize.small};
+  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+
+  text-transform: uppercase;
+
+  color: ${({ theme }) => theme.colors.grey};
+`;
+
 export const HeadingForm = styled.View`
   margin-bottom: 20;
 `;

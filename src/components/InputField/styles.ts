@@ -3,7 +3,7 @@ import { Entypo } from "@expo/vector-icons";
 
 import { IColorsProps } from "./types";
 
-export const Label = styled.Text``
+export const Label = styled.Text``;
 
 export const Field = styled.View<IColorsProps>`
   border-bottom-color: ${(props) =>
@@ -19,8 +19,8 @@ export const Field = styled.View<IColorsProps>`
 `;
 
 export const Input = styled.TextInput<IColorsProps>`
-  color: ${(props) =>
-    props.primary ? props?.theme?.colors?.grey : props?.theme?.colors?.light};
+  color: ${({ theme, primary }) =>
+    primary ? theme.colors?.grey : theme.colors?.light};
 
   width: 80%;
 

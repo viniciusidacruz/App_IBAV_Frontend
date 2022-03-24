@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -36,7 +36,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
   >(undefined);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const { dispatch } = useFormReport();
+  const { state, dispatch } = useFormReport();
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -53,13 +53,16 @@ export function MembersReportScreen({ navigation }: AppProps) {
     checkUser();
   }, []);
 
+  const dataUser = user && user[0] && user[0][1];
   const identifyCelula = user && user[0][1].numero_celula;
+  const idCelulaSelect = state.celulaSelect.split(' -')[0]
+  const whatIsOffice = dataUser && dataUser.cargo;
 
   useEffect(() => {
     const filterMembers =
       members &&
       members.filter((item: any) => {
-        return item[1].celula === identifyCelula;
+        return item[1].celula === identifyCelula || item[1].celula === idCelulaSelect;
       });
 
     if (filterMembers) {
@@ -130,7 +133,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
   newArrayMembers && newArrayMembers.sort(compared);
 
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("SendReport")} />
         <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
@@ -154,8 +157,15 @@ export function MembersReportScreen({ navigation }: AppProps) {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <>
+        <Fragment>
           <S.Content>
+            {whatIsOffice !== "lider" && (
+              <S.Heading>
+                <S.Title>Célula</S.Title>
+                <S.Subtitle>{state.celulaSelect}</S.Subtitle>
+              </S.Heading>
+            )}
+
             <HeadingPresentComponent />
             <ScrollView>
               {newArrayMembers &&
@@ -176,7 +186,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
               />
             </S.Button>
           </S.Content>
-        </>
+        </Fragment>
       )}
 
       <ModalComponent
@@ -189,6 +199,6 @@ export function MembersReportScreen({ navigation }: AppProps) {
           membersPresent={newArrayMembers}
         />
       </ModalComponent>
-    </>
+    </Fragment>
   );
 }
