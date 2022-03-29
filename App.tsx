@@ -11,9 +11,9 @@ import {
 } from "@expo-google-fonts/poppins";
 
 import { Routes } from "./src/routes";
-import { FormProvider } from "./src/contexts/FormReport";
 
 import theme from "./src/styles/theme";
+import { FormProvider } from "./src/contexts/FormReport";
 
 export default function App() {
   const [fontsLoaded] = useFonts({

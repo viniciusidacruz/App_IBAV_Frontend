@@ -1,4 +1,4 @@
-import { FormReportActions } from "..";
+import { FormReportActions } from "../../contexts";
 
 export interface IState {
   offer: string;
