@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { AppRoutes } from "./app.routes";
 import { AuthRouter } from "./auth.routes";
+
 import { initializeApp } from "firebase/app";
 import { getAuth, signOut } from "firebase/auth";
 import { firebaseConfig } from "../config/firebase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { NavigationContainer } from "@react-navigation/native";
 
 export const Routes = () => {
 
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<boolean>(false);
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
