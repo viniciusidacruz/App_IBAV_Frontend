@@ -18,7 +18,6 @@ export const Routes = () => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log(user, 'user')
       if (user) {
         setUser(true);
       } else {
@@ -31,7 +30,7 @@ export const Routes = () => {
 
   return (
     <NavigationContainer>
-      {user ?<AppRoutes /> : <AuthRouter/>}
+      {user ? <AppRoutes /> : <AuthRouter/>}
     </NavigationContainer>
   );
 };
