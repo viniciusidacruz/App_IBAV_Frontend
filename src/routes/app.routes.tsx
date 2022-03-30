@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen } from "../screens/Home";
 import { SignInScreen } from "../screens/SignIn";
 import { MembersScreen } from "../screens/Members";
+import { Multiplication } from "../screens/Multiplication";
+import { WaitApproval } from "../screens/WaitApproval";
 import { PreloadScreen } from "../screens/PreLoad";
 import { RegisterScreen } from "../screens/Register";
 import { SendReportScreen } from "../screens/SendReport";
@@ -45,6 +47,16 @@ export function AppRoutes() {
       <Screen
         name="Register"
         component={RegisterScreen}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="Multiplication"
+        component={Multiplication}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="WaitApproval"
+        component={WaitApproval}
         options={{ headerShown: false }}
       />
     </Navigator>

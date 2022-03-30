@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from "@expo/vector-icons";
 
 export const Logout = styled(MaterialIcons)`
@@ -52,8 +53,10 @@ export const ContentOptions = styled.View`
   margin-top: 24px;
 
   flex-direction: row;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
 `;
+
 
 export const SendReportIcon = styled(Ionicons)`
   color: ${({ theme }) => theme.colors.light};
@@ -68,6 +71,18 @@ export const MembersIcon = styled(FontAwesome5)`
 `;
 
 export const RegisterIcon = styled(FontAwesome5)`
+  color: ${({ theme }) => theme.colors.light};
+
+  font-size: ${({ theme }) => theme.fonts.fontSize.large};
+`;
+
+export const WaitApprovalIcon = styled(FontAwesome5)`
+  color: ${({ theme }) => theme.colors.light};
+  
+  font-size: ${({ theme }) => theme.fonts.fontSize.large};
+`;
+
+export const MultiplicationIcon = styled(MaterialCommunityIcons)`
   color: ${({ theme }) => theme.colors.light};
 
   font-size: ${({ theme }) => theme.fonts.fontSize.large};

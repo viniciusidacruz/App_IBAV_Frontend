@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 export const Content = styled(TouchableOpacity)`
   align-items: center;
-
+  margin-left: 40px ;
   flex-direction: column;
 `;
 
@@ -20,7 +20,7 @@ export const BackgroundIcon = styled.View`
 `;
 
 export const Title = styled.Text`
-  max-width: 70px;
+  max-width: 80px;
   width: 100%;
 
   text-align: center;

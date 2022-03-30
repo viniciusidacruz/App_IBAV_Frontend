@@ -9,6 +9,8 @@ export type AppStackParamsList = {
   Register: undefined;
   SignIn: undefined;
   Preload: undefined;
+  Multiplication: undefined;
+  WaitApproval: undefined;
 };
 
 export type AppProps = NativeStackScreenProps<AppStackParamsList>;

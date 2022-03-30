@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -146,6 +146,18 @@ export function HomeScreen({ navigation }: AppProps) {
                   icon={<S.RegisterIcon name="user-plus" />}
                   title="Cadastrar"
                   onPress={() => navigation.navigate("Register")}
+                />
+              </S.ContentOptions>
+              <S.ContentOptions>
+                <SelectedMenuComponent
+                  icon={<S.WaitApprovalIcon name="thumbs-up" />}
+                  title="Aguardando Aprovação"
+                  onPress={() => navigation.navigate("WaitApproval")}
+                />
+                <SelectedMenuComponent
+                  icon={<S.MultiplicationIcon name="multiplication" />}
+                  title="Miltiplicação"
+                  onPress={() => navigation.navigate("Multiplication")}
                 />
               </S.ContentOptions>
             </Fragment>
