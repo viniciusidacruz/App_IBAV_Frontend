@@ -148,18 +148,21 @@ export function HomeScreen({ navigation }: AppProps) {
                   onPress={() => navigation.navigate("Register")}
                 />
               </S.ContentOptions>
-              <S.ContentOptions>
-                <SelectedMenuComponent
-                  icon={<S.WaitApprovalIcon name="thumbs-up" />}
-                  title="Aguardando Aprovação"
-                  onPress={() => navigation.navigate("WaitApproval")}
-                />
-                <SelectedMenuComponent
-                  icon={<S.MultiplicationIcon name="multiplication" />}
-                  title="Miltiplicação"
-                  onPress={() => navigation.navigate("Multiplication")}
-                />
-              </S.ContentOptions>
+
+              {whatIsOffice === "administrador" && (
+                <S.ContentOptions>
+                  <SelectedMenuComponent
+                    icon={<S.WaitApprovalIcon name="thumbs-up" />}
+                    title="Aguardando Aprovação"
+                    onPress={() => navigation.navigate("WaitApproval")}
+                  />
+                  <SelectedMenuComponent
+                    icon={<S.MultiplicationIcon name="multiplication" />}
+                    title="Miltiplicação"
+                    onPress={() => navigation.navigate("Multiplication")}
+                  />
+                </S.ContentOptions>
+              )}
             </Fragment>
           )}
         </S.Content>
