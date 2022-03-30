@@ -5,6 +5,7 @@ export const Content = styled(TouchableOpacity)`
   align-items: center;
   margin-left: 40px ;
   flex-direction: column;
+  
 `;
 
 export const BackgroundIcon = styled.View`
