@@ -16,7 +16,7 @@ export function AppRoutes() {
     createNativeStackNavigator<AppStackParamsList>();
 
   return (
-    <Navigator>
+    <Navigator initialRouteName="Home">
       <Screen
         name="Home"
         component={HomeScreen}
