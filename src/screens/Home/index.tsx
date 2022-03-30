@@ -30,6 +30,7 @@ export function HomeScreen({ navigation }: AppProps) {
   useEffect(() => {
     setLoading(true);
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log(user, 'user')
       if (user) {
         setLoading(false);
       } else {
