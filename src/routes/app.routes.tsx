@@ -16,20 +16,10 @@ export function AppRoutes() {
     createNativeStackNavigator<AppStackParamsList>();
 
   return (
-    <Navigator initialRouteName="Preload">
+    <Navigator initialRouteName="Home">
       <Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Screen
-        name="SignIn"
-        component={SignInScreen}
-        options={{ headerShown: false }}
-      />
-      <Screen
-        name="Preload"
-        component={PreloadScreen}
         options={{ headerShown: false }}
       />
       <Screen
