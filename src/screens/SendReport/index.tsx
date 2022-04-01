@@ -1,5 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ScrollView } from "react-native";
+
 
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
@@ -164,9 +166,8 @@ export function SendReportScreen({ navigation }: AppProps) {
             <TitleComponent title={`${FormFields.CELULA}:`} small primary />
             <S.ContentC>
               <S.IconC name="user-friends" />
-              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
-                userInfo && userInfo.rede
-              }`}</S.DescriptionC>
+              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${userInfo && userInfo.rede
+                }`}</S.DescriptionC>
             </S.ContentC>
           </S.Grid>
         );
@@ -201,56 +202,59 @@ export function SendReportScreen({ navigation }: AppProps) {
           {userInfo && (
             <Fragment>
               <S.Content>
-                {office()}
+                <ScrollView>
+                  <S.Form behavior="position" enabled>
+                    {office()}
+                    <S.Grid>
+                      <TitleComponent
+                        title={`${FormFields.OFFER}R$:`}
+                        small
+                        primary
+                      />
+                      <S.ContentC>
+                        <S.IconC name="file-invoice-dollar" />
+                        <InputFieldComponent
+                          primary
+                          value={state.offer}
+                          placeholderTextColor="grey"
+                          onChangeText={handleOfferChange}
+                        />
+                      </S.ContentC>
+                    </S.Grid>
 
-                <S.Grid>
-                  <TitleComponent
-                    title={`${FormFields.OFFER}R$:`}
-                    small
-                    primary
-                  />
-                  <S.ContentC>
-                    <S.IconC name="file-invoice-dollar" />
-                    <InputFieldComponent
-                      primary
-                      value={state.offer}
-                      placeholderTextColor="grey"
-                      onChangeText={handleOfferChange}
+                    <S.Grid>
+                      <TitleComponent title={`${FormFields.DATE}:`} small primary />
+                      <S.ContentC>
+                        <DateComponent
+                          text={state.textDate}
+                          open={showMode}
+                          showCalender={showCalender}
+                          dataDados={state.date}
+                          onChange={handleDateChange}
+                        />
+                      </S.ContentC>
+                    </S.Grid>
+
+                    <S.Grid>
+                      <TitleComponent
+                        title={`${FormFields.OBSERVATIONS}:`}
+                        small
+                        primary
+                      />
+                      <S.Observations
+                        multiline={true}
+                        numberOfLines={5}
+                        onChangeText={handleObservationsChange}
+                        value={state.observations}
+                      />
+                    </S.Grid>
+
+                    <ButtonComponent
+                      title={ButtonsText.REPORT}
+                      onPress={handleOpenModal}
                     />
-                  </S.ContentC>
-                </S.Grid>
-
-                <S.Grid>
-                  <TitleComponent title={`${FormFields.DATE}:`} small primary />
-                  <S.ContentC>
-                    <DateComponent
-                      text={state.textDate}
-                      open={showMode}
-                      showCalender={showCalender}
-                      dataDados={state.date}
-                      onChange={handleDateChange}
-                    />
-                  </S.ContentC>
-                </S.Grid>
-
-                <S.Grid>
-                  <TitleComponent
-                    title={`${FormFields.OBSERVATIONS}:`}
-                    small
-                    primary
-                  />
-                  <S.Observations
-                    multiline={true}
-                    numberOfLines={5}
-                    onChangeText={handleObservationsChange}
-                    value={state.observations}
-                  />
-                </S.Grid>
-
-                <ButtonComponent
-                  title={ButtonsText.REPORT}
-                  onPress={handleOpenModal}
-                />
+                  </S.Form>
+                </ScrollView>
               </S.Content>
 
               <ModalComponent

@@ -21,6 +21,11 @@ export const Content = styled.View`
   margin-right: auto;
 `;
 
+export const Form = styled.KeyboardAvoidingView`
+  flex: 1 ;
+  margin-top: 0;
+`;
+
 export const Grid = styled.View`
   margin-bottom: 32;
 `;
