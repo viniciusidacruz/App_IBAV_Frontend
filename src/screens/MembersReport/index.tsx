@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalComponent } from "../../components/Modal";
 import { ButtonComponent } from "../../components/Button";
 import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
+import { NavigationComponent } from "../../components/Navigation";
 import { FooterInfoComponent } from "../../components/FooterInfo";
 import { NotificationComponent } from "../../components/Notification";
 import { CardMembersComponent } from "../../components/Cards/Members";
@@ -17,7 +18,6 @@ import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { FormReportActions } from "../../contexts/FormReport";
 import { connectApi } from "../../common/services/ConnectApi";
-import MenuNavigation from "../../common/constants/navigation";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -55,14 +55,16 @@ export function MembersReportScreen({ navigation }: AppProps) {
 
   const dataUser = user && user[0] && user[0][1];
   const identifyCelula = user && user[0][1].numero_celula;
-  const idCelulaSelect = state.celulaSelect.split(' -')[0]
+  const idCelulaSelect = state.celulaSelect.split(" -")[0];
   const whatIsOffice = dataUser && dataUser.cargo;
 
   useEffect(() => {
     const filterMembers =
       members &&
       members.filter((item: any) => {
-        return item[1].celula === identifyCelula || item[1].celula === idCelulaSelect;
+        return (
+          item[1].celula === identifyCelula || item[1].celula === idCelulaSelect
+        );
       });
 
     if (filterMembers) {
@@ -136,28 +138,16 @@ export function MembersReportScreen({ navigation }: AppProps) {
     <Fragment>
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("SendReport")} />
-        <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation>{MenuNavigation.DATA}</S.Navigation>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
-          <S.Navigation
-            style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
-          >
-            {MenuNavigation.MEMBERS}
-          </S.Navigation>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
-          <S.Navigation>{MenuNavigation.VISITORS}</S.Navigation>
-        </TouchableOpacity>
+        <NavigationComponent navigation={navigation} members />
         <NotificationComponent />
       </HeaderComponent>
 
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <Fragment>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
           <S.Content>
             {whatIsOffice !== "lider" && (
               <S.Heading>
@@ -186,7 +176,7 @@ export function MembersReportScreen({ navigation }: AppProps) {
               />
             </S.Button>
           </S.Content>
-        </Fragment>
+        </KeyboardAvoidingView>
       )}
 
       <ModalComponent

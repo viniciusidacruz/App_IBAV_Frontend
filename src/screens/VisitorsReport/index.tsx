@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalComponent } from "../../components/Modal";
@@ -8,6 +8,7 @@ import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputMaskComponent } from "../../components/InputMask";
 import { FooterInfoComponent } from "../../components/FooterInfo";
+import { NavigationComponent } from "../../components/Navigation";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { CardMembersComponent } from "../../components/Cards/Members";
@@ -22,7 +23,6 @@ import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
-import MenuNavigation from "../../common/constants/navigation";
 
 import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
@@ -105,8 +105,6 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
   const dataUser = user && user[0] && user[0][1];
   const whatIsOffice = dataUser && dataUser.cargo;
 
-  console.log("whatIsOffice =>", whatIsOffice);
-
   const newVisitorsList = membersPerPage && Object.values(membersPerPage);
 
   const filterVisitorList =
@@ -182,21 +180,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
         <ComeBackComponent
           onPress={() => navigation.navigate("MembersReport")}
         />
-        <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation>{MenuNavigation.DATA}</S.Navigation>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
-          <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
-          <S.Navigation
-            style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
-          >
-            {MenuNavigation.VISITORS}
-          </S.Navigation>
-        </TouchableOpacity>
+        <NavigationComponent navigation={navigation} visitors />
         <NotificationComponent />
       </HeaderComponent>
 

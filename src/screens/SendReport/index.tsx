@@ -1,5 +1,4 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DateComponent } from "../../components/Date";
@@ -22,11 +21,11 @@ import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
-import MenuNavigation from "../../common/constants/navigation";
 
 import { IContentProps } from "./types";
 
 import * as S from "./styles";
+import { NavigationComponent } from "../../components/Navigation";
 
 export function SendReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();
@@ -191,21 +190,7 @@ export function SendReportScreen({ navigation }: AppProps) {
     <Fragment>
       <HeaderComponent>
         <ComeBackComponent onPress={() => navigation.navigate("Home")} />
-        <TouchableOpacity onPress={() => navigation.navigate("SendReport")}>
-          <S.Navigation
-            style={{ borderBottomColor: "white", borderBottomWidth: 2 }}
-          >
-            {MenuNavigation.DATA}
-          </S.Navigation>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("MembersReport")}>
-          <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("VisitorsReport")}>
-          <S.Navigation>{MenuNavigation.VISITORS}</S.Navigation>
-        </TouchableOpacity>
+        <NavigationComponent navigation={navigation} data />
         <NotificationComponent />
       </HeaderComponent>
 

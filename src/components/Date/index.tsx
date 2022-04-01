@@ -22,7 +22,9 @@ export function DateComponent({
         </S.SelectDate>
       </S.Content>
 
-      {showCalender && <DateTimePicker value={dataDados} onChange={onChange} />}
+      {showCalender && (
+        <DateTimePicker value={dataDados} onChange={onChange} textColor="red" />
+      )}
     </S.Date>
   );
 }

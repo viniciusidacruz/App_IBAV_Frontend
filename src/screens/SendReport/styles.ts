@@ -4,9 +4,10 @@ import { Image } from "react-native";
 
 export const Navigation = styled.Text`
   color: ${({ theme }) => theme.colors.light};
-  text-transform: capitalize;
+  text-transform: uppercase;
 
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
+  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
 `;
 
 export const Content = styled.View`
@@ -43,9 +44,10 @@ export const IconC = styled(FontAwesome5)`
 export const DescriptionC = styled.Text`
   width: 100%;
 
-  font-size: ${({ theme }) => theme.fonts.fontSize.small};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.medium};
+  font-size: 14;
+  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
   color: ${({ theme }) => theme.colors.grey};
+  text-transform: uppercase;
 
   border-bottom-color: ${({ theme }) => theme.colors.grey};
   border-bottom-width: 1px;
