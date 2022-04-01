@@ -1,17 +1,16 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { HomeScreen } from "../screens/Home";
-import { SignInScreen } from "../screens/SignIn";
 import { MembersScreen } from "../screens/Members";
-import { Multiplication } from "../screens/Multiplication";
-import { WaitApproval } from "../screens/WaitApproval";
-import { PreloadScreen } from "../screens/PreLoad";
+import { UserGridScreen } from "../screens/UserGrid";
 import { RegisterScreen } from "../screens/Register";
+import { WaitApproval } from "../screens/WaitApproval";
 import { SendReportScreen } from "../screens/SendReport";
+import { Multiplication } from "../screens/Multiplication";
+import { PreListAdminScreen } from "../screens/PreListAdmin";
 import { MembersReportScreen } from "../screens/MembersReport";
 import { VisitorsReportScreen } from "../screens/VisitorsReport";
-import { PreRegisterAdmin } from "../screens/PreRegisterAdmin";
-import { UserGridScreen } from "../screens/UserGrid";
+import { PreRegisterAdminScreen } from "../screens/PreRegisterAdmin";
 
 import { AppStackParamsList } from "./types/app";
 
@@ -63,7 +62,12 @@ export function AppRoutes() {
       />
       <Screen
         name="PreRegisterAdmin"
-        component={PreRegisterAdmin}
+        component={PreRegisterAdminScreen}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="PreListAdmin"
+        component={PreListAdminScreen}
         options={{ headerShown: false }}
       />
       <Screen

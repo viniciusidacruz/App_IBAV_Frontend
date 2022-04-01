@@ -9,6 +9,7 @@ import { SelectComponent } from "../../components/Select";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
+import { NavigationComponent } from "../../components/Navigation";
 import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
@@ -25,7 +26,6 @@ import { FormReportActions } from "../../contexts/FormReport";
 import { IContentProps } from "./types";
 
 import * as S from "./styles";
-import { NavigationComponent } from "../../components/Navigation";
 
 export function SendReportScreen({ navigation }: AppProps) {
   const [user, setUser] = useState<any>();

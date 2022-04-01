@@ -145,38 +145,35 @@ export function MembersReportScreen({ navigation }: AppProps) {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <S.Content>
-            {whatIsOffice !== "lider" && (
-              <S.Heading>
-                <S.Title>Célula</S.Title>
-                <S.Subtitle>{state.celulaSelect}</S.Subtitle>
-              </S.Heading>
-            )}
+        <S.Content>
+          {whatIsOffice !== "lider" && (
+            <S.Heading>
+              <S.Title>Célula</S.Title>
+              <S.Subtitle>{state.celulaSelect}</S.Subtitle>
+            </S.Heading>
+          )}
 
-            <HeadingPresentComponent />
-            <ScrollView>
-              {newArrayMembers &&
-                newArrayMembers.map((data: any) => (
-                  <CardMembersComponent
-                    key={data}
-                    data={data}
-                    setSelectPerson={setSelectPerson}
-                  />
-                ))}
-            </ScrollView>
-            <FooterInfoComponent />
+          <HeadingPresentComponent />
 
-            <S.Button>
-              <ButtonComponent
-                title={ButtonsText.REPORT}
-                onPress={handleOpenModal}
-              />
-            </S.Button>
-          </S.Content>
-        </KeyboardAvoidingView>
+          <ScrollView>
+            {newArrayMembers &&
+              newArrayMembers.map((data: any) => (
+                <CardMembersComponent
+                  key={data}
+                  data={data}
+                  setSelectPerson={setSelectPerson}
+                />
+              ))}
+          </ScrollView>
+          <FooterInfoComponent />
+
+          <S.Button>
+            <ButtonComponent
+              title={ButtonsText.REPORT}
+              onPress={handleOpenModal}
+            />
+          </S.Button>
+        </S.Content>
       )}
 
       <ModalComponent

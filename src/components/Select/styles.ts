@@ -43,7 +43,7 @@ export const Icons = styled.View<IStyledDisabled>`
   justify-content: center;
 
   height: 100%;
-  width: 15%;
+  width: 20;
 `;
 
 export const Icon = styled(MaterialIcons)`

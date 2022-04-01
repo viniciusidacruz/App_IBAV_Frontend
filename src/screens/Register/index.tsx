@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -17,8 +17,9 @@ import { DefaultContentModalComponent } from "../../components/Modal/Default";
 import { AppProps } from "../../routes/types/app";
 import FormFields from "../../common/constants/form";
 import { useFormReport } from "../../hooks/useFormReport";
-import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
+import { connectApi } from "../../common/services/ConnectApi";
+import MenuNavigation from "../../common/constants/navigation";
 import {
   selectCivilStatus,
   selectState,
@@ -30,6 +31,7 @@ const loadingGif = require("../../assets/loader-two.gif");
 import { IAddress } from "./types";
 
 import * as S from "./styles";
+import { ScrollView } from "react-native";
 
 export function RegisterScreen({ navigation }: AppProps) {
   const [address, setAddress] = useState<IAddress>({
@@ -59,6 +61,8 @@ export function RegisterScreen({ navigation }: AppProps) {
   const { state, dispatch } = useFormReport();
 
   const identifyCelula = user && user[0][1].numero_celula;
+  const userInfo = user && user[0][1];
+  const whatOffice = userInfo && userInfo.cargo;
 
   useEffect(() => {
     const checkUser = async () => {
@@ -244,12 +248,96 @@ export function RegisterScreen({ navigation }: AppProps) {
       .catch((err) => console.log("Erro:", err));
   }, [address.cep]);
 
+  const office = () => {
+    switch (whatOffice) {
+      case "discipulador":
+        return (
+          <S.BoxSelect>
+            <SelectComponent
+              label="Estado Civil"
+              onChange={handleCivilStatusChange}
+              selectedOption={selectedOptionCivilStatus}
+              labelSelect={state.textSelectCivilStatus}
+              dataOptions={selectCivilStatus}
+            />
+          </S.BoxSelect>
+        );
+
+      case "pastor":
+        return (
+          <Fragment>
+            <S.BoxSelect>
+              <SelectComponent
+                label="Estado Civil"
+                onChange={handleCivilStatusChange}
+                selectedOption={selectedOptionCivilStatus}
+                labelSelect={state.textSelectCivilStatus}
+                dataOptions={selectCivilStatus}
+              />
+            </S.BoxSelect>
+
+            <S.BoxSelect>
+              <SelectComponent
+                label="Estado Civil"
+                onChange={handleCivilStatusChange}
+                selectedOption={selectedOptionCivilStatus}
+                labelSelect={state.textSelectCivilStatus}
+                dataOptions={selectCivilStatus}
+              />
+            </S.BoxSelect>
+          </Fragment>
+        );
+
+      case "administrador":
+        return (
+          <Fragment>
+            <S.BoxSelect>
+              <SelectComponent
+                label="Rede"
+                onChange={handleCivilStatusChange}
+                selectedOption={selectedOptionCivilStatus}
+                labelSelect={state.textSelectCivilStatus}
+                dataOptions={selectCivilStatus}
+              />
+            </S.BoxSelect>
+
+            <S.BoxSelect>
+              <SelectComponent
+                label="Discipulado"
+                onChange={handleCivilStatusChange}
+                selectedOption={selectedOptionCivilStatus}
+                labelSelect={state.textSelectCivilStatus}
+                dataOptions={selectCivilStatus}
+              />
+            </S.BoxSelect>
+
+            <S.BoxSelect>
+              <SelectComponent
+                label="Célula"
+                onChange={handleCivilStatusChange}
+                selectedOption={selectedOptionCivilStatus}
+                labelSelect={state.textSelectCivilStatus}
+                dataOptions={selectCivilStatus}
+              />
+            </S.BoxSelect>
+          </Fragment>
+        );
+    }
+  };
+
   return (
-    <>
+    <Fragment>
       <HeaderComponent>
         <S.ComeBack>
           <ComeBackComponent onPress={() => navigation.navigate("Home")} />
-          <TitleComponent title="Cadastro" small />
+          <TitleComponent
+            title={
+              whatOffice
+                ? MenuNavigation.REGISTER_MEMBERS
+                : MenuNavigation.REGISTER
+            }
+            small
+          />
         </S.ComeBack>
 
         <NotificationComponent />
@@ -258,164 +346,175 @@ export function RegisterScreen({ navigation }: AppProps) {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <S.Container>
-          <S.Form>
-            <InputFieldComponent
-              primary
-              value={name}
-              placeholder={`* ${FormFields.FULL_NAME}`}
-              onChangeText={(value) => setName(value)}
-            />
+        <ScrollView>
+          <S.Container>
+            <S.Form>
+              {office()}
+              <InputFieldComponent
+                primary
+                value={name}
+                placeholder={`* ${FormFields.FULL_NAME}`}
+                onChangeText={(value) => setName(value)}
+              />
 
-            <InputMaskComponent
-              value={phone}
-              mask="phone"
-              maxLength={14}
-              placeholder={`* ${FormFields.PHONE}`}
-              inputMaskChange={(value: string) => setPhone(value)}
-              primary
-            />
+              <InputMaskComponent
+                value={phone}
+                mask="phone"
+                maxLength={14}
+                placeholder={`* ${FormFields.PHONE}`}
+                inputMaskChange={(value: string) => setPhone(value)}
+                primary
+              />
 
-            <InputFieldComponent
-              primary
-              value={email}
-              placeholder={FormFields.EMAIL}
-              onChangeText={(value) => setEmail(value)}
-            />
+              <InputFieldComponent
+                primary
+                value={email}
+                placeholder={FormFields.EMAIL}
+                onChangeText={(value) => setEmail(value)}
+              />
 
-            <InputFieldComponent
-              primary
-              value={address.cep}
-              placeholder={FormFields.CEP}
-              onEndEditing={() => getAddressFromApi()}
-              onChangeText={(value) =>
-                setAddress((old) => ({
-                  ...old,
-                  cep: value,
-                }))
-              }
-            />
+              <InputFieldComponent
+                primary
+                value={address.cep}
+                placeholder={FormFields.CEP}
+                onEndEditing={() => getAddressFromApi()}
+                onChangeText={(value) =>
+                  setAddress((old) => ({
+                    ...old,
+                    cep: value,
+                  }))
+                }
+              />
 
-            <S.GridForm>
-              <S.GridItemLarge>
-                <InputFieldComponent
-                  primary
-                  value={address.logradouro}
-                  placeholder={
-                    address.logradouro !== ""
-                      ? address.logradouro
-                      : FormFields.ADDRESS
-                  }
-                  onChangeText={(value) =>
-                    setAddress((old) => ({
-                      ...old,
-                      logradouro: value,
-                    }))
-                  }
-                  editable={address.logradouro === ""}
-                />
-              </S.GridItemLarge>
+              <S.GridForm>
+                <S.GridItemLarge>
+                  <InputFieldComponent
+                    primary
+                    value={address.logradouro}
+                    placeholder={
+                      address.logradouro !== ""
+                        ? address.logradouro
+                        : FormFields.ADDRESS
+                    }
+                    onChangeText={(value) =>
+                      setAddress((old) => ({
+                        ...old,
+                        logradouro: value,
+                      }))
+                    }
+                    editable={address.logradouro === ""}
+                  />
+                </S.GridItemLarge>
 
-              <S.GridItemSmall>
-                <InputFieldComponent
-                  primary
-                  value={numberHouse}
-                  placeholder={FormFields.NUMBER}
-                  onChangeText={(value) => setNumberHouse(value)}
-                />
-              </S.GridItemSmall>
-            </S.GridForm>
+                <S.GridItemSmall>
+                  <InputFieldComponent
+                    primary
+                    value={numberHouse}
+                    placeholder={FormFields.NUMBER}
+                    onChangeText={(value) => setNumberHouse(value)}
+                  />
+                </S.GridItemSmall>
+              </S.GridForm>
 
-            <S.GridForm>
-              <S.GridItem>
-                <InputFieldComponent
-                  primary
-                  value={address.bairro}
-                  placeholder={
-                    address.bairro !== "" ? address.bairro : FormFields.DISTRICT
-                  }
-                  onChangeText={(value) =>
-                    setAddress((old) => ({
-                      ...old,
-                      bairro: value,
-                    }))
-                  }
-                  editable={address.bairro === ""}
-                />
-              </S.GridItem>
+              <S.GridForm>
+                <S.GridItem>
+                  <InputFieldComponent
+                    primary
+                    value={address.bairro}
+                    placeholder={
+                      address.bairro !== ""
+                        ? address.bairro
+                        : FormFields.DISTRICT
+                    }
+                    onChangeText={(value) =>
+                      setAddress((old) => ({
+                        ...old,
+                        bairro: value,
+                      }))
+                    }
+                    editable={address.bairro === ""}
+                  />
+                </S.GridItem>
 
-              <S.GridItem>
-                <InputFieldComponent
-                  primary
-                  value={address.localidade}
-                  placeholder={
-                    address.localidade !== ""
-                      ? address.localidade
-                      : FormFields.CITY
-                  }
-                  onChangeText={(value) =>
-                    setAddress((old) => ({
-                      ...old,
-                      localidade: value,
-                    }))
-                  }
-                  editable={address.localidade === ""}
-                />
-              </S.GridItem>
-            </S.GridForm>
+                <S.GridItem>
+                  <InputFieldComponent
+                    primary
+                    value={address.localidade}
+                    placeholder={
+                      address.localidade !== ""
+                        ? address.localidade
+                        : FormFields.CITY
+                    }
+                    onChangeText={(value) =>
+                      setAddress((old) => ({
+                        ...old,
+                        localidade: value,
+                      }))
+                    }
+                    editable={address.localidade === ""}
+                  />
+                </S.GridItem>
+              </S.GridForm>
 
-            <S.GridForm>
-              <S.GridItem>
-                <SelectComponent
-                  label="Estado"
-                  onChange={handleStateChange}
-                  selectedOption={selectedOptionState}
-                  labelSelect={address.uf ? address.uf : state.textSelectState}
-                  dataOptions={selectState}
-                  disabled={address.uf !== ""}
-                />
-              </S.GridItem>
+              <S.GridForm>
+                <S.GridItem>
+                  <SelectComponent
+                    label="Estado"
+                    onChange={handleStateChange}
+                    selectedOption={selectedOptionState}
+                    labelSelect={
+                      address.uf ? address.uf : state.textSelectState
+                    }
+                    dataOptions={selectState}
+                    disabled={address.uf !== ""}
+                  />
+                </S.GridItem>
 
-              <S.GridItem>
-                <SelectComponent
-                  label="Estado Civil"
-                  onChange={handleCivilStatusChange}
-                  selectedOption={selectedOptionCivilStatus}
-                  labelSelect={state.textSelectCivilStatus}
-                  dataOptions={selectCivilStatus}
-                />
-              </S.GridItem>
-            </S.GridForm>
+                <S.GridItem>
+                  <SelectComponent
+                    label="Estado Civil"
+                    onChange={handleCivilStatusChange}
+                    selectedOption={selectedOptionCivilStatus}
+                    labelSelect={state.textSelectCivilStatus}
+                    dataOptions={selectCivilStatus}
+                  />
+                </S.GridItem>
+              </S.GridForm>
 
-            <S.GridForm>
-              <S.GridItem>
-                <DateComponent
-                  text={state.textRegister}
-                  open={showMode}
-                  showCalender={showCalender}
-                  dataDados={state.dateRegister}
-                  onChange={handleDateChange}
-                  label="Data de Nascimento"
-                />
-              </S.GridItem>
+              <S.GridForm>
+                <S.GridItem>
+                  <DateComponent
+                    text={state.textRegister}
+                    open={showMode}
+                    showCalender={showCalender}
+                    dataDados={state.dateRegister}
+                    onChange={handleDateChange}
+                    label="Data de Nascimento"
+                  />
+                </S.GridItem>
 
-              <S.GridItem>
-                <SelectComponent
-                  label="Categoria"
-                  onChange={handleCategoryChange}
-                  selectedOption={selectedOptionCategory}
-                  labelSelect={state.textSelectCategory}
-                  dataOptions={selectCategory}
-                />
-              </S.GridItem>
-            </S.GridForm>
-          </S.Form>
+                <S.GridItem>
+                  <SelectComponent
+                    label="Categoria"
+                    onChange={handleCategoryChange}
+                    selectedOption={selectedOptionCategory}
+                    labelSelect={state.textSelectCategory}
+                    dataOptions={selectCategory}
+                  />
+                </S.GridItem>
+              </S.GridForm>
+            </S.Form>
 
-          <S.FooterFields>
-            <S.Required>* Campos obrigatórios</S.Required>
-            <ButtonComponent title="Cadastrar" onPress={submitRegister} small />
-          </S.FooterFields>
-        </S.Container>
+            <S.FooterFields>
+              <S.Required>* Campos obrigatórios</S.Required>
+              <ButtonComponent
+                title="Cadastrar"
+                onPress={submitRegister}
+                small
+              />
+            </S.FooterFields>
+          </S.Container>
+        </ScrollView>
       )}
 
       <ModalComponent
@@ -428,6 +527,6 @@ export function RegisterScreen({ navigation }: AppProps) {
           type="register"
         />
       </ModalComponent>
-    </>
+    </Fragment>
   );
 }

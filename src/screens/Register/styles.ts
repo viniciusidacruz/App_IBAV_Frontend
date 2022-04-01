@@ -11,6 +11,10 @@ export const Container = styled.KeyboardAvoidingView`
   justify-content: space-between;
 `;
 
+export const BoxSelect = styled.View`
+  margin-bottom: 10;
+`;
+
 export const Form = styled.View`
   padding-left: 15;
   padding-right: 15;

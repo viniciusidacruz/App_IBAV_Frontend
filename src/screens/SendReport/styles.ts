@@ -13,24 +13,27 @@ export const Navigation = styled.Text`
 export const Content = styled.View`
   flex: 1;
 
-  max-width: 350px;
+  max-width: 350;
   width: 100%;
 
-  margin-top: 32px;
+  margin-top: 32;
   margin-left: auto;
   margin-right: auto;
 `;
 
 export const Grid = styled.View`
-  margin-bottom: 32px;
+  margin-bottom: 32;
 `;
 
 export const ContentC = styled.View`
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
 
-  margin-top: 15;
-  width: 310px;
+  margin: 0;
+  padding: 0;
+
+  width: 310;
+  height: 40;
 `;
 
 export const IconC = styled(FontAwesome5)`
@@ -50,15 +53,15 @@ export const DescriptionC = styled.Text`
   text-transform: uppercase;
 
   border-bottom-color: ${({ theme }) => theme.colors.grey};
-  border-bottom-width: 1px;
+  border-bottom-width: 1;
 `;
 
 export const Observations = styled.TextInput`
   border-color: ${({ theme }) => theme.colors.grey};
-  border-width: 1px;
+  border-width: 1;
 
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 10;
+  padding-right: 10;
 
   margin-top: 15;
 `;

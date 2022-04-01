@@ -3,13 +3,17 @@ import styled from "styled-components/native";
 import { Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from "@expo/vector-icons";
 
 export const Logout = styled(MaterialIcons)`
   font-size: ${({ theme }) => theme.fonts.fontSize.medium};
 
   color: ${({ theme }) => theme.colors.light};
+`;
+
+export const HeadingIcons = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const Buttons = styled.View`
@@ -53,10 +57,8 @@ export const ContentOptions = styled.View`
   margin-top: 24px;
 
   flex-direction: row;
-  /* justify-content: space-between; */
-  flex-wrap: wrap;
+  justify-content: space-around;
 `;
-
 
 export const SendReportIcon = styled(Ionicons)`
   color: ${({ theme }) => theme.colors.light};
@@ -81,6 +83,5 @@ export const UserGridIcon = styled(FontAwesome5)`
 
   font-size: ${({ theme }) => theme.fonts.fontSize.large};
 `;
-
 
 export const Loading = styled(Image)``;

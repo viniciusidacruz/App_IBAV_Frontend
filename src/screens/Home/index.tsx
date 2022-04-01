@@ -1,7 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { TouchableOpacity, View } from "react-native";
-import { getAuth, signOut } from "firebase/auth";
+import { TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { LogoComponent } from "../../components/Logo";
@@ -17,7 +18,6 @@ import { firebaseConfig } from "../../config/firebase";
 import { connectApi } from "../../common/services/ConnectApi";
 
 import * as S from "./styles";
-import { useNavigation } from "@react-navigation/native";
 
 export function HomeScreen({ navigation }: AppProps) {
   const [listUsers, setListUsers] = useState<any>();
@@ -91,7 +91,7 @@ export function HomeScreen({ navigation }: AppProps) {
           <NotificationComponent />
 
           <TouchableOpacity onPress={logout}>
-            <S.Logout name="logout" />
+            <S.Material name="logout" size={24} />
           </TouchableOpacity>
         </S.Buttons>
       </HeaderComponent>
@@ -122,16 +122,11 @@ export function HomeScreen({ navigation }: AppProps) {
                   title="Entregar Relatório"
                   onPress={() => navigation.navigate("SendReport")}
                 />
-                <SelectedMenuComponent
-                  icon={<S.MembersIcon name="user-friends" />}
-                  title="Membros"
-                  onPress={() => navigation.navigate("Members")}
-                />
 
                 {whatIsOffice === "administrador" ? (
                   <SelectedMenuComponent
-                    icon={<S.RegisterIcon name="user-plus" />}
-                    title="Cadastrar"
+                    icon={<S.Material name="add" size={40} />}
+                    title="Cadastro"
                     onPress={() => navigation.navigate("PreRegisterAdmin")}
                   />
                 ) : (
@@ -139,6 +134,20 @@ export function HomeScreen({ navigation }: AppProps) {
                     icon={<S.RegisterIcon name="user-plus" />}
                     title="Cadastrar"
                     onPress={() => navigation.navigate("Register")}
+                  />
+                )}
+
+                {whatIsOffice === "administrador" ? (
+                  <SelectedMenuComponent
+                    icon={<S.Material name="format-list-bulleted" size={40} />}
+                    title="Listagem"
+                    onPress={() => navigation.navigate("PreListAdmin")}
+                  />
+                ) : (
+                  <SelectedMenuComponent
+                    icon={<S.MembersIcon name="user-friends" />}
+                    title="Membros"
+                    onPress={() => navigation.navigate("Members")}
                   />
                 )}
               </S.ContentOptions>
@@ -152,7 +161,7 @@ export function HomeScreen({ navigation }: AppProps) {
                   />
                   <SelectedMenuComponent
                     icon={<S.MultiplicationIcon name="multiplication" />}
-                    title="Miltiplicação"
+                    title="Multiplicação"
                     onPress={() => navigation.navigate("Multiplication")}
                   />
                 </S.ContentOptions>

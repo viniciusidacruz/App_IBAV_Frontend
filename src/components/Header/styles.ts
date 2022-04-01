@@ -1,7 +1,8 @@
 import styled from "styled-components/native";
 
 export const Content = styled.View`
-  height: 120px;
+  max-height: 80;
+  height: 100%;
 
   justify-content: center;
 
@@ -11,9 +12,9 @@ export const Content = styled.View`
 `;
 
 export const Container = styled.View`
-  margin-top: 40px;
-
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
+
+  margin-top: 10;
 `;

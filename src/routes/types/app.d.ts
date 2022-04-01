@@ -2,17 +2,18 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type AppStackParamsList = {
   Home: undefined;
+  SignIn: undefined;
+  Members: undefined;
+  Preload: undefined;
+  UserGrid: undefined;
+  Register: undefined;
   SendReport: undefined;
+  PreListAdmin: undefined;
+  WaitApproval: undefined;
   MembersReport: undefined;
   VisitorsReport: undefined;
-  Members: undefined;
-  Register: undefined;
-  SignIn: undefined;
-  Preload: undefined;
   Multiplication: undefined;
-  WaitApproval: undefined;
   PreRegisterAdmin: undefined;
-  UserGrid: undefined;
 };
 
 export type AppProps = NativeStackScreenProps<AppStackParamsList>;

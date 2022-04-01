@@ -13,7 +13,7 @@ import { AppProps } from "../../routes/types/app";
 
 import * as S from "./styles";
 
-export function PreRegisterAdminScreen({ navigation }: AppProps) {
+export function PreListAdminScreen({ navigation }: AppProps) {
   const logout = () => {
     AsyncStorage.removeItem("@storage_User");
     AsyncStorage.removeItem("@storage_dataUser");
@@ -39,18 +39,25 @@ export function PreRegisterAdminScreen({ navigation }: AppProps) {
 
       <S.Content>
         <S.Names>
-          <TitleComponent title="Cadastro" medium uppercase primary weight />
+          <TitleComponent title="Listagem" medium uppercase primary weight />
         </S.Names>
 
         <S.ContentOptions>
           <SelectedMenuComponent
-            icon={<S.RegisterIcon name="user-plus" />}
+            icon={<S.MembersIcon name="user-friends" />}
             title="Membros"
-            onPress={() => navigation.navigate("Register")}
+            onPress={() => navigation.navigate("Members")}
           />
+
+          <SelectedMenuComponent
+            icon={<S.Font name="user-o" size={34} />}
+            title="Usuário/Rede"
+            onPress={() => navigation.navigate("UserGrid")}
+          />
+
           <SelectedMenuComponent
             icon={<S.UserGridIcon name="network-wired" />}
-            title="Usuário/Rede"
+            title="Rede"
             onPress={() => navigation.navigate("UserGrid")}
           />
         </S.ContentOptions>

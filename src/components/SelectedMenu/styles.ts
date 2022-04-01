@@ -11,15 +11,15 @@ export const BackgroundIcon = styled.View`
 
   background-color: ${({ theme }) => theme.colors.red};
 
-  height: 64px;
-  width: 64px;
+  height: 65px;
+  width: 65px;
 
   align-items: center;
   justify-content: center;
 `;
 
 export const Title = styled.Text`
-  max-width: 80px;
+  max-width: 85px;
   width: 100%;
 
   text-align: center;

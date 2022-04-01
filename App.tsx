@@ -31,7 +31,7 @@ export default function App() {
       <FormProvider>
         <Routes />
       </FormProvider>
-      <StatusBar style="light" backgroundColor="transparent" translucent />
+      <StatusBar style="light" backgroundColor="#000A3E" translucent />
     </ThemeProvider>
   );
 }
