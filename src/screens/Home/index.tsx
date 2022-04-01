@@ -141,12 +141,20 @@ export function HomeScreen({ navigation }: AppProps) {
                   icon={<S.MembersIcon name="user-friends" />}
                   title="Membros"
                   onPress={() => navigation.navigate("Members")}
-                />
-                <SelectedMenuComponent
-                  icon={<S.RegisterIcon name="user-plus" />}
-                  title="Cadastrar"
-                  onPress={() => navigation.navigate("Register")}
-                />
+                  />
+                  {whatIsOffice === "administrador" ? (
+                    <SelectedMenuComponent
+                      icon={<S.RegisterIcon name="user-plus" />}
+                      title="Cadastrar"
+                      onPress={() => navigation.navigate("PreRegisterAdmin")}
+                    />
+                  ) : (
+                    <SelectedMenuComponent
+                      icon={<S.RegisterIcon name="user-plus" />}
+                      title="Cadastrar"
+                      onPress={() => navigation.navigate("Register")}
+                    />
+                  )}        
               </S.ContentOptions>
 
               {whatIsOffice === "administrador" && (

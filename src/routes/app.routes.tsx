@@ -10,6 +10,8 @@ import { RegisterScreen } from "../screens/Register";
 import { SendReportScreen } from "../screens/SendReport";
 import { MembersReportScreen } from "../screens/MembersReport";
 import { VisitorsReportScreen } from "../screens/VisitorsReport";
+import { PreRegisterAdmin } from "../screens/PreRegisterAdmin";
+import { UserGridScreen } from "../screens/UserGrid";
 
 import { AppStackParamsList } from "./types/app";
 
@@ -57,6 +59,16 @@ export function AppRoutes() {
       <Screen
         name="WaitApproval"
         component={WaitApproval}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="PreRegisterAdmin"
+        component={PreRegisterAdmin}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="UserGrid"
+        component={UserGridScreen}
         options={{ headerShown: false }}
       />
     </Navigator>

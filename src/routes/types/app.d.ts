@@ -11,6 +11,8 @@ export type AppStackParamsList = {
   Preload: undefined;
   Multiplication: undefined;
   WaitApproval: undefined;
+  PreRegisterAdmin: undefined;
+  UserGrid: undefined;
 };
 
 export type AppProps = NativeStackScreenProps<AppStackParamsList>;
