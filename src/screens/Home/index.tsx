@@ -75,7 +75,7 @@ export function HomeScreen({ navigation }: AppProps) {
   const office = () => {
     switch (whatIsOffice) {
       case "lider":
-        return <TitleComponent title="lider de Célula" decoration red />;
+        return <S.Office>Lider de Célula</S.Office>;
 
       case "discipulador":
         return <TitleComponent title="Discipulador" decoration red />;
@@ -95,6 +95,7 @@ export function HomeScreen({ navigation }: AppProps) {
           </TouchableOpacity>
         </S.Buttons>
       </HeaderComponent>
+
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
@@ -102,32 +103,16 @@ export function HomeScreen({ navigation }: AppProps) {
           {dataUser && (
             <Fragment>
               <S.Names>
-                <TitleComponent
-                  title={dataUser.nome}
-                  medium
-                  uppercase
-                  primary
-                  weight
-                />
+                <S.Name>{dataUser.nome}</S.Name>
 
                 {office()}
               </S.Names>
 
               {whatIsOffice === "lider" && (
                 <S.Info>
-                  <TitleComponent
-                    title="Célula"
-                    decoration
-                    red
-                    weight
-                    uppercase
-                  />
-                  <TitleComponent
-                    title={`${dataUser.numero_celula} - ${dataUser.rede}`}
-                    small
-                    uppercase
-                    primary
-                  />
+                  <S.InfoTextTitle>Célula</S.InfoTextTitle>
+
+                  <S.InfoTextSubtitle>{`${dataUser.numero_celula} - ${dataUser.rede}`}</S.InfoTextSubtitle>
                 </S.Info>
               )}
 
@@ -141,20 +126,21 @@ export function HomeScreen({ navigation }: AppProps) {
                   icon={<S.MembersIcon name="user-friends" />}
                   title="Membros"
                   onPress={() => navigation.navigate("Members")}
+                />
+
+                {whatIsOffice === "administrador" ? (
+                  <SelectedMenuComponent
+                    icon={<S.RegisterIcon name="user-plus" />}
+                    title="Cadastrar"
+                    onPress={() => navigation.navigate("PreRegisterAdmin")}
                   />
-                  {whatIsOffice === "administrador" ? (
-                    <SelectedMenuComponent
-                      icon={<S.RegisterIcon name="user-plus" />}
-                      title="Cadastrar"
-                      onPress={() => navigation.navigate("PreRegisterAdmin")}
-                    />
-                  ) : (
-                    <SelectedMenuComponent
-                      icon={<S.RegisterIcon name="user-plus" />}
-                      title="Cadastrar"
-                      onPress={() => navigation.navigate("Register")}
-                    />
-                  )}        
+                ) : (
+                  <SelectedMenuComponent
+                    icon={<S.RegisterIcon name="user-plus" />}
+                    title="Cadastrar"
+                    onPress={() => navigation.navigate("Register")}
+                  />
+                )}
               </S.ContentOptions>
 
               {whatIsOffice === "administrador" && (
