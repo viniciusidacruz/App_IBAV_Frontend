@@ -11,9 +11,10 @@ import {
 } from "@expo-google-fonts/poppins";
 
 import { Routes } from "./src/routes";
+import { FormProvider } from "./src/contexts/FormReport";
+import { AuthProvider } from "./src/contexts/Authenticate";
 
 import theme from "./src/styles/theme";
-import { FormProvider } from "./src/contexts/FormReport";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -28,9 +29,11 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <FormProvider>
-        <Routes />
-      </FormProvider>
+      <AuthProvider>
+        <FormProvider>
+          <Routes />
+        </FormProvider>
+      </AuthProvider>
       <StatusBar style="light" backgroundColor="#000A3E" translucent />
     </ThemeProvider>
   );

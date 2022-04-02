@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalComponent } from "../../components/Modal";
@@ -13,7 +14,6 @@ import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 
-import { AppProps } from "../../routes/types/app";
 import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { FormReportActions } from "../../contexts/FormReport";
@@ -25,7 +25,7 @@ import { IDataUserProps, ISelectedUserProps } from "./types";
 
 import * as S from "./styles";
 
-export function MembersReportScreen({ navigation }: AppProps) {
+export function MembersReportScreen() {
   const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [celulas, setCelulas] = useState<any>();
@@ -137,8 +137,8 @@ export function MembersReportScreen({ navigation }: AppProps) {
   return (
     <Fragment>
       <HeaderComponent>
-        <ComeBackComponent onPress={() => navigation.navigate("SendReport")} />
-        <NavigationComponent navigation={navigation} members />
+        <ComeBackComponent />
+        <NavigationComponent members />
         <NotificationComponent />
       </HeaderComponent>
 

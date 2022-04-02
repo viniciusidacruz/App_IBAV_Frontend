@@ -1,15 +1,14 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { ArrowLeft } from "./styles";
 
-interface IBackActionProps {
-  onPress: () => void;
-}
+export function ComeBackComponent() {
+  const navigation = useNavigation();
 
-export function ComeBackComponent({ onPress }: IBackActionProps) {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={() => navigation.goBack()}>
       <ArrowLeft name="arrow-back-ios" />
     </TouchableOpacity>
   );

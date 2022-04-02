@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { LogoComponent } from "../../components/Logo";
@@ -13,32 +13,21 @@ import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
-import { AppProps } from "../../routes/types/app";
 import { firebaseConfig } from "../../config/firebase";
+import { handleSignOut } from "../../common/utils/firebase";
+import { IPropsAppStack } from "../../routes/AppStack/types";
 import { connectApi } from "../../common/services/ConnectApi";
 
 import * as S from "./styles";
 
-export function HomeScreen({ navigation }: AppProps) {
+export function HomeScreen() {
   const [listUsers, setListUsers] = useState<any>();
   const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
 
+  const navigation = useNavigation<IPropsAppStack>();
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-
-  useEffect(() => {
-    setLoading(true);
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setLoading(false);
-      } else {
-        navigation.replace("SignIn");
-      }
-    });
-
-    return unsubscribe;
-  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -62,13 +51,6 @@ export function HomeScreen({ navigation }: AppProps) {
     }
   }, [listUsers]);
 
-  const logout = () => {
-    auth.signOut().then(() => alert("Você está deslogado"));
-    AsyncStorage.removeItem("@storage_User");
-    AsyncStorage.removeItem("@storage_dataUser");
-    AsyncStorage.removeItem("@storage_members");
-  };
-
   const dataUser = user && user[0] && user[0][1];
   const whatIsOffice = dataUser && dataUser.cargo;
 
@@ -90,7 +72,7 @@ export function HomeScreen({ navigation }: AppProps) {
         <S.Buttons>
           <NotificationComponent />
 
-          <TouchableOpacity onPress={logout}>
+          <TouchableOpacity onPress={() => handleSignOut()}>
             <S.Material name="logout" size={24} />
           </TouchableOpacity>
         </S.Buttons>

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { TouchableOpacity } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
@@ -9,29 +9,26 @@ import { ComeBackComponent } from "../../components/ComeBack";
 import { NotificationComponent } from "../../components/Notification";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
-import { AppProps } from "../../routes/types/app";
+import { IPropsAppStack } from "../../routes/AppStack/types";
 
 import * as S from "./styles";
+import { handleSignOut } from "../../common/utils/firebase";
 
-export function PreListAdminScreen({ navigation }: AppProps) {
-  const logout = () => {
-    AsyncStorage.removeItem("@storage_User");
-    AsyncStorage.removeItem("@storage_dataUser");
-    AsyncStorage.removeItem("@storage_members");
-  };
+export function PreListAdminScreen() {
+  const navigation = useNavigation<IPropsAppStack>();
 
   return (
     <Fragment>
       <HeaderComponent>
         <S.HeadingIcons>
-          <ComeBackComponent onPress={() => navigation.navigate("Home")} />
+          <ComeBackComponent />
           <LogoComponent full />
         </S.HeadingIcons>
 
         <S.Buttons>
           <NotificationComponent />
 
-          <TouchableOpacity onPress={logout}>
+          <TouchableOpacity onPress={() => handleSignOut()}>
             <S.Logout name="logout" />
           </TouchableOpacity>
         </S.Buttons>

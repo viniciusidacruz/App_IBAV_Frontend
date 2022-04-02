@@ -18,7 +18,6 @@ import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
-import { AppProps } from "../../routes/types/app";
 import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
@@ -28,7 +27,7 @@ import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
 import * as S from "./styles";
 
-export function VisitorsReportScreen({ navigation }: AppProps) {
+export function VisitorsReportScreen() {
   const [error, setError] = useState("");
   const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -177,10 +176,8 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
   return (
     <Fragment>
       <HeaderComponent>
-        <ComeBackComponent
-          onPress={() => navigation.navigate("MembersReport")}
-        />
-        <NavigationComponent navigation={navigation} visitors />
+        <ComeBackComponent />
+        <NavigationComponent visitors />
         <NotificationComponent />
       </HeaderComponent>
 

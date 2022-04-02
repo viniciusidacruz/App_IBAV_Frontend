@@ -1,30 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
-import { AppRoutes } from "./app.routes";
-import { AuthRouter } from "./auth.routes";
+import { AppRoutes } from "./AppStack/index.routes";
+import { AuthRouter } from "./AuthStack/index.routes";
 
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { firebaseConfig } from "../config/firebase";
+import { useAuth } from "../hooks/useAuth";
 
 export const Routes = () => {
-  const [user, setUser] = useState<boolean>(false);
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(true);
-      } else {
-        setUser(false);
-      }
-    });
-
-    return unsubscribe;
-  }, []);
+  const user = useAuth();
 
   return (
     <NavigationContainer>

@@ -14,7 +14,6 @@ import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
-import { AppProps } from "../../routes/types/app";
 import FormFields from "../../common/constants/form";
 import { useFormReport } from "../../hooks/useFormReport";
 import { FormReportActions } from "../../contexts/FormReport";
@@ -33,7 +32,7 @@ import { IAddress } from "./types";
 import * as S from "./styles";
 import { ScrollView } from "react-native";
 
-export function RegisterScreen({ navigation }: AppProps) {
+export function RegisterScreen() {
   const [address, setAddress] = useState<IAddress>({
     uf: "",
     cep: "",
@@ -329,7 +328,7 @@ export function RegisterScreen({ navigation }: AppProps) {
     <Fragment>
       <HeaderComponent>
         <S.ComeBack>
-          <ComeBackComponent onPress={() => navigation.navigate("Home")} />
+          <ComeBackComponent />
           <TitleComponent
             title={
               whatOffice

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ScrollView } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
@@ -18,10 +18,10 @@ import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
-import { AppProps } from "../../routes/types/app";
 import FormFields from "../../common/constants/form";
 import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
+import { IPropsAppStack } from "../../routes/AppStack/types";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 
@@ -29,7 +29,7 @@ import { IContentProps } from "./types";
 
 import * as S from "./styles";
 
-export function SendReportScreen({ navigation }: AppProps) {
+export function SendReportScreen() {
   const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [celulas, setCelulas] = useState<any>([]);
@@ -39,6 +39,7 @@ export function SendReportScreen({ navigation }: AppProps) {
   const [celulaFiltered, setCelulaFiltered] = useState<any>([]);
 
   const { state, dispatch } = useFormReport();
+  const navigation = useNavigation<IPropsAppStack>();
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -166,8 +167,9 @@ export function SendReportScreen({ navigation }: AppProps) {
             <TitleComponent title={`${FormFields.CELULA}:`} small primary />
             <S.ContentC>
               <S.IconC name="user-friends" />
-              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${userInfo && userInfo.rede
-                }`}</S.DescriptionC>
+              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
+                userInfo && userInfo.rede
+              }`}</S.DescriptionC>
             </S.ContentC>
           </S.Grid>
         );
@@ -190,8 +192,8 @@ export function SendReportScreen({ navigation }: AppProps) {
   return (
     <Fragment>
       <HeaderComponent>
-        <ComeBackComponent onPress={() => navigation.navigate("Home")} />
-        <NavigationComponent navigation={navigation} data />
+        <ComeBackComponent />
+        <NavigationComponent data />
         <NotificationComponent />
       </HeaderComponent>
 
@@ -223,7 +225,11 @@ export function SendReportScreen({ navigation }: AppProps) {
                     </S.Grid>
 
                     <S.Grid>
-                      <TitleComponent title={`${FormFields.DATE}:`} small primary />
+                      <TitleComponent
+                        title={`${FormFields.DATE}:`}
+                        small
+                        primary
+                      />
                       <S.ContentC>
                         <DateComponent
                           text={state.textDate}

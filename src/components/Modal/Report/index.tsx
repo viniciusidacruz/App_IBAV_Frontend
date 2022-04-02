@@ -1,5 +1,5 @@
 import { Alert } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalComponent } from "..";
@@ -71,7 +71,7 @@ export function ReportContentModalComponent({
   }, []);
 
   return (
-    <>
+    <Fragment>
       <S.ContentModal>
         <S.TitleModal>Resumo do relatório</S.TitleModal>
 
@@ -151,6 +151,6 @@ export function ReportContentModalComponent({
           type="sendReport"
         />
       </ModalComponent>
-    </>
+    </Fragment>
   );
 }

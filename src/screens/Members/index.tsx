@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { HeaderComponent } from "../../components/Header";
@@ -7,37 +8,20 @@ import { ButtonComponent } from "../../components/Button";
 import { NotificationComponent } from "../../components/Notification";
 import { PersonLabelComponent } from "../../components/PersonLabel";
 
-import { useFormReport } from "../../hooks/useFormReport";
 const loadingGif = require("../../assets/loader-two.gif");
-import { FormReportActions } from "../../contexts/FormReport";
+import { IPropsAppStack } from "../../routes/AppStack/types";
 import { connectApi } from "../../common/services/ConnectApi";
 import MenuNavigation from "../../common/constants/navigation";
 
-import { AppProps } from "../../routes/types/app";
-
 import * as S from "./styles";
 
-export function MembersScreen(this: any, { navigation }: AppProps) {
+export function MembersScreen(this: any) {
   const [user, setUser] = useState<any>();
   const [members, setMembers] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [celulas, setCelulas] = useState<any>();
 
-  const { state, dispatch } = useFormReport();
-
-  const selectedOptionCelula = (value: string) => {
-    dispatch({
-      type: FormReportActions.setTextSelectCelula,
-      payload: value,
-    });
-  };
-
-  const handleCelulaChange = (value: string) => {
-    dispatch({
-      type: FormReportActions.setCelulaSelect,
-      payload: value,
-    });
-  };
+  const navigation = useNavigation<IPropsAppStack>();
 
   useEffect(() => {
     const checkUser = async () => {
@@ -76,7 +60,7 @@ export function MembersScreen(this: any, { navigation }: AppProps) {
   return (
     <Fragment>
       <HeaderComponent>
-        <ComeBackComponent onPress={() => navigation.navigate("Home")} />
+        <ComeBackComponent />
         <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
         <ButtonComponent
           title="Cadastrar"

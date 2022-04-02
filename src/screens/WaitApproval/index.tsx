@@ -1,6 +1,5 @@
-import React from "react";
-import { AppProps } from "../../routes/types/app";
+import React, { Fragment } from "react";
 
-export function WaitApproval({ navigation }: AppProps) {
-  return <></>
+export function WaitApproval() {
+  return <Fragment></Fragment>;
 }

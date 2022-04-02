@@ -1,18 +1,17 @@
 import React, { Fragment } from "react";
 import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import MenuNavigation from "../../common/constants/navigation";
 
 import { IDataProps } from "./types";
+import { IPropsAppStack } from "../../routes/AppStack/types";
 
 import { Navigation } from "./styles";
 
-export function NavigationComponent({
-  data,
-  members,
-  visitors,
-  navigation,
-}: IDataProps) {
+export function NavigationComponent({ data, members, visitors }: IDataProps) {
+  const navigation = useNavigation<IPropsAppStack>();
+
   return (
     <Fragment>
       {data && (

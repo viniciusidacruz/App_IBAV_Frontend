@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 export const Content = styled.View`
-  max-height: 80;
+  max-height: 100;
   height: 100%;
 
   justify-content: center;

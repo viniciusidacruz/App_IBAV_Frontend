@@ -1,6 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { AppProps } from "../../routes/types/app";
+import React, { Fragment } from "react";
 
-export function Multiplication({ navigation }: AppProps) {
-  return <></>
+export function Multiplication() {
+  return <Fragment></Fragment>;
 }

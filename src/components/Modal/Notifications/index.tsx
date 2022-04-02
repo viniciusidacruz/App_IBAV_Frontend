@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import { TitleComponent } from "../../Title";
 
@@ -16,7 +16,7 @@ export default function NotificationContentModalComponent({
 
       <S.ContainerInfo>
         {data ? (
-          <>
+          <Fragment>
             {data.map((item: any) => {
               return (
                 <S.ContentInfo>
@@ -31,7 +31,7 @@ export default function NotificationContentModalComponent({
                 </S.ContentInfo>
               );
             })}
-          </>
+          </Fragment>
         ) : (
           <S.InfoNotResults>
             <TitleComponent title="Não há nenhuma notificação" large weight />

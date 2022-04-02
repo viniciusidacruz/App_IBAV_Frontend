@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import { IContentProps } from "./types";
 
@@ -17,7 +17,7 @@ export function TitleComponent({
   blue,
 }: IContentProps) {
   return (
-    <>
+    <Fragment>
       {small && (
         <S.Small
           red={red}
@@ -64,6 +64,6 @@ export function TitleComponent({
           {title}
         </S.Decoration>
       )}
-    </>
+    </Fragment>
   );
 }

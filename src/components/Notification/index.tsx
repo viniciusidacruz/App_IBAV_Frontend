@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Text } from "react-native";
 import { ModalComponent } from "../Modal";
 import NotificationContentModalComponent from "../Modal/Notifications";
@@ -20,7 +20,7 @@ export function NotificationComponent() {
   const counter = mock.length;
 
   return (
-    <>
+    <Fragment>
       <S.Notification onPress={handleOpenNotification}>
         <S.Icon name="notifications" />
         <S.Count>
@@ -37,6 +37,6 @@ export function NotificationComponent() {
           data={mock}
         />
       </ModalComponent>
-    </>
+    </Fragment>
   );
 }

@@ -2,17 +2,12 @@ import React, { useState } from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 import { AppProps } from "../../routes/types/app";
 import { firebaseConfig } from "../../config/firebase";
 import ButtonsText from "../../common/constants/buttons";
-import { connectApi } from "../../common/services/ConnectApi";
 
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
@@ -28,28 +23,6 @@ export function SignInScreen({ navigation }: AppProps) {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  const handleCreateAccount = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((response) => {
-        const user = response.user;
-        createUser(user.uid);
-        alert("Conta criada com sucesso!");
-      })
-      .catch((error) => {
-        if (error.code === "auth/email-already-in-use") {
-          alert("Este e-mail já está em uso. Cadastre um novo email!");
-        }
-
-        if (error.code === "auth/invalid-email") {
-          alert("Este e-mail está invalido!");
-        }
-
-        if (error.code === "auth/weak-password") {
-          alert("Esta senha está invalida!");
-        }
-      });
-  };
-
   const handleSignIn = async () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((response) => {
@@ -57,10 +30,6 @@ export function SignInScreen({ navigation }: AppProps) {
         const userStore = JSON.stringify(user);
 
         AsyncStorage.setItem("@storage_User", userStore);
-
-        if (userStore) {
-          navigation.navigate("Home");
-        }
       })
       .catch((error) => {
         if (
@@ -70,14 +39,6 @@ export function SignInScreen({ navigation }: AppProps) {
           alert("Email/Senha não encontrado!");
         }
       });
-  };
-
-  const createUser = (id: string) => {
-    connectApi.post("/users.json", {
-      email,
-      password,
-      id,
-    });
   };
 
   return (
@@ -90,7 +51,7 @@ export function SignInScreen({ navigation }: AppProps) {
 
           <S.Content>
             <S.Heading>
-              <TitleComponent title="Login" uppercase large weight />
+              <TitleComponent title="Entrar" uppercase large weight />
             </S.Heading>
 
             <S.Field>
