@@ -26,6 +26,7 @@ import { FormReportActions } from "../../contexts/FormReport";
 import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
 import * as S from "./styles";
+import { useFetch } from "../../hooks/useFetch";
 
 export function VisitorsReportScreen() {
   const [error, setError] = useState("");
@@ -34,20 +35,25 @@ export function VisitorsReportScreen() {
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [memberStorage, setMemberStorage] = useState<any>();
-  const [membersPerPage, setMembersPerPage] = useState<any>();
   const [visitorsIdentify, setVisitorsIdentify] = useState<any>();
   const [selectPerson, setSelectPerson] = useState<
     ISelectedUserProps | undefined
   >(undefined);
+
+  const ID_CELULA =
+    memberStorage && memberStorage.length > 0 && memberStorage[0][0];
+
+  const { data: membersPerPage } = useFetch(
+    `/celulas/${ID_CELULA}/membros.json`,
+    undefined,
+    isAddVisible
+  );
 
   const { state, dispatch } = useFormReport();
 
   const handleOpenModalReport = () => {
     setModalVisible(true);
   };
-
-  const ID_CELULA =
-    memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
   const handleOpenModalAdd = () => {
     const nome = state.nameVisitor;
@@ -82,12 +88,6 @@ export function VisitorsReportScreen() {
     };
 
     checkMembers();
-  }, [isAddVisible]);
-
-  useEffect(() => {
-    connectApi.get(`/celulas/${ID_CELULA}/membros.json`).then((response) => {
-      setMembersPerPage(response.data);
-    });
   }, [isAddVisible]);
 
   useEffect(() => {

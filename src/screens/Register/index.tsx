@@ -31,6 +31,7 @@ import { IAddress } from "./types";
 
 import * as S from "./styles";
 import { ScrollView } from "react-native";
+import { useFetch } from "../../hooks/useFetch";
 
 export function RegisterScreen() {
   const [address, setAddress] = useState<IAddress>({
@@ -51,11 +52,11 @@ export function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [user, setUser] = useState<any>();
   const [members, setMembers] = useState<any>();
-  const [celulas, setCelulas] = useState<any>();
-  const [loading, setLoading] = useState(false);
   const [numberHouse, setNumberHouse] = useState("");
   const [showCalender, setShowCalender] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+
+  const { data: celulas, isFetching: loading } = useFetch("celulas.json");
 
   const { state, dispatch } = useFormReport();
 
@@ -76,29 +77,21 @@ export function RegisterScreen() {
 
   useEffect(() => {
     const filterMembers =
-      members &&
-      members.filter((item: any) => {
+      celulas &&
+      celulas.filter((item: any) => {
         return item[1].celula === identifyCelula;
       });
 
     if (filterMembers) {
-      setCelulas(filterMembers);
+      setMembers(filterMembers);
       AsyncStorage.setItem("@storage_members", JSON.stringify(filterMembers));
     }
-  }, [identifyCelula, members]);
-
-  useEffect(() => {
-    setLoading(true);
-    connectApi.get("celulas.json").then((response) => {
-      setLoading(false);
-      setMembers(Object.entries(response.data));
-    });
-  }, []);
+  }, [identifyCelula, celulas]);
 
   const submitRegister = () => {
     const { cep, bairro, localidade, logradouro } = address;
 
-    const ID_CELULAS = celulas && celulas[0][0];
+    const ID_CELULAS = members && members[0][0];
     const endereco = `${logradouro} ${numberHouse}`;
 
     try {

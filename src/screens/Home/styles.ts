@@ -22,17 +22,17 @@ export const Content = styled.View`
   flex: 1;
   align-items: center;
 
-  max-width: 350px;
+  max-width: 350;
   width: 100%;
 
-  margin-top: 32px;
+  margin-top: 32;
   margin-left: auto;
   margin-right: auto;
 `;
 
 export const Name = styled.Text`
   color: ${({ theme }) => theme.colors.grey};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
   font-size: ${({ theme }) => theme.fonts.fontSize.medium};
   text-transform: uppercase;
 `;
@@ -65,7 +65,7 @@ export const InfoTextTitle = styled.Text`
   color: ${({ theme }) => theme.colors.blue};
 
   font-size: 16;
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
   text-transform: uppercase;
 `;
 
@@ -73,7 +73,7 @@ export const InfoTextSubtitle = styled.Text`
   color: ${({ theme }) => theme.colors.grey};
 
   font-size: 16;
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
   text-transform: uppercase;
 
   margin-top: -8;

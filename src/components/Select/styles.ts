@@ -15,7 +15,7 @@ export const Container = styled.TouchableOpacity`
   height: 32;
 
   border-color: ${({ theme }) => theme.colors.grey};
-  border-width: 1px;
+  border-width: 1;
 `;
 
 export const LabelField = styled.Text`

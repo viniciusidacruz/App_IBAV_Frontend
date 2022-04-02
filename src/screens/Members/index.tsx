@@ -9,8 +9,9 @@ import { NotificationComponent } from "../../components/Notification";
 import { PersonLabelComponent } from "../../components/PersonLabel";
 
 const loadingGif = require("../../assets/loader-two.gif");
+
+import { useFetch } from "../../hooks/useFetch";
 import { IPropsAppStack } from "../../routes/AppStack/types";
-import { connectApi } from "../../common/services/ConnectApi";
 import MenuNavigation from "../../common/constants/navigation";
 
 import * as S from "./styles";
@@ -18,8 +19,8 @@ import * as S from "./styles";
 export function MembersScreen(this: any) {
   const [user, setUser] = useState<any>();
   const [members, setMembers] = useState<any>([]);
-  const [loading, setLoading] = useState(false);
-  const [celulas, setCelulas] = useState<any>();
+
+  const { data: celulas, isFetching: loading } = useFetch("celulas.json");
 
   const navigation = useNavigation<IPropsAppStack>();
 
@@ -38,24 +39,16 @@ export function MembersScreen(this: any) {
 
   useEffect(() => {
     const filterMembers =
-      members &&
-      members.filter((item: any) => {
+      celulas &&
+      celulas.filter((item: any) => {
         return item[1].celula === identifyCelula;
       });
 
     if (filterMembers) {
-      setCelulas(filterMembers);
+      setMembers(filterMembers);
       AsyncStorage.setItem("@storage_members", JSON.stringify(filterMembers));
     }
-  }, [identifyCelula, members]);
-
-  useEffect(() => {
-    setLoading(true);
-    connectApi.get("celulas.json").then((response) => {
-      setLoading(false);
-      setMembers(Object.entries(response.data));
-    });
-  }, []);
+  }, [identifyCelula, celulas]);
 
   return (
     <Fragment>
@@ -75,9 +68,9 @@ export function MembersScreen(this: any) {
           <S.Loading source={loadingGif} />
         ) : (
           <Fragment>
-            {celulas &&
-              celulas.length > 0 &&
-              Object.values(celulas[0][1].membros).map((item: any) => (
+            {members &&
+              members.length > 0 &&
+              Object.values(members[0][1].membros).map((item: any) => (
                 <Fragment>
                   <PersonLabelComponent
                     nome={item.nome}

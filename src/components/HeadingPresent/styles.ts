@@ -4,7 +4,7 @@ export const Heading = styled.View`
   align-items: flex-end;
 
   border-bottom-color: ${({ theme }) => theme.colors.red};
-  border-bottom-width: 1px;
+  border-bottom-width: 1;
 `;
 
 export const Titles = styled.View`
@@ -15,7 +15,7 @@ export const Titles = styled.View`
 export const Title = styled.Text`
   margin-left: 10;
 
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
   text-transform: uppercase;
 
   color: ${({ theme }) => theme.colors.blue};

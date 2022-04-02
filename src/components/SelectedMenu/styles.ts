@@ -11,20 +11,20 @@ export const BackgroundIcon = styled.View`
 
   background-color: ${({ theme }) => theme.colors.red};
 
-  height: 65px;
-  width: 65px;
+  height: 65;
+  width: 65;
 
   align-items: center;
   justify-content: center;
 `;
 
 export const Title = styled.Text`
-  max-width: 85px;
+  max-width: 85;
   width: 100%;
 
   text-align: center;
 
-  margin-top: 5px;
+  margin-top: 5;
 
   color: ${({ theme }) => theme.colors.grey};
 `;

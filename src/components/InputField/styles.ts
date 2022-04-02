@@ -8,10 +8,10 @@ export const Label = styled.Text``;
 export const Field = styled.View<IColorsProps>`
   border-bottom-color: ${(props) =>
     props.primary ? props?.theme?.colors?.grey : props?.theme?.colors?.light};
-  border-bottom-width: 1px;
+  border-bottom-width: 1;
 
   width: 100%;
-  height: 48px;
+  height: 48;
 
   flex-direction: row;
   align-items: center;
@@ -24,7 +24,7 @@ export const Input = styled.TextInput<IColorsProps>`
 
   width: 80%;
 
-  padding-left: 16px;
+  padding-left: 16;
 `;
 
 export const Icons = styled.TouchableOpacity``;

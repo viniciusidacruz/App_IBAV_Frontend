@@ -21,7 +21,7 @@ export const Content = styled.TouchableOpacity`
   justify-content: space-between;
 
   border-color: ${({ theme }) => theme.colors.grey};
-  border-width: 1px;
+  border-width: 1;
 `;
 
 export const TextSelect = styled.Text`

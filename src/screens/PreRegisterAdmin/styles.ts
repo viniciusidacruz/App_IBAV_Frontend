@@ -28,10 +28,10 @@ export const Content = styled.View`
   flex: 1;
   align-items: center;
 
-  max-width: 350px;
+  max-width: 350;
   width: 100%;
 
-  margin-top: 32px;
+  margin-top: 32;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -41,7 +41,7 @@ export const Names = styled.View`
   width: 100%;
 
   border-bottom-color: ${({ theme }) => theme.colors.grey};
-  border-bottom-width: 1px;
+  border-bottom-width: 1;
 `;
 
 export const Info = styled.View`
@@ -49,12 +49,12 @@ export const Info = styled.View`
 
   align-items: center;
 
-  margin-top: 24px;
+  margin-top: 24;
 `;
 
 export const ContentOptions = styled.View`
   width: 100%;
-  margin-top: 24px;
+  margin-top: 24;
 
   flex-direction: row;
   justify-content: space-around;

@@ -46,12 +46,12 @@ export const InfoText = styled.Text`
 
 export const Call = styled.Text`
   color: ${({ theme }) => theme.colors.red};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 `;
 
 export const Decoration = styled.Text`
   color: ${({ theme }) => theme.colors.light};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 `;
 
 export const InfoNotResults = styled.View`

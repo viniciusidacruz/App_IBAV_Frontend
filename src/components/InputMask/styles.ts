@@ -3,10 +3,10 @@ import { IColorsProps } from "../InputField/types";
 
 export const Field = styled.View<IColorsProps>`
   border-bottom-color: ${({ theme }) => theme.colors.grey};
-  border-bottom-width: 1px;
+  border-bottom-width: 1;
 
   width: 100%;
-  height: 48px;
+  height: 48;
 
   flex-direction: row;
   align-items: center;
@@ -19,5 +19,5 @@ export const Input = styled.TextInput<IColorsProps>`
 
   width: 80%;
 
-  padding-left: 16px;
+  padding-left: 16;
 `;

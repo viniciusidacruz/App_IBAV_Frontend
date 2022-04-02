@@ -17,7 +17,7 @@ export const Form = styled.KeyboardAvoidingView`
 export const Content = styled.View`
   margin-top: 48;
 
-  max-width: 400px;
+  max-width: 400;
   width: 100%;
 `;
 
@@ -26,7 +26,7 @@ export const Heading = styled.View`
 `;
 
 export const Field = styled.View`
-  margin-top: 24px;
+  margin-top: 24;
 `;
 
 export const Buttons = styled.View`

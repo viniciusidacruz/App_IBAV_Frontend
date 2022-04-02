@@ -26,7 +26,7 @@ export const SubDescription = styled.Text`
 
 export const Name = styled.Text`
   color: ${({ theme }) => theme.colors.blue};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 
   text-transform: uppercase;
 `;

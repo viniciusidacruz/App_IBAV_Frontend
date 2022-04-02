@@ -8,6 +8,6 @@ export const Footer = styled.View`
 export const Info = styled.Text``;
 
 export const Decoration = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
   color: ${({ theme }) => theme.colors.blue};
 `;

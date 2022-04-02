@@ -10,7 +10,7 @@ export const Content = styled.View`
   width: 100%;
 
   border-bottom-color: ${({ theme }) => theme.colors.grey};
-  border-bottom-width: 1px;
+  border-bottom-width: 1;
 `;
 
 export const ContentName = styled.View`

@@ -12,11 +12,11 @@ export default {
   },
   fonts: {
     fontSize: {
-      small: "18px",
-      medium: "24px",
-      large: "32px",
+      small: 18,
+      medium: 24,
+      large: 32,
     },
-    fontWeight: {
+    fontFamily: {
       regular: "Poppins_400Regular",
       medium: "Poppins_500Medium",
       bold: "Poppins_700Bold",

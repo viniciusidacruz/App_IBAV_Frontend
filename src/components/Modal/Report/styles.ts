@@ -15,7 +15,7 @@ export const ContentModal = styled.View`
 export const TitleModal = styled.Text`
   margin-bottom: 10;
 
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
   text-transform: uppercase;
 

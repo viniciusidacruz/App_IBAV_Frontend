@@ -5,5 +5,5 @@ export const Navigation = styled.Text`
   text-transform: uppercase;
 
   font-size: 14;
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 `;

@@ -4,9 +4,9 @@ import styled from "styled-components/native";
 import { ISizeProps, ISvgProps } from "./types";
 
 export const Content = styled.TouchableOpacity<ISizeProps>`
-  height: ${(props) => (props.small ? "32px" : "48px")};
+  height: ${(props) => (props.small ? "32" : "48")};
 
-  width: ${(props) => (props.small ? "150px" : "100%")};
+  width: ${(props) => (props.small ? "150" : "100%")};
 
   background-color: ${({ theme }) => theme.colors.red};
   border-radius: 10;
@@ -26,16 +26,16 @@ export const Background = styled(LinearGradient).attrs({
 `;
 
 export const BoxIcon = styled.View<ISvgProps>`
-  margin-right: ${(props) => (props.icon ? "5px" : "0px")};
+  margin-right: ${(props) => (props.icon ? "5" : "0")};
 `;
 
 export const Title = styled.Text<ISizeProps>`
   font-size: ${(props) =>
-    props.small ? "10px" : props.theme.fonts.fontSize.small};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+    props.small ? "10" : props.theme.fonts.fontSize.small};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1;
 
   color: ${({ theme }) => theme.colors.light};
 `;

@@ -13,29 +13,21 @@ import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
+import { useFetch } from "../../hooks/useFetch";
 import { firebaseConfig } from "../../config/firebase";
 import { handleSignOut } from "../../common/utils/firebase";
 import { IPropsAppStack } from "../../routes/AppStack/types";
-import { connectApi } from "../../common/services/ConnectApi";
 
 import * as S from "./styles";
 
 export function HomeScreen() {
-  const [listUsers, setListUsers] = useState<any>();
   const [user, setUser] = useState<any>();
-  const [loading, setLoading] = useState(false);
+
+  const { data: listUsers, isFetching: loading } = useFetch("/users.json");
 
   const navigation = useNavigation<IPropsAppStack>();
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-
-  useEffect(() => {
-    setLoading(true);
-    connectApi.get("/users.json").then((response) => {
-      setListUsers(Object.entries(response.data));
-      setLoading(false);
-    });
-  }, []);
 
   useEffect(() => {
     const emailAuth = auth.currentUser?.email;

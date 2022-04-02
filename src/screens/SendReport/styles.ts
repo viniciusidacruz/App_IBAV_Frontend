@@ -7,14 +7,13 @@ export const Navigation = styled.Text`
   text-transform: uppercase;
 
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 `;
 
 export const Content = styled.View`
-  flex: 1;
-
   max-width: 350;
   width: 100%;
+  height: 100%;
 
   margin-top: 32;
   margin-left: auto;
@@ -22,8 +21,8 @@ export const Content = styled.View`
 `;
 
 export const Form = styled.KeyboardAvoidingView`
-  flex: 1 ;
   margin-top: 0;
+  height: 100%;
 `;
 
 export const Grid = styled.View`
@@ -53,7 +52,7 @@ export const DescriptionC = styled.Text`
   width: 100%;
 
   font-size: 14;
-  font-family: ${({ theme }) => theme.fonts.fontWeight.bold};
+  font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
   color: ${({ theme }) => theme.colors.grey};
   text-transform: uppercase;
 
@@ -69,6 +68,10 @@ export const Observations = styled.TextInput`
   padding-right: 10;
 
   margin-top: 15;
+`;
+
+export const ContentButton = styled.View`
+  height: 100%;
 `;
 
 export const Button = styled.View`

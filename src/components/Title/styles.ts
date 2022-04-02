@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
-import { IPrimaryColorProps } from './types';
+import { IPrimaryColorProps } from "./types";
 
 export const Small = styled.Text<IPrimaryColorProps>`
   color: ${(props) =>
@@ -8,10 +8,10 @@ export const Small = styled.Text<IPrimaryColorProps>`
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
   font-family: ${(props) =>
     props.weight
-      ? props.theme.fonts.fontWeight.bold
-      : props.theme.fonts.fontWeight.regular};
-  letter-spacing: 1px;
-  text-transform: ${(props) => (props.uppercase ? 'uppercase' : 'none')};
+      ? props.theme.fonts.fontFamily.bold
+      : props.theme.fonts.fontFamily.regular};
+  letter-spacing: 1;
+  text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
 `;
 
 export const Medium = styled.Text<IPrimaryColorProps>`
@@ -20,10 +20,10 @@ export const Medium = styled.Text<IPrimaryColorProps>`
   font-size: ${({ theme }) => theme.fonts.fontSize.medium};
   font-family: ${(props) =>
     props.weight
-      ? props.theme.fonts.fontWeight.bold
-      : props.theme.fonts.fontWeight.regular};
-  letter-spacing: 1px;
-  text-transform: ${(props) => (props.uppercase ? 'uppercase' : 'none')};
+      ? props.theme.fonts.fontFamily.bold
+      : props.theme.fonts.fontFamily.regular};
+  letter-spacing: 1;
+  text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
 `;
 
 export const Large = styled.Text<IPrimaryColorProps>`
@@ -32,10 +32,10 @@ export const Large = styled.Text<IPrimaryColorProps>`
   font-size: ${({ theme }) => theme?.fonts?.fontSize?.large};
   font-family: ${(props) =>
     props.weight
-      ? props?.theme?.fonts?.fontWeight?.bold
-      : props?.theme?.fonts?.fontWeight?.regular};
-  letter-spacing: 1px;
-  text-transform: ${(props) => (props.uppercase ? 'uppercase' : 'none')};
+      ? props?.theme?.fonts?.fontFamily?.bold
+      : props?.theme?.fonts?.fontFamily?.regular};
+  letter-spacing: 1;
+  text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
 `;
 
 export const Decoration = styled.Text<IPrimaryColorProps>`
@@ -44,7 +44,7 @@ export const Decoration = styled.Text<IPrimaryColorProps>`
   font-size: 14;
   font-family: ${(props) =>
     props.weight
-      ? props.theme.fonts.fontWeight.bold
-      : props.theme.fonts.fontWeight.regular};
-  text-transform: ${(props) => (props.uppercase ? 'uppercase' : 'none')};
+      ? props.theme.fonts.fontFamily.bold
+      : props.theme.fonts.fontFamily.regular};
+  text-transform: ${(props) => (props.uppercase ? "uppercase" : "none")};
 `;

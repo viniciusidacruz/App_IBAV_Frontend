@@ -119,14 +119,6 @@ export function SendReportScreen() {
     checkUser();
   }, []);
 
-  useEffect(() => {
-    setLoading(true);
-    connectApi.get("celulas.json").then((response) => {
-      setLoading(false);
-      setCelulas(Object.entries(response.data));
-    });
-  }, []);
-
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
 
@@ -255,38 +247,40 @@ export function SendReportScreen() {
                       />
                     </S.Grid>
 
-                    <ButtonComponent
-                      title={ButtonsText.REPORT}
-                      onPress={handleOpenModal}
-                    />
+                    <S.ContentButton>
+                      <ButtonComponent
+                        title={ButtonsText.REPORT}
+                        onPress={handleOpenModal}
+                      />
+                    </S.ContentButton>
                   </S.Form>
                 </ScrollView>
               </S.Content>
-
-              <ModalComponent
-                isVisible={isModalVisible}
-                onBackdropPress={() => setModalVisible(false)}
-              >
-                <ReportContentModalComponent
-                  handleCloseModal={setModalVisible}
-                  data={user}
-                  onPressIn={openModalSuccess}
-                />
-              </ModalComponent>
-
-              <ModalComponent
-                isVisible={modalSuccess}
-                onBackdropPress={() => setModalSuccess(false)}
-              >
-                <DefaultContentModalComponent
-                  closeModal={setModalSuccess}
-                  type="sendReport"
-                />
-              </ModalComponent>
             </Fragment>
           )}
         </Fragment>
       )}
+
+      <ModalComponent
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+      >
+        <ReportContentModalComponent
+          handleCloseModal={setModalVisible}
+          data={user}
+          onPressIn={openModalSuccess}
+        />
+      </ModalComponent>
+
+      <ModalComponent
+        isVisible={modalSuccess}
+        onBackdropPress={() => setModalSuccess(false)}
+      >
+        <DefaultContentModalComponent
+          closeModal={setModalSuccess}
+          type="sendReport"
+        />
+      </ModalComponent>
     </Fragment>
   );
 }

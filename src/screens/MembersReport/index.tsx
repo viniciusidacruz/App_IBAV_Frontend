@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { ModalComponent } from "../../components/Modal";
@@ -17,24 +16,24 @@ import { ReportContentModalComponent } from "../../components/Modal/Report";
 import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import { FormReportActions } from "../../contexts/FormReport";
-import { connectApi } from "../../common/services/ConnectApi";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
 import { IDataUserProps, ISelectedUserProps } from "./types";
 
 import * as S from "./styles";
+import { useFetch } from "../../hooks/useFetch";
 
 export function MembersReportScreen() {
   const [user, setUser] = useState<any>();
-  const [loading, setLoading] = useState(false);
-  const [celulas, setCelulas] = useState<any>();
   const [members, setMembers] = useState<any>([]);
   const [membersIdentify, setMembersIdentify] = useState<any>();
   const [selectPerson, setSelectPerson] = useState<
     ISelectedUserProps | undefined
   >(undefined);
   const [isModalVisible, setModalVisible] = useState(false);
+
+  const { data: celulas, isFetching: loading } = useFetch("celulas.json");
 
   const { state, dispatch } = useFormReport();
 
@@ -60,31 +59,23 @@ export function MembersReportScreen() {
 
   useEffect(() => {
     const filterMembers =
-      members &&
-      members.filter((item: any) => {
+      celulas &&
+      celulas.filter((item: any) => {
         return (
           item[1].celula === identifyCelula || item[1].celula === idCelulaSelect
         );
       });
 
     if (filterMembers) {
-      setCelulas(filterMembers);
+      setMembers(filterMembers);
       AsyncStorage.setItem("@storage_members", JSON.stringify(filterMembers));
     }
-  }, [identifyCelula, members]);
-
-  useEffect(() => {
-    setLoading(true);
-    connectApi.get("celulas.json").then((response) => {
-      setLoading(false);
-      setMembers(Object.entries(response.data));
-    });
-  }, []);
+  }, [identifyCelula, celulas]);
 
   const newMembersList =
-    celulas &&
-    celulas.length > 0 &&
-    Object.values(celulas[0][1].membros).filter(
+    members &&
+    members.length > 0 &&
+    Object.values(members[0][1].membros).filter(
       (member: any) =>
         member.status !== "visitante" && member.status !== "Visitante"
     );
