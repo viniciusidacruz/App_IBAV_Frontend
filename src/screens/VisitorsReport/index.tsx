@@ -27,6 +27,7 @@ import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
 import * as S from "./styles";
 import { useFetch } from "../../hooks/useFetch";
+import { GetStorage } from "../../common/constants/storage";
 
 export function VisitorsReportScreen() {
   const [error, setError] = useState("");
@@ -92,7 +93,7 @@ export function VisitorsReportScreen() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dataUser");
+      const user = await AsyncStorage.getItem(GetStorage.USER_FILTERED);
 
       if (user) {
         setUser(JSON.parse(user));

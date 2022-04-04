@@ -13,19 +13,19 @@ import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 
+const loadingGif = require("../../assets/loader-two.gif");
+
+import { useFetch } from "../../hooks/useFetch";
 import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
+import useUserFiltered from "../../hooks/useUserFiltered";
 import { FormReportActions } from "../../contexts/FormReport";
-
-const loadingGif = require("../../assets/loader-two.gif");
 
 import { IDataUserProps, ISelectedUserProps } from "./types";
 
 import * as S from "./styles";
-import { useFetch } from "../../hooks/useFetch";
 
 export function MembersReportScreen() {
-  const [user, setUser] = useState<any>();
   const [members, setMembers] = useState<any>([]);
   const [membersIdentify, setMembersIdentify] = useState<any>();
   const [selectPerson, setSelectPerson] = useState<
@@ -34,23 +34,12 @@ export function MembersReportScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const { data: celulas, isFetching: loading } = useFetch("celulas.json");
-
+  const { user } = useUserFiltered();
   const { state, dispatch } = useFormReport();
 
   const handleOpenModal = () => {
     setModalVisible(true);
   };
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dataUser");
-
-      if (user) {
-        setUser(JSON.parse(user));
-      }
-    };
-    checkUser();
-  }, []);
 
   const dataUser = user && user[0] && user[0][1];
   const identifyCelula = user && user[0][1].numero_celula;

@@ -3,37 +3,27 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { HeaderComponent } from "../../components/Header";
-import { ComeBackComponent } from "../../components/ComeBack";
 import { ButtonComponent } from "../../components/Button";
-import { NotificationComponent } from "../../components/Notification";
+import { ComeBackComponent } from "../../components/ComeBack";
 import { PersonLabelComponent } from "../../components/PersonLabel";
+import { NotificationComponent } from "../../components/Notification";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
 import { useFetch } from "../../hooks/useFetch";
-import { IPropsAppStack } from "../../routes/AppStack/types";
+import useUserFiltered from "../../hooks/useUserFiltered";
 import MenuNavigation from "../../common/constants/navigation";
+
+import { IPropsAppStack } from "../../routes/AppStack/types";
 
 import * as S from "./styles";
 
 export function MembersScreen(this: any) {
-  const [user, setUser] = useState<any>();
   const [members, setMembers] = useState<any>([]);
 
   const { data: celulas, isFetching: loading } = useFetch("celulas.json");
-
+  const { user } = useUserFiltered();
   const navigation = useNavigation<IPropsAppStack>();
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dataUser");
-
-      if (user) {
-        setUser(JSON.parse(user));
-      }
-    };
-    checkUser();
-  }, []);
 
   const identifyCelula = user && user[0][1].numero_celula;
 

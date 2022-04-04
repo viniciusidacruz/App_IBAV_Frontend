@@ -1,16 +1,17 @@
 import { Alert } from "react-native";
-import React, { Fragment, useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { Fragment, useState } from "react";
 
 import { ModalComponent } from "..";
 import { TitleComponent } from "../../Title";
 import { ButtonComponent } from "../../Button";
 import { DefaultContentModalComponent } from "../Default";
 
+import useUserFiltered from "../../../hooks/useUserFiltered";
 import { useFormReport } from "../../../hooks/useFormReport";
 import { connectApi } from "../../../common/services/ConnectApi";
 
 import { IContentModal } from "./types";
+
 import * as S from "./styles";
 
 export function ReportContentModalComponent({
@@ -18,10 +19,10 @@ export function ReportContentModalComponent({
   data,
   onPressIn,
 }: IContentModal) {
-  const [user, setUser] = useState<any>();
   const [sendModal, setSendModal] = useState(false);
 
   const { state } = useFormReport();
+  const { user } = useUserFiltered();
 
   const presentCLMembers = state.members.filter((item) => item.celula === "P");
   const presentCTMembers = state.members.filter((item) => item.culto === "P");
@@ -57,18 +58,6 @@ export function ReportContentModalComponent({
       }
     }
   };
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dataUser");
-
-      if (user) {
-        setUser(JSON.parse(user));
-      }
-    };
-
-    checkUser();
-  }, []);
 
   return (
     <Fragment>

@@ -13,6 +13,7 @@ import {
 import { Routes } from "./src/routes";
 import { FormProvider } from "./src/contexts/FormReport";
 import { AuthProvider } from "./src/contexts/Authenticate";
+import { FilteredProvider } from "./src/contexts/Filtered";
 
 import theme from "./src/styles/theme";
 
@@ -29,11 +30,13 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <FormProvider>
-          <Routes />
-        </FormProvider>
-      </AuthProvider>
+      <FilteredProvider>
+        <AuthProvider>
+          <FormProvider>
+            <Routes />
+          </FormProvider>
+        </AuthProvider>
+      </FilteredProvider>
       <StatusBar style="light" backgroundColor="#000A3E" translucent />
     </ThemeProvider>
   );

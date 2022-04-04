@@ -1,7 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
@@ -20,8 +18,8 @@ const loadingGif = require("../../assets/loader-two.gif");
 
 import FormFields from "../../common/constants/form";
 import ButtonsText from "../../common/constants/buttons";
+import useUserFiltered from "../../hooks/useUserFiltered";
 import { useFormReport } from "../../hooks/useFormReport";
-import { IPropsAppStack } from "../../routes/AppStack/types";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 
@@ -30,8 +28,6 @@ import { IContentProps } from "./types";
 import * as S from "./styles";
 
 export function SendReportScreen() {
-  const [user, setUser] = useState<any>();
-  const [loading, setLoading] = useState(false);
   const [celulas, setCelulas] = useState<any>([]);
   const [showCalender, setShowCalender] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
@@ -39,7 +35,7 @@ export function SendReportScreen() {
   const [celulaFiltered, setCelulaFiltered] = useState<any>([]);
 
   const { state, dispatch } = useFormReport();
-  const navigation = useNavigation<IPropsAppStack>();
+  const { user, loading } = useUserFiltered();
 
   const handleOpenModal = () => {
     setModalVisible(true);
@@ -103,21 +99,6 @@ export function SendReportScreen() {
       payload: value,
     });
   };
-
-  useEffect(() => {
-    setLoading(true);
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dataUser");
-
-      if (user) {
-        setUser(JSON.parse(user));
-        setLoading(false);
-      } else {
-        navigation.replace("SignIn");
-      }
-    };
-    checkUser();
-  }, []);
 
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;

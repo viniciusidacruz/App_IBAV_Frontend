@@ -1,5 +1,6 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import { ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DateComponent } from "../../components/Date";
@@ -14,7 +15,9 @@ import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
+import { useFetch } from "../../hooks/useFetch";
 import FormFields from "../../common/constants/form";
+import useUserFiltered from "../../hooks/useUserFiltered";
 import { useFormReport } from "../../hooks/useFormReport";
 import { FormReportActions } from "../../contexts/FormReport";
 import { connectApi } from "../../common/services/ConnectApi";
@@ -30,8 +33,6 @@ const loadingGif = require("../../assets/loader-two.gif");
 import { IAddress } from "./types";
 
 import * as S from "./styles";
-import { ScrollView } from "react-native";
-import { useFetch } from "../../hooks/useFetch";
 
 export function RegisterScreen() {
   const [address, setAddress] = useState<IAddress>({
@@ -50,30 +51,18 @@ export function RegisterScreen() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [user, setUser] = useState<any>();
   const [members, setMembers] = useState<any>();
   const [numberHouse, setNumberHouse] = useState("");
   const [showCalender, setShowCalender] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
-  const { data: celulas, isFetching: loading } = useFetch("celulas.json");
-
+  const { user } = useUserFiltered();
   const { state, dispatch } = useFormReport();
+  const { data: celulas, isFetching: loading } = useFetch("celulas.json");
 
   const identifyCelula = user && user[0][1].numero_celula;
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_dataUser");
-
-      if (user) {
-        setUser(JSON.parse(user));
-      }
-    };
-    checkUser();
-  }, []);
 
   useEffect(() => {
     const filterMembers =
