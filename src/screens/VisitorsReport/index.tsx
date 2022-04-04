@@ -42,6 +42,7 @@ export function VisitorsReportScreen({ navigation }: AppProps) {
   >(undefined);
 
   const { state, dispatch } = useFormReport();
+  
 
   const handleOpenModalReport = () => {
     setModalVisible(true);
