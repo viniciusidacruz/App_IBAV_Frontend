@@ -9,8 +9,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 export function handleSignOut() {
-  auth.signOut().then(() => alert("Você está deslogado"));
-  AsyncStorage.removeItem("@storage_User");
+  auth.signOut();
+
+  AsyncStorage.removeItem(GetStorage.USER_INFO);
   AsyncStorage.removeItem(GetStorage.USER_FILTERED);
-  AsyncStorage.removeItem("@storage_members");
+  AsyncStorage.removeItem(GetStorage.MEMBERS_FILTERED);
 }

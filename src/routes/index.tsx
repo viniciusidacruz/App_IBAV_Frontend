@@ -7,7 +7,7 @@ import { AuthRouter } from "./AuthStack/index.routes";
 import { useAuth } from "../hooks/useAuth";
 
 export const Routes = () => {
-  const user = useAuth();
+  const { user } = useAuth();
 
   return (
     <NavigationContainer>

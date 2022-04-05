@@ -80,7 +80,7 @@ export function VisitorsReportScreen() {
   useEffect(() => {
     setLoading(true);
     const checkMembers = async () => {
-      const members = await AsyncStorage.getItem("@storage_members");
+      const members = await AsyncStorage.getItem(GetStorage.MEMBERS_FILTERED);
 
       if (members) {
         setMemberStorage(JSON.parse(members));

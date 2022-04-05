@@ -12,10 +12,10 @@ import {
 
 import { Routes } from "./src/routes";
 import { FormProvider } from "./src/contexts/FormReport";
-import { AuthProvider } from "./src/contexts/Authenticate";
 import { FilteredProvider } from "./src/contexts/Filtered";
 
 import theme from "./src/styles/theme";
+import { AuthenticatedProvider } from "./src/contexts/Auth";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,13 +30,13 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <FilteredProvider>
-        <AuthProvider>
+      <AuthenticatedProvider>
+        <FilteredProvider>
           <FormProvider>
             <Routes />
           </FormProvider>
-        </AuthProvider>
-      </FilteredProvider>
+        </FilteredProvider>
+      </AuthenticatedProvider>
       <StatusBar style="light" backgroundColor="#000A3E" translucent />
     </ThemeProvider>
   );

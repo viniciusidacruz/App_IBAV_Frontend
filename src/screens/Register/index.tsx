@@ -19,6 +19,7 @@ import { useFetch } from "../../hooks/useFetch";
 import FormFields from "../../common/constants/form";
 import useUserFiltered from "../../hooks/useUserFiltered";
 import { useFormReport } from "../../hooks/useFormReport";
+import { GetStorage } from "../../common/constants/storage";
 import { FormReportActions } from "../../contexts/FormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import MenuNavigation from "../../common/constants/navigation";
@@ -73,7 +74,10 @@ export function RegisterScreen() {
 
     if (filterMembers) {
       setMembers(filterMembers);
-      AsyncStorage.setItem("@storage_members", JSON.stringify(filterMembers));
+      AsyncStorage.setItem(
+        GetStorage.MEMBERS_FILTERED,
+        JSON.stringify(filterMembers)
+      );
     }
   }, [identifyCelula, celulas]);
 
@@ -97,6 +101,8 @@ export function RegisterScreen() {
           estado: state.stateSelect,
           data_de_nascimento: state.dateRegister,
           estado_civil: state.civilStatusSelect,
+          aguardando_exclusao: false,
+          aguardando_cadastro: true,
         })
         .then(() => {
           setSuccessModal(true);
@@ -311,14 +317,11 @@ export function RegisterScreen() {
       <HeaderComponent>
         <S.ComeBack>
           <ComeBackComponent />
-          <TitleComponent
-            title={
-              whatOffice
-                ? MenuNavigation.REGISTER_MEMBERS
-                : MenuNavigation.REGISTER
-            }
-            small
-          />
+          <S.TitlePage>
+            {whatOffice
+              ? MenuNavigation.REGISTER_MEMBERS
+              : MenuNavigation.REGISTER}
+          </S.TitlePage>
         </S.ComeBack>
 
         <NotificationComponent />
@@ -335,7 +338,7 @@ export function RegisterScreen() {
                 primary
                 value={name}
                 placeholder={`* ${FormFields.FULL_NAME}`}
-                onChangeText={(value) => setName(value)}
+                onChangeText={setName}
               />
 
               <InputMaskComponent
@@ -351,7 +354,7 @@ export function RegisterScreen() {
                 primary
                 value={email}
                 placeholder={FormFields.EMAIL}
-                onChangeText={(value) => setEmail(value)}
+                onChangeText={setEmail}
               />
 
               <InputFieldComponent
@@ -392,7 +395,7 @@ export function RegisterScreen() {
                     primary
                     value={numberHouse}
                     placeholder={FormFields.NUMBER}
-                    onChangeText={(value) => setNumberHouse(value)}
+                    onChangeText={setNumberHouse}
                   />
                 </S.GridItemSmall>
               </S.GridForm>

@@ -19,7 +19,7 @@ export const BackgroundIcon = styled.View`
 `;
 
 export const Title = styled.Text`
-  max-width: 85;
+  max-width: 86;
   width: 100%;
 
   text-align: center;
