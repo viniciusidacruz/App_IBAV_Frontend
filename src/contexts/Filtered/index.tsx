@@ -1,14 +1,11 @@
 import { useState, useEffect, createContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { getAuth, User } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-
 import { useFetch } from "../../hooks/useFetch";
-import { firebaseConfig } from "../../config/firebase";
 import { GetStorage } from "../../common/constants/storage";
 
 import { IContextProps, IProviderProps } from "./types";
+import { useAuth } from "../../hooks/useAuth";
 
 export const FilteredContext = createContext<IContextProps>(
   {} as IContextProps
@@ -17,13 +14,11 @@ export const FilteredContext = createContext<IContextProps>(
 export const FilteredProvider = ({ children }: IProviderProps) => {
   const [user, setUser] = useState(null);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
   const { data: listUsers, isFetching: loading } = useFetch("/users.json");
+  const { user: userAuth } = useAuth();
 
   useEffect(() => {
-    const emailAuth = auth.currentUser?.email;
+    const emailAuth = userAuth?.email;
     const filterUser =
       listUsers &&
       listUsers.filter((item: any) => {
@@ -37,7 +32,7 @@ export const FilteredProvider = ({ children }: IProviderProps) => {
         JSON.stringify(filterUser)
       );
     }
-  }, [listUsers]);
+  }, [listUsers, loading, userAuth]);
 
   return (
     <FilteredContext.Provider value={{ user, loading }}>

@@ -12,6 +12,7 @@ const loadingGif = require("../../assets/loader-two.gif");
 
 import { useFetch } from "../../hooks/useFetch";
 import useUserFiltered from "../../hooks/useUserFiltered";
+import { GetStorage } from "../../common/constants/storage";
 import MenuNavigation from "../../common/constants/navigation";
 
 import { IPropsAppStack } from "../../routes/AppStack/types";
@@ -36,7 +37,10 @@ export function MembersScreen(this: any) {
 
     if (filterMembers) {
       setMembers(filterMembers);
-      AsyncStorage.setItem("@storage_members", JSON.stringify(filterMembers));
+      AsyncStorage.setItem(
+        GetStorage.MEMBERS_FILTERED,
+        JSON.stringify(filterMembers)
+      );
     }
   }, [identifyCelula, celulas]);
 

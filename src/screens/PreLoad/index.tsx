@@ -1,16 +1,21 @@
 import React, { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const loadingGif = require("../../assets/loading.gif");
 
-import { AppProps } from "../../routes/types/app";
+import { GetStorage } from "../../common/constants/storage";
+
+import { IPropsAuthStack } from "../../routes/AuthStack/types";
 
 import * as S from "./styles";
 
-export function PreloadScreen({ navigation }: AppProps) {
+export function PreloadScreen() {
+  const navigation = useNavigation<IPropsAuthStack>();
+
   useEffect(() => {
     const checkUser = async () => {
-      const user = await AsyncStorage.getItem("@storage_User");
+      const user = await AsyncStorage.getItem(GetStorage.USER_INFO);
 
       if (user) {
         navigation.navigate("Home");

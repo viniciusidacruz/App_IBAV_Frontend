@@ -49,7 +49,7 @@ export function PreRegisterAdminScreen() {
           <SelectedMenuComponent
             icon={<S.UserGridIcon name="network-wired" />}
             title="Usuário/Rede"
-            onPress={() => navigation.navigate("UserGrid")}
+            onPress={() => navigation.navigate("UserRegister")}
           />
         </S.ContentOptions>
       </S.Content>
