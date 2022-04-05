@@ -12,15 +12,14 @@ const loadingGif = require("../../assets/loader-two.gif");
 
 import { useAuth } from "../../hooks/useAuth";
 import useUserFiltered from "../../hooks/useUserFiltered";
-import { handleSignOut } from "../../common/utils/firebase";
 
 import { IPropsAppStack } from "../../routes/AppStack/types";
 
 import * as S from "./styles";
 
 export function HomeScreen() {
-  const { loading, user } = useUserFiltered();
   const { signOut } = useAuth();
+  const { loading, user } = useUserFiltered();
   const navigation = useNavigation<IPropsAppStack>();
 
   const dataUser = user && user[0] && user[0][1];

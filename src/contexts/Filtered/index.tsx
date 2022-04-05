@@ -32,7 +32,7 @@ export const FilteredProvider = ({ children }: IProviderProps) => {
         JSON.stringify(filterUser)
       );
     }
-  }, [listUsers]);
+  }, [listUsers, loading, userAuth]);
 
   return (
     <FilteredContext.Provider value={{ user, loading }}>
