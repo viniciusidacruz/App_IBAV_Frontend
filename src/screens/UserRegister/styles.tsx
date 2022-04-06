@@ -40,3 +40,15 @@ export const GridItemSmall = styled.View`
 export const GridSelect = styled.View`
   margin-bottom: 10;
 `;
+
+export const FooterFields = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+
+  padding-left: 15;
+  padding-right: 15;
+
+  margin-bottom: 15;
+`;
+
+export const Required = styled.Text``;
