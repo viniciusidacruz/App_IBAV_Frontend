@@ -36,3 +36,7 @@ export const GridItemLarge = styled.View`
 export const GridItemSmall = styled.View`
   width: 25%;
 `;
+
+export const GridSelect = styled.View`
+  margin-bottom: 10;
+`;

@@ -9,8 +9,10 @@ import { InputMaskComponent } from "../../components/InputMask";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 
+import { useFetch } from "../../hooks/useFetch";
 import FormFields from "../../common/constants/form";
 import { useFormReport } from "../../hooks/useFormReport";
+import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 import {
   officeMembers,
@@ -22,21 +24,23 @@ import {
 import { IAddress } from "../Register/types";
 
 import * as S from "./styles";
-import { FormReportActions } from "../../contexts/FormReport";
 
 export function UserRegisterScreen() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [state, setState] = useState("");
-  const [office, setOffice] = useState("Selecionar");
   const [category, setCategory] = useState("");
   const [stateCivil, setStateCivil] = useState("");
+  const [office, setOffice] = useState("Selecionar");
   const [numberHouse, setNumberHouse] = useState("");
   const [showCalender, setShowCalender] = useState(false);
 
   const { state: stateReducer, dispatch } = useFormReport();
+  const { data } = useFetch('/users.json');
 
+  console.log(Object.values(data[0]));
+  
   const [address, setAddress] = useState<IAddress>({
     uf: "",
     cep: "",
@@ -114,7 +118,45 @@ export function UserRegisterScreen() {
     });
   };
 
-  console.log("Esse é o office", office);
+  const renderSelectsOptions = () => {
+    if (office === 'discipulador') {
+      return (
+        <S.GridSelect>
+          <SelectComponent
+            label="Rede"
+            onChange={() => { }}
+            selectedOption={() => { }}
+            labelSelect="Selecione"
+            dataOptions={[]}
+          />
+        </S.GridSelect>
+      )
+    } else if (office === 'lider de celula') {
+      return (
+        <Fragment>
+          <S.GridSelect>
+            <SelectComponent
+              label="Rede"
+              onChange={() => { }}
+              selectedOption={() => { }}
+              labelSelect="Selecione"
+              dataOptions={[]}
+            />
+          </S.GridSelect>
+
+          <S.GridSelect>
+            <SelectComponent
+              label="Discipulado"
+              onChange={() => { }}
+              selectedOption={() => { }}
+              labelSelect="Selecione"
+              dataOptions={[]}
+            />
+          </S.GridSelect>
+        </Fragment>
+      )
+    }
+  }
 
   return (
     <Fragment>
@@ -127,33 +169,18 @@ export function UserRegisterScreen() {
       </HeaderComponent>
 
       <S.Main>
-        <SelectComponent
-          label="Cargo"
-          onChange={selectOffice}
-          selectedOption={selectOffice}
-          labelSelect={office}
-          dataOptions={officeMembers}
-        />
-
-        {office === "discipulador" && (
+        <S.GridSelect>
           <SelectComponent
-            label="Rede"
-            onChange={() => {}}
-            selectedOption={() => {}}
-            labelSelect="Selecione"
-            dataOptions={[]}
+            label="Cargo"
+            onChange={selectOffice}
+            selectedOption={selectOffice}
+            labelSelect={office}
+            dataOptions={officeMembers}
           />
-        )}
+        </S.GridSelect>
 
-        {office === "lider de celula" && (
-          <SelectComponent
-            label="Discipulado"
-            onChange={() => {}}
-            selectedOption={() => {}}
-            labelSelect="Selecione"
-            dataOptions={[]}
-          />
-        )}
+
+        {renderSelectsOptions()}
 
         {office !== "Selecionar" && (
           <Fragment>

@@ -43,6 +43,6 @@ export const selectState = [
 
 export const officeMembers = [
   { value: "pastor de rede" },
-  { value: "discipulador " },
+  { value: "discipulador" },
   { value: "lider de celula" },
 ];
