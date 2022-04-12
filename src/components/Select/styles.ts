@@ -13,6 +13,7 @@ export const Container = styled.TouchableOpacity`
   justify-content: space-between;
 
   height: 32;
+  width: 300px;
 
   border-color: ${({ theme }) => theme.colors.grey};
   border-width: 1;

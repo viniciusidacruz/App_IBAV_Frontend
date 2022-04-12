@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, Text } from "react-native";
 
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
@@ -109,10 +109,12 @@ export function SendReportScreen() {
         const response = await connectApi.get("/celulas.json");
 
         setCelulas(Object.values(response.data));
+        console.log(celulas, 'celulas')
       };
       getCelulas();
     }
   }, []);
+
 
   useEffect(() => {
     const filterCelulas =
@@ -124,6 +126,19 @@ export function SendReportScreen() {
     setCelulaFiltered(filterCelulas);
   }, [celulas]);
 
+
+
+  const redes =  celulas.map((item: any) => (item.rede))
+  const redesUnicas = redes.filter(function(este:any, i:any) {
+      return redes.indexOf(este) === i;
+  });
+
+  const mapRedesUnicas = redesUnicas.map((item: any) => {
+  return {
+    value: item
+  }
+  })
+
   const optionsCelula =
     celulaFiltered &&
     celulaFiltered.map((celulaIdentify: IContentProps) => {
@@ -131,6 +146,7 @@ export function SendReportScreen() {
         value: `${celulaIdentify?.celula} - ${celulaIdentify.lider}`,
       };
     });
+
 
   const office = () => {
     switch (whatOffice) {
@@ -140,9 +156,8 @@ export function SendReportScreen() {
             <TitleComponent title={`${FormFields.CELULA}:`} small primary />
             <S.ContentC>
               <S.IconC name="user-friends" />
-              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
-                userInfo && userInfo.rede
-              }`}</S.DescriptionC>
+              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${userInfo && userInfo.rede
+                }`}</S.DescriptionC>
             </S.ContentC>
           </S.Grid>
         );
@@ -151,13 +166,92 @@ export function SendReportScreen() {
         return (
           <S.Grid>
             <TitleComponent title={`${FormFields.CELULA}:`} small primary />
-            <SelectComponent
-              onChange={handleCelulaChange}
-              labelSelect={state.textSelectCelula}
-              dataOptions={optionsCelula && optionsCelula}
-              selectedOption={selectedOptionCelula}
-            />
+            <S.ContentC>
+              <S.IconC name="user-friends" />
+              <SelectComponent
+                onChange={handleCelulaChange}
+                labelSelect={state.textSelectCelula}
+                dataOptions={optionsCelula && optionsCelula}
+                selectedOption={selectedOptionCelula}
+              />
+            </S.ContentC>
           </S.Grid>
+        );
+      case "pastor":
+        return (
+          <>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.DISCIPLESHIP}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="network-wired" />
+                <SelectComponent
+                  onChange={handleCelulaChange}
+                  labelSelect={state.textSelectCelula}
+                  dataOptions={[]}
+                  selectedOption={selectedOptionCelula}
+                />
+              </S.ContentC>
+            </S.Grid>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.CELULA}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="user-friends" />
+                <SelectComponent
+                  onChange={handleCelulaChange}
+                  labelSelect={state.textSelectCelula}
+                  dataOptions={[]}
+                  selectedOption={selectedOptionCelula}
+                />
+                {
+                 redesUnicas && redesUnicas.map((item: any) => {
+                    return(
+                      <Text>{item}</Text>
+                      )})}
+              </S.ContentC>
+            </S.Grid>
+          </>
+        );
+
+      case "administrador":
+        return (
+          <>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.REDE}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="vector-square" />
+                <SelectComponent
+                  onChange={handleCelulaChange}
+                  labelSelect={state.textSelectCelula}
+                  dataOptions={mapRedesUnicas}
+                  selectedOption={selectedOptionCelula}
+                />
+              </S.ContentC>
+            </S.Grid>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.DISCIPLESHIP}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="network-wired" />
+                <SelectComponent
+                  onChange={handleCelulaChange}
+                  labelSelect={state.textSelectCelula}
+                  dataOptions={[]}
+                  selectedOption={selectedOptionCelula}
+                />
+              </S.ContentC>
+            </S.Grid>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.CELULA}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="user-friends" />
+                <SelectComponent
+                  onChange={handleCelulaChange}
+                  labelSelect={state.textSelectCelula}
+                  dataOptions={[]}
+                  selectedOption={selectedOptionCelula}
+                />
+              </S.ContentC>
+            </S.Grid>
+          </>
         );
     }
   };
