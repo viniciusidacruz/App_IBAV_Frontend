@@ -40,3 +40,9 @@ export const selectState = [
   { value: "TO" },
   { value: "DF" },
 ];
+
+export const officeMembers = [
+  { value: "pastor de rede" },
+  { value: "discipulador" },
+  { value: "lider de celula" },
+];

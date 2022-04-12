@@ -10,14 +10,15 @@ import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
+import { useAuth } from "../../hooks/useAuth";
 import useUserFiltered from "../../hooks/useUserFiltered";
-import { handleSignOut } from "../../common/utils/firebase";
 
 import { IPropsAppStack } from "../../routes/AppStack/types";
 
 import * as S from "./styles";
 
 export function HomeScreen() {
+  const { signOut } = useAuth();
   const { loading, user } = useUserFiltered();
   const navigation = useNavigation<IPropsAppStack>();
 
@@ -42,7 +43,7 @@ export function HomeScreen() {
         <S.Buttons>
           <NotificationComponent />
 
-          <TouchableOpacity onPress={() => handleSignOut()}>
+          <TouchableOpacity onPress={signOut}>
             <S.Material name="logout" size={24} />
           </TouchableOpacity>
         </S.Buttons>

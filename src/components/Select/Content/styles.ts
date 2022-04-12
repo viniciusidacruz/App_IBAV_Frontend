@@ -26,6 +26,7 @@ export const Options = styled.TouchableOpacity`
 
 export const OptionSelect = styled.Text`
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
+  text-transform: capitalize;
 
   padding-top: 5;
   padding-bottom: 5;

@@ -1,45 +1,25 @@
 import React, { useState } from "react";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-
-import { AppProps } from "../../routes/types/app";
-import { firebaseConfig } from "../../config/firebase";
-import ButtonsText from "../../common/constants/buttons";
 
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { ButtonComponent } from "../../components/Button";
 import { InputFieldComponent } from "../../components/InputField";
 
+import { useAuth } from "../../hooks/useAuth";
+import ButtonsText from "../../common/constants/buttons";
+
 import * as S from "./styles";
 
-export function SignInScreen({ navigation }: AppProps) {
+export function SignInScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  const { signIn } = useAuth();
 
-  const handleSignIn = async () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((response) => {
-        const user = response.user;
-        const userStore = JSON.stringify(user);
-
-        AsyncStorage.setItem("@storage_User", userStore);
-      })
-      .catch((error) => {
-        if (
-          error.code === "auth/user-not-found" ||
-          error.code === "auth/wrong-password"
-        ) {
-          alert("Email/Senha não encontrado!");
-        }
-      });
-  };
+  function handleSignIn() {
+    signIn(email, password);
+  }
 
   return (
     <S.Container source={require("../../assets/background.png")}>
@@ -58,7 +38,7 @@ export function SignInScreen({ navigation }: AppProps) {
               <InputFieldComponent
                 placeholder="Usuário"
                 placeholderTextColor="white"
-                onChangeText={(value) => setEmail(value)}
+                onChangeText={setEmail}
                 value={email}
               />
             </S.Field>
@@ -69,7 +49,7 @@ export function SignInScreen({ navigation }: AppProps) {
                 secureTextEntry
                 placeholderTextColor="white"
                 value={password}
-                onChangeText={(value) => setPassword(value)}
+                onChangeText={setPassword}
               />
             </S.Field>
             <S.Buttons>

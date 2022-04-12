@@ -19,6 +19,7 @@ import { useFetch } from "../../hooks/useFetch";
 import ButtonsText from "../../common/constants/buttons";
 import { useFormReport } from "../../hooks/useFormReport";
 import useUserFiltered from "../../hooks/useUserFiltered";
+import { GetStorage } from "../../common/constants/storage";
 import { FormReportActions } from "../../contexts/FormReport";
 
 import { IDataUserProps, ISelectedUserProps } from "./types";
@@ -57,7 +58,10 @@ export function MembersReportScreen() {
 
     if (filterMembers) {
       setMembers(filterMembers);
-      AsyncStorage.setItem("@storage_members", JSON.stringify(filterMembers));
+      AsyncStorage.setItem(
+        GetStorage.MEMBERS_FILTERED,
+        JSON.stringify(filterMembers)
+      );
     }
   }, [identifyCelula, celulas]);
 
