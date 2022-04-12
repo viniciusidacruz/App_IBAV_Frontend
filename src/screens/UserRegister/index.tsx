@@ -1,8 +1,10 @@
-import React, { Fragment, useCallback, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 import { DateComponent } from "../../components/Date";
+import { ModalComponent } from "../../components/Modal";
 import { SelectComponent } from "../../components/Select";
+import { ButtonComponent } from "../../components/Button";
 import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputMaskComponent } from "../../components/InputMask";
@@ -11,6 +13,7 @@ import { NotificationComponent } from "../../components/Notification";
 
 import FormFields from "../../common/constants/form";
 import { useFormReport } from "../../hooks/useFormReport";
+import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 import {
   officeMembers,
@@ -19,23 +22,29 @@ import {
   selectState,
 } from "../../common/utils/selects";
 
+import { connectApi } from "../../common/services/ConnectApi";
+
 import { IAddress } from "../Register/types";
+import { IDataUser } from "./types";
 
 import * as S from "./styles";
-import { FormReportActions } from "../../contexts/FormReport";
+import { ReportContentModalComponent } from "../../components/Modal/Report";
+import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 export function UserRegisterScreen() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [state, setState] = useState("");
-  const [office, setOffice] = useState("Selecionar");
+  const [users, setUsers] = useState([]);
   const [category, setCategory] = useState("");
   const [stateCivil, setStateCivil] = useState("");
   const [numberHouse, setNumberHouse] = useState("");
+  const [office, setOffice] = useState("Selecionar");
   const [showCalender, setShowCalender] = useState(false);
-
-  const { state: stateReducer, dispatch } = useFormReport();
+  const [selectNetwork, setSelectNetwork] = useState("Selecionar");
+  const [selectDisciples, setSelectDisciples] = useState("Selecionar");
+  const [confirmRegisterModal, setConfirmRegisterModal] = useState(false);
 
   const [address, setAddress] = useState<IAddress>({
     uf: "",
@@ -49,6 +58,45 @@ export function UserRegisterScreen() {
     localidade: "",
     complemento: "",
   });
+
+  const { state: stateReducer, dispatch } = useFormReport();
+
+  useEffect(() => {
+    const getCelulas = async () => {
+      const response = await connectApi.get("/users.json");
+
+      setUsers(Object.values(response.data));
+    };
+    getCelulas();
+  }, []);
+
+  const getNetwork = selectNetwork.split(" -")[0];
+
+  const usersMinister =
+    users && users.filter((minister: IDataUser) => minister.cargo === "pastor");
+  const usersDisciples =
+    users &&
+    users.filter((discipler: IDataUser) => discipler.cargo === "discipulador");
+
+  const disciplesFiltered =
+    usersDisciples &&
+    usersDisciples.filter((user: IDataUser) => user.rede === getNetwork);
+
+  const optionsDisciples =
+    disciplesFiltered &&
+    disciplesFiltered.map((disc: IDataUser) => {
+      return {
+        value: disc.nome,
+      };
+    });
+
+  const optionsNetwork =
+    usersMinister &&
+    usersMinister.map((pastor: IDataUser) => {
+      return {
+        value: `${pastor?.rede} - ${pastor.nome}`,
+      };
+    });
 
   const getAddressFromApi = useCallback(() => {
     axios
@@ -76,6 +124,9 @@ export function UserRegisterScreen() {
 
   const selectOffice = (value: string) => {
     setOffice(value);
+
+    setSelectNetwork("Selecionar");
+    setSelectDisciples("Selecionar");
   };
 
   const handleCivilStatusChange = (value: string) => {
@@ -114,7 +165,59 @@ export function UserRegisterScreen() {
     });
   };
 
-  console.log("Esse é o office", office);
+  const handleNetworkChange = (value: string) => {
+    setSelectNetwork(value);
+
+    setSelectDisciples("Selecionar");
+  };
+
+  const handleDisciplesChange = (value: string) => {
+    setSelectDisciples(value);
+  };
+
+  const submitRegister = () => {
+    setConfirmRegisterModal(true);
+  };
+
+  const renderSelectsOptions = () => {
+    if (office === "discipulador") {
+      return (
+        <S.GridSelect>
+          <SelectComponent
+            label="Rede"
+            onChange={handleNetworkChange}
+            selectedOption={handleNetworkChange}
+            labelSelect={selectNetwork}
+            dataOptions={optionsNetwork && optionsNetwork}
+          />
+        </S.GridSelect>
+      );
+    } else if (office === "lider de celula") {
+      return (
+        <Fragment>
+          <S.GridSelect>
+            <SelectComponent
+              label="Rede"
+              onChange={handleNetworkChange}
+              selectedOption={handleNetworkChange}
+              labelSelect={selectNetwork}
+              dataOptions={optionsNetwork && optionsNetwork}
+            />
+          </S.GridSelect>
+
+          <S.GridSelect>
+            <SelectComponent
+              label="Discipulado"
+              onChange={handleDisciplesChange}
+              selectedOption={handleDisciplesChange}
+              labelSelect={selectDisciples}
+              dataOptions={optionsDisciples && optionsDisciples}
+            />
+          </S.GridSelect>
+        </Fragment>
+      );
+    }
+  };
 
   return (
     <Fragment>
@@ -127,33 +230,17 @@ export function UserRegisterScreen() {
       </HeaderComponent>
 
       <S.Main>
-        <SelectComponent
-          label="Cargo"
-          onChange={selectOffice}
-          selectedOption={selectOffice}
-          labelSelect={office}
-          dataOptions={officeMembers}
-        />
-
-        {office === "discipulador" && (
+        <S.GridSelect>
           <SelectComponent
-            label="Rede"
-            onChange={() => {}}
-            selectedOption={() => {}}
-            labelSelect="Selecione"
-            dataOptions={[]}
+            label="Cargo"
+            onChange={selectOffice}
+            selectedOption={selectOffice}
+            labelSelect={office}
+            dataOptions={officeMembers}
           />
-        )}
+        </S.GridSelect>
 
-        {office === "lider de celula" && (
-          <SelectComponent
-            label="Discipulado"
-            onChange={() => {}}
-            selectedOption={() => {}}
-            labelSelect="Selecione"
-            dataOptions={[]}
-          />
-        )}
+        {renderSelectsOptions()}
 
         {office !== "Selecionar" && (
           <Fragment>
@@ -306,9 +393,29 @@ export function UserRegisterScreen() {
                 />
               </S.GridItem>
             </S.GridForm>
+
+            <S.FooterFields>
+              <S.Required>* Campos obrigatórios</S.Required>
+              <ButtonComponent
+                title="Cadastrar"
+                onPress={submitRegister}
+                small
+              />
+            </S.FooterFields>
           </Fragment>
         )}
       </S.Main>
+
+      <ModalComponent
+        isVisible={confirmRegisterModal}
+        onBackdropPress={() => setConfirmRegisterModal(false)}
+      >
+        <DefaultContentModalComponent
+          closeModal={setConfirmRegisterModal}
+          type="register"
+          data={name}
+        />
+      </ModalComponent>
     </Fragment>
   );
 }

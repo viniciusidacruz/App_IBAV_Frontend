@@ -33,6 +33,7 @@ export const Label = styled.Text`
   padding-left: 15;
 
   color: ${({ theme }) => theme.colors.grey};
+  text-transform: capitalize;
 `;
 
 export const Icons = styled.View<IStyledDisabled>`
