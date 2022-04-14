@@ -1,4 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
+
 import { ScrollView, Text } from "react-native";
 
 import { DateComponent } from "../../components/Date";
@@ -100,6 +101,32 @@ export function SendReportScreen() {
     });
   };
 
+  const handleRedeChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setRedeSelect,
+      payload: value,
+    });
+    dispatch({
+      type: FormReportActions.setDiscipuladoSelect,
+      payload: null,
+    });
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: null,
+    });
+  };
+
+  const handleDiscipuladoChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setDiscipuladoSelect,
+      payload: value,
+    });
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: null,
+    });
+  };
+
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
 
@@ -127,17 +154,37 @@ export function SendReportScreen() {
   }, [celulas]);
 
 
-
-  const redes =  celulas.map((item: any) => (item.rede))
-  const redesUnicas = redes.filter(function(este:any, i:any) {
-      return redes.indexOf(este) === i;
+  const redes = celulas.map((item: any) => (item.rede))
+  const redesUnicas = redes.filter(function (este: any, i: any) {
+    return redes.indexOf(este) === i;
   });
 
   const mapRedesUnicas = redesUnicas.map((item: any) => {
-  return {
-    value: item
-  }
+    return {
+      value: item
+    }
   })
+
+  const filtrandoRedes = celulas.filter((item: any) => {
+    return item.rede === state.redeSelect
+  })
+  const discipulado = filtrandoRedes.map((item: any) => {
+    return {
+      value: item.discipulador
+    }
+  })
+
+  const filtrandoDiscipulado = celulas.filter((item: any) => {
+    return item.discipulador === state.discipuladoSelect && item.rede === state.redeSelect
+  })
+  const celulaAdm = filtrandoDiscipulado.map((item: any) => {
+    return {
+      value: item.celula
+    }
+  })
+
+  // console.log (filtrandoRedes, 'filtrandoRedes')
+  // console.log (discipulado, 'discipulado')
 
   const optionsCelula =
     celulaFiltered &&
@@ -188,7 +235,7 @@ export function SendReportScreen() {
                   onChange={handleCelulaChange}
                   labelSelect={state.textSelectCelula}
                   dataOptions={[]}
-                  selectedOption={selectedOptionCelula}
+                  selectedOption={handleCelulaChange}
                 />
               </S.ContentC>
             </S.Grid>
@@ -203,10 +250,11 @@ export function SendReportScreen() {
                   selectedOption={selectedOptionCelula}
                 />
                 {
-                 redesUnicas && redesUnicas.map((item: any) => {
-                    return(
+                  redesUnicas && redesUnicas.map((item: any) => {
+                    return (
                       <Text>{item}</Text>
-                      )})}
+                    )
+                  })}
               </S.ContentC>
             </S.Grid>
           </>
@@ -220,10 +268,10 @@ export function SendReportScreen() {
               <S.ContentC>
                 <S.IconC name="vector-square" />
                 <SelectComponent
-                  onChange={handleCelulaChange}
-                  labelSelect={state.textSelectCelula}
+                  onChange={handleRedeChange}
+                  labelSelect={state.redeSelect}
                   dataOptions={mapRedesUnicas}
-                  selectedOption={selectedOptionCelula}
+                  selectedOption={handleRedeChange}
                 />
               </S.ContentC>
             </S.Grid>
@@ -232,10 +280,10 @@ export function SendReportScreen() {
               <S.ContentC>
                 <S.IconC name="network-wired" />
                 <SelectComponent
-                  onChange={handleCelulaChange}
-                  labelSelect={state.textSelectCelula}
-                  dataOptions={[]}
-                  selectedOption={selectedOptionCelula}
+                  onChange={(handleDiscipuladoChange)}
+                  labelSelect={state.discipuladoSelect}
+                  dataOptions={state.redeSelect && discipulado}
+                  selectedOption={handleDiscipuladoChange}
                 />
               </S.ContentC>
             </S.Grid>
@@ -245,8 +293,8 @@ export function SendReportScreen() {
                 <S.IconC name="user-friends" />
                 <SelectComponent
                   onChange={handleCelulaChange}
-                  labelSelect={state.textSelectCelula}
-                  dataOptions={[]}
+                  labelSelect={state.celulaSelect}
+                  dataOptions={celulaAdm} 
                   selectedOption={selectedOptionCelula}
                 />
               </S.ContentC>

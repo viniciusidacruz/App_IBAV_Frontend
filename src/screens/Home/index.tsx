@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+import { useFormReport } from "../../hooks/useFormReport";
+import { FormReportActions } from "../../contexts/FormReport";
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
@@ -24,6 +26,23 @@ export function HomeScreen() {
 
   const dataUser = user && user[0] && user[0][1];
   const whatIsOffice = dataUser && dataUser.cargo;
+  
+  const { dispatch } = useFormReport();
+  const clean = () => {
+    navigation.navigate("SendReport")
+    dispatch({
+      type: FormReportActions.setRedeSelect,
+      payload: null,
+    });
+    dispatch({
+      type: FormReportActions.setDiscipuladoSelect,
+      payload: null,
+    });
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: null,
+    });
+  }
 
   const office = () => {
     switch (whatIsOffice) {
@@ -73,7 +92,7 @@ export function HomeScreen() {
                 <SelectedMenuComponent
                   icon={<S.SendReportIcon name="document-text-sharp" />}
                   title="Entregar Relatório"
-                  onPress={() => navigation.navigate("SendReport")}
+                  onPress={() => clean()}
                 />
 
                 {whatIsOffice === "administrador" ? (

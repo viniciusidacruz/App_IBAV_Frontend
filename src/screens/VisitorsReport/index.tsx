@@ -36,6 +36,7 @@ export function VisitorsReportScreen() {
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [memberStorage, setMemberStorage] = useState<any>();
+  const [visitantes, setVisitantes] = useState<any>();
   const [visitorsIdentify, setVisitorsIdentify] = useState<any>();
   const [selectPerson, setSelectPerson] = useState<
     ISelectedUserProps | undefined
@@ -44,11 +45,15 @@ export function VisitorsReportScreen() {
   const ID_CELULA =
     memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
-  const { data: membersPerPage } = useFetch(
-    `/celulas/${ID_CELULA}/membros.json`,
-    undefined,
-    isAddVisible
-  );
+  useEffect(() => {
+    connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
+    .then((response) => {
+      setVisitantes(Object.values(response.data));      
+    })
+  },[])
+  {console.log(visitantes, 'visitantes')}
+
+  // {console.log(membersPerPage, 'membersPerPage1')}
 
   const { state, dispatch } = useFormReport();
 
@@ -59,14 +64,12 @@ export function VisitorsReportScreen() {
   const handleOpenModalAdd = () => {
     const nome = state.nameVisitor;
     const telefone = state.phoneVisitor;
-    const status = "visitante";
 
     if (state.phoneVisitor !== "") {
       connectApi
-        .post(`/celulas/${ID_CELULA}/membros.json`, {
+        .post(`/celulas/${ID_CELULA}/visitantes.json`, {
           nome,
-          telefone,
-          status,
+          telefone
         })
         .then(() => {
           setIsAddVisible(true);
@@ -105,17 +108,21 @@ export function VisitorsReportScreen() {
   const dataUser = user && user[0] && user[0][1];
   const whatIsOffice = dataUser && dataUser.cargo;
 
-  const newVisitorsList = membersPerPage && Object.values(membersPerPage);
+  // const newVisitorsList = membersPerPage && Object.values(membersPerPage);
 
-  const filterVisitorList =
-    newVisitorsList &&
-    newVisitorsList.filter(
-      (item: any) => item.status === "visitante" || item.status === "Visitante"
-    );
+  // {console.log(membersPerPage, 'membersPerPage')}
+  // {console.log(newVisitorsList, 'newVisitorsList1')}
+
+  // const filterVisitorList =
+  // newVisitorsList &&
+  // newVisitorsList.filter(
+  //     (item: any) => item.status !== "visitante");
+
+    // {console.log(filterVisitorList[1], 'filterVisitorList1')}
 
   const newArrayVisitors = visitorsIdentify
-    ? visitorsIdentify
-    : filterVisitorList;
+    && visitorsIdentify
+
 
   useEffect(() => {
     const visitorsFilter =
@@ -222,7 +229,7 @@ export function VisitorsReportScreen() {
           </S.HeadingForm>
 
           <HeadingPresentComponent />
-
+            {/* {console.log(newArrayVisitors, 'newArrayVisitors')} */}
           <ScrollView>
             {newArrayVisitors &&
               newArrayVisitors.map((data: any) => {

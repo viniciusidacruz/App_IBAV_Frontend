@@ -19,6 +19,8 @@ export interface IState {
   members: IContentMembers[];
   visitors: IContentMembers[];
   textSelectCivilStatus: string;
+  redeSelect: string;
+  discipuladoSelect: string;
 }
 
 interface IContentMembers {
