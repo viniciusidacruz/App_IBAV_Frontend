@@ -1,7 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-
 import { ScrollView, Text } from "react-native";
-
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
 import { ModalComponent } from "../../components/Modal";
@@ -136,12 +134,10 @@ export function SendReportScreen() {
         const response = await connectApi.get("/celulas.json");
 
         setCelulas(Object.values(response.data));
-        console.log(celulas, 'celulas')
       };
       getCelulas();
     }
   }, []);
-
 
   useEffect(() => {
     const filterCelulas =
@@ -168,9 +164,16 @@ export function SendReportScreen() {
   const filtrandoRedes = celulas.filter((item: any) => {
     return item.rede === state.redeSelect
   })
-  const discipulado = filtrandoRedes.map((item: any) => {
+  const discipulado = filtrandoRedes.map((item: any) =>
+    (item.discipulador))
+
+  const discipuladossUnicos = discipulado.filter(function (este: any, i: any) {
+    return discipulado.indexOf(este) === i;
+  });
+
+  const mapDiscipuladosUnicos = discipuladossUnicos.map((item: any) => {
     return {
-      value: item.discipulador
+      value: item
     }
   })
 
@@ -182,9 +185,6 @@ export function SendReportScreen() {
       value: item.celula
     }
   })
-
-  // console.log (filtrandoRedes, 'filtrandoRedes')
-  // console.log (discipulado, 'discipulado')
 
   const optionsCelula =
     celulaFiltered &&
@@ -282,7 +282,7 @@ export function SendReportScreen() {
                 <SelectComponent
                   onChange={(handleDiscipuladoChange)}
                   labelSelect={state.discipuladoSelect}
-                  dataOptions={state.redeSelect && discipulado}
+                  dataOptions={state.redeSelect && mapDiscipuladosUnicos}
                   selectedOption={handleDiscipuladoChange}
                 />
               </S.ContentC>
@@ -294,7 +294,7 @@ export function SendReportScreen() {
                 <SelectComponent
                   onChange={handleCelulaChange}
                   labelSelect={state.celulaSelect}
-                  dataOptions={celulaAdm} 
+                  dataOptions={celulaAdm}
                   selectedOption={selectedOptionCelula}
                 />
               </S.ContentC>

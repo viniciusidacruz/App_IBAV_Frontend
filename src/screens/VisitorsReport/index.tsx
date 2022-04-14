@@ -36,8 +36,8 @@ export function VisitorsReportScreen() {
   const [isAddVisible, setIsAddVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [memberStorage, setMemberStorage] = useState<any>();
-  const [visitantes, setVisitantes] = useState<any>();
   const [visitorsIdentify, setVisitorsIdentify] = useState<any>();
+  const [visitantes, setVisitantes] = useState<any>();
   const [selectPerson, setSelectPerson] = useState<
     ISelectedUserProps | undefined
   >(undefined);
@@ -45,17 +45,14 @@ export function VisitorsReportScreen() {
   const ID_CELULA =
     memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
-  useEffect(() => {
-    connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
-    .then((response) => {
-      setVisitantes(Object.values(response.data));      
-    })
-  },[])
-  {console.log(visitantes, 'visitantes')}
-
-  // {console.log(membersPerPage, 'membersPerPage1')}
-
-  const { state, dispatch } = useFormReport();
+    useEffect(() => {
+      connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
+      .then((response) => {
+        setVisitantes(Object.values(response.data));      
+      })
+    },[isAddVisible])
+  
+   const { state, dispatch } = useFormReport();
 
   const handleOpenModalReport = () => {
     setModalVisible(true);
@@ -64,12 +61,14 @@ export function VisitorsReportScreen() {
   const handleOpenModalAdd = () => {
     const nome = state.nameVisitor;
     const telefone = state.phoneVisitor;
+    const status = "visitante";
 
     if (state.phoneVisitor !== "") {
       connectApi
         .post(`/celulas/${ID_CELULA}/visitantes.json`, {
           nome,
-          telefone
+          telefone,
+          status,
         })
         .then(() => {
           setIsAddVisible(true);
@@ -108,21 +107,9 @@ export function VisitorsReportScreen() {
   const dataUser = user && user[0] && user[0][1];
   const whatIsOffice = dataUser && dataUser.cargo;
 
-  // const newVisitorsList = membersPerPage && Object.values(membersPerPage);
-
-  // {console.log(membersPerPage, 'membersPerPage')}
-  // {console.log(newVisitorsList, 'newVisitorsList1')}
-
-  // const filterVisitorList =
-  // newVisitorsList &&
-  // newVisitorsList.filter(
-  //     (item: any) => item.status !== "visitante");
-
-    // {console.log(filterVisitorList[1], 'filterVisitorList1')}
-
   const newArrayVisitors = visitorsIdentify
-    && visitorsIdentify
-
+    ? visitorsIdentify
+    : visitantes;
 
   useEffect(() => {
     const visitorsFilter =
@@ -229,7 +216,7 @@ export function VisitorsReportScreen() {
           </S.HeadingForm>
 
           <HeadingPresentComponent />
-            {/* {console.log(newArrayVisitors, 'newArrayVisitors')} */}
+
           <ScrollView>
             {newArrayVisitors &&
               newArrayVisitors.map((data: any) => {
