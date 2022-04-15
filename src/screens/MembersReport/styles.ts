@@ -13,15 +13,13 @@ export const Content = styled.View`
 
   max-width: 350;
   width: 100%;
-
+  margin-top: 20;
   margin-left: auto;
   margin-right: auto;
 `;
 
 export const Heading = styled.View`
   align-items: center;
-
-  margin-top: 20;
   margin-bottom: 20;
 `;
 
