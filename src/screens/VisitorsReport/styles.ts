@@ -14,15 +14,15 @@ export const Content = styled.View`
   max-width: 350;
   width: 100%;
 
-  margin-top: 32;
   margin-left: auto;
   margin-right: auto;
+  
 `;
 
 export const Heading = styled.View`
   align-items: center;
-
-  margin-bottom: 20;
+margin-top: 20;
+  margin-bottom: 10;
 `;
 
 export const Title = styled.Text`
@@ -37,14 +37,9 @@ export const Title = styled.Text`
 export const Subtitle = styled.Text`
   font-size: ${({ theme }) => theme.fonts.fontSize.small};
   font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
-
   text-transform: uppercase;
-
   color: ${({ theme }) => theme.colors.grey};
-`;
-
-export const HeadingForm = styled.View`
-  margin-bottom: 20;
+  margin-top: -10;
 `;
 
 export const FinishForm = styled.View`

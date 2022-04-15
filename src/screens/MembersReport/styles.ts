@@ -14,7 +14,6 @@ export const Content = styled.View`
   max-width: 350;
   width: 100%;
 
-  margin-top: 32;
   margin-left: auto;
   margin-right: auto;
 `;
@@ -22,7 +21,8 @@ export const Content = styled.View`
 export const Heading = styled.View`
   align-items: center;
 
-  margin-bottom: 40;
+  margin-top: 20;
+  margin-bottom: 20;
 `;
 
 export const Title = styled.Text`
@@ -39,7 +39,7 @@ export const Subtitle = styled.Text`
   font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 
   text-transform: uppercase;
-
+  margin-top: -10;
   color: ${({ theme }) => theme.colors.grey};
 `;
 

@@ -26,7 +26,6 @@ import { FormReportActions } from "../../contexts/FormReport";
 import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
 import * as S from "./styles";
-import { useFetch } from "../../hooks/useFetch";
 import { GetStorage } from "../../common/constants/storage";
 
 export function VisitorsReportScreen() {
@@ -61,14 +60,12 @@ export function VisitorsReportScreen() {
   const handleOpenModalAdd = () => {
     const nome = state.nameVisitor;
     const telefone = state.phoneVisitor;
-    const status = "visitante";
 
     if (state.phoneVisitor !== "") {
       connectApi
         .post(`/celulas/${ID_CELULA}/visitantes.json`, {
           nome,
           telefone,
-          status,
         })
         .then(() => {
           setIsAddVisible(true);
@@ -83,13 +80,12 @@ export function VisitorsReportScreen() {
     setLoading(true);
     const checkMembers = async () => {
       const members = await AsyncStorage.getItem(GetStorage.MEMBERS_FILTERED);
-
       if (members) {
         setMemberStorage(JSON.parse(members));
         setLoading(false);
       }
     };
-
+    
     checkMembers();
   }, [isAddVisible]);
 
@@ -179,6 +175,7 @@ export function VisitorsReportScreen() {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
+        <ScrollView>
         <S.Content>
           {whatIsOffice && whatIsOffice !== "lider" && (
             <S.Heading>
@@ -187,7 +184,6 @@ export function VisitorsReportScreen() {
             </S.Heading>
           )}
 
-          <S.HeadingForm>
             <InputFieldComponent
               primary
               value={state.nameVisitor}
@@ -213,11 +209,8 @@ export function VisitorsReportScreen() {
                 small
               />
             </S.FinishForm>
-          </S.HeadingForm>
 
           <HeadingPresentComponent />
-
-          <ScrollView>
             {newArrayVisitors &&
               newArrayVisitors.map((data: any) => {
                 return (
@@ -228,8 +221,6 @@ export function VisitorsReportScreen() {
                   />
                 );
               })}
-          </ScrollView>
-
           <FooterInfoComponent />
 
           <S.Button>
@@ -239,6 +230,7 @@ export function VisitorsReportScreen() {
             />
           </S.Button>
         </S.Content>
+        </ScrollView>
       )}
 
       <ModalComponent

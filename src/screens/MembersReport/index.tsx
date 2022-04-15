@@ -129,6 +129,7 @@ export function MembersReportScreen() {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
+        <ScrollView>
         <S.Content>
           {whatIsOffice !== "lider" && (
             <S.Heading>
@@ -158,6 +159,7 @@ export function MembersReportScreen() {
             />
           </S.Button>
         </S.Content>
+        </ScrollView>
       )}
 
       <ModalComponent

@@ -182,7 +182,7 @@ export function SendReportScreen() {
   })
   const celulaAdm = filtrandoDiscipulado.map((item: any) => {
     return {
-      value: item.celula
+      value: `${item.celula} - ${item.lider}`
     }
   })
 
@@ -315,11 +315,10 @@ export function SendReportScreen() {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <Fragment>
+        <ScrollView>
           {userInfo && (
-            <Fragment>
               <S.Content>
-                <ScrollView>
+                
                   <S.Form behavior="position" enabled>
                     {office()}
                     <S.Grid>
@@ -377,11 +376,9 @@ export function SendReportScreen() {
                       />
                     </S.ContentButton>
                   </S.Form>
-                </ScrollView>
               </S.Content>
-            </Fragment>
           )}
-        </Fragment>
+        </ScrollView>
       )}
 
       <ModalComponent
