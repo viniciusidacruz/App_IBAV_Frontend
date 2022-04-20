@@ -5,11 +5,17 @@ export interface IContentProps {
   labelSelect: string;
   dataOptions: Array<IOptions>;
   disabled?: boolean;
+  small?: boolean;
 }
 
 export interface IStyledDisabled {
   disabled?: boolean;
 }
+
+export interface ISizeProps {
+  small?: boolean;
+}
+
 interface IOptions {
   value: string
 }

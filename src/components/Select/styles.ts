@@ -1,19 +1,20 @@
 import styled from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { IStyledDisabled } from "./types";
+import { IStyledDisabled, ISizeProps } from "./types";
 
 export const Content = styled.View`
   flex-direction: column;
 `;
 
-export const Container = styled.TouchableOpacity`
+export const Container = styled.TouchableOpacity<ISizeProps>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 
   height: 32;
-  width: 300px;
+  width: ${(props) => (props.small ? "55" : "300")};
+  margin-top: ${(props) => (props.small ? "-20" : "0")};
 
   border-color: ${({ theme }) => theme.colors.grey};
   border-width: 1;
