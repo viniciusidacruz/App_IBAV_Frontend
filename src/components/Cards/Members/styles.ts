@@ -30,4 +30,8 @@ export const ContainerSelect = styled.View`
   width: 40%;
 `;
 
+export const BoxSelect = styled.View`
+margin-left: 10;
+`;
+
 export const ContentPresent = styled.View``;

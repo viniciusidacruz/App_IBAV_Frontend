@@ -50,22 +50,24 @@ export function CardMembersComponent({ data, setSelectPerson }: IDataPros) {
       </S.ContentName>
 
       <S.ContainerSelect>
-        <SelectComponent
-          onChange={handlePresentCelula}
-          selectedOption={handlePresentCelula}
-          labelSelect={presencaCelula}
-          dataOptions={presenca}
-          small
-        />
-
-        <SelectComponent
-          onChange={handlePresentCulto}
-          selectedOption={handlePresentCulto}
-          labelSelect={presencaCulto}
-          dataOptions={presenca}
-          small
-        />
-
+        <S.BoxSelect>
+          <SelectComponent
+            onChange={handlePresentCelula}
+            selectedOption={handlePresentCelula}
+            labelSelect={presencaCelula}
+            dataOptions={presenca}
+            small
+          />
+        </S.BoxSelect>
+        <S.BoxSelect>
+          <SelectComponent
+            onChange={handlePresentCulto}
+            selectedOption={handlePresentCulto}
+            labelSelect={presencaCulto}
+            dataOptions={presenca}
+            small
+          />
+        </S.BoxSelect>
       </S.ContainerSelect>
     </S.Content>
   );

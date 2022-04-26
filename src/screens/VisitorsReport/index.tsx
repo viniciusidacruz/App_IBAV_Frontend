@@ -70,6 +70,17 @@ export function VisitorsReportScreen() {
         .then(() => {
           setIsAddVisible(true);
           setError("");
+
+          dispatch({
+            type: FormReportActions.setPhoneVisitor,
+            payload: "",
+          });
+
+          dispatch({
+            type: FormReportActions.setNameVisitor,
+            payload: "",
+          });
+
         });
     } else {
       setError("Campo obrigatório!");
