@@ -44,7 +44,7 @@ export function MembersReportScreen() {
 
   const dataUser = user && user[0] && user[0][1];
   const identifyCelula = user && user[0][1].numero_celula;
-  const idCelulaSelect = state.celulaSelect.split(" -")[0];
+  const idCelulaSelect = state.celulaSelect && state.celulaSelect.split(" -")[0];
   const whatIsOffice = dataUser && dataUser.cargo;
 
   useEffect(() => {
@@ -129,6 +129,7 @@ export function MembersReportScreen() {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
+        <ScrollView>
         <S.Content>
           {whatIsOffice !== "lider" && (
             <S.Heading>
@@ -158,6 +159,7 @@ export function MembersReportScreen() {
             />
           </S.Button>
         </S.Content>
+        </ScrollView>
       )}
 
       <ModalComponent

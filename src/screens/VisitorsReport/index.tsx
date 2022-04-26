@@ -26,7 +26,6 @@ import { FormReportActions } from "../../contexts/FormReport";
 import { IDataUserProps, ISelectedUserProps } from "../MembersReport/types";
 
 import * as S from "./styles";
-import { useFetch } from "../../hooks/useFetch";
 import { GetStorage } from "../../common/constants/storage";
 
 export function VisitorsReportScreen() {
@@ -37,6 +36,7 @@ export function VisitorsReportScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [memberStorage, setMemberStorage] = useState<any>();
   const [visitorsIdentify, setVisitorsIdentify] = useState<any>();
+  const [visitantes, setVisitantes] = useState<any>();
   const [selectPerson, setSelectPerson] = useState<
     ISelectedUserProps | undefined
   >(undefined);
@@ -44,13 +44,14 @@ export function VisitorsReportScreen() {
   const ID_CELULA =
     memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
-  const { data: membersPerPage } = useFetch(
-    `/celulas/${ID_CELULA}/membros.json`,
-    undefined,
-    isAddVisible
-  );
-
-  const { state, dispatch } = useFormReport();
+    useEffect(() => {
+      connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
+      .then((response) => {
+        setVisitantes(Object.values(response.data));      
+      })
+    },[isAddVisible])
+  
+   const { state, dispatch } = useFormReport();
 
   const handleOpenModalReport = () => {
     setModalVisible(true);
@@ -59,18 +60,27 @@ export function VisitorsReportScreen() {
   const handleOpenModalAdd = () => {
     const nome = state.nameVisitor;
     const telefone = state.phoneVisitor;
-    const status = "visitante";
 
     if (state.phoneVisitor !== "") {
       connectApi
-        .post(`/celulas/${ID_CELULA}/membros.json`, {
+        .post(`/celulas/${ID_CELULA}/visitantes.json`, {
           nome,
           telefone,
-          status,
         })
         .then(() => {
           setIsAddVisible(true);
           setError("");
+
+          dispatch({
+            type: FormReportActions.setPhoneVisitor,
+            payload: "",
+          });
+
+          dispatch({
+            type: FormReportActions.setNameVisitor,
+            payload: "",
+          });
+
         });
     } else {
       setError("Campo obrigatório!");
@@ -81,13 +91,12 @@ export function VisitorsReportScreen() {
     setLoading(true);
     const checkMembers = async () => {
       const members = await AsyncStorage.getItem(GetStorage.MEMBERS_FILTERED);
-
       if (members) {
         setMemberStorage(JSON.parse(members));
         setLoading(false);
       }
     };
-
+    
     checkMembers();
   }, [isAddVisible]);
 
@@ -105,17 +114,9 @@ export function VisitorsReportScreen() {
   const dataUser = user && user[0] && user[0][1];
   const whatIsOffice = dataUser && dataUser.cargo;
 
-  const newVisitorsList = membersPerPage && Object.values(membersPerPage);
-
-  const filterVisitorList =
-    newVisitorsList &&
-    newVisitorsList.filter(
-      (item: any) => item.status === "visitante" || item.status === "Visitante"
-    );
-
   const newArrayVisitors = visitorsIdentify
     ? visitorsIdentify
-    : filterVisitorList;
+    : visitantes;
 
   useEffect(() => {
     const visitorsFilter =
@@ -185,6 +186,7 @@ export function VisitorsReportScreen() {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
+        <ScrollView>
         <S.Content>
           {whatIsOffice && whatIsOffice !== "lider" && (
             <S.Heading>
@@ -193,7 +195,6 @@ export function VisitorsReportScreen() {
             </S.Heading>
           )}
 
-          <S.HeadingForm>
             <InputFieldComponent
               primary
               value={state.nameVisitor}
@@ -219,11 +220,8 @@ export function VisitorsReportScreen() {
                 small
               />
             </S.FinishForm>
-          </S.HeadingForm>
 
           <HeadingPresentComponent />
-
-          <ScrollView>
             {newArrayVisitors &&
               newArrayVisitors.map((data: any) => {
                 return (
@@ -234,8 +232,6 @@ export function VisitorsReportScreen() {
                   />
                 );
               })}
-          </ScrollView>
-
           <FooterInfoComponent />
 
           <S.Button>
@@ -245,6 +241,7 @@ export function VisitorsReportScreen() {
             />
           </S.Button>
         </S.Content>
+        </ScrollView>
       )}
 
       <ModalComponent

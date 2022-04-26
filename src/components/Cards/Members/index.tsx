@@ -1,17 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
+import { SelectComponent } from '../../Select'
 
 import { IDataPros } from "./types";
 
 import * as S from "./styles";
 
 export function CardMembersComponent({ data, setSelectPerson }: IDataPros) {
+  const presenca = [
+    {
+      label: "F",
+      value: "F"
+    },
+    {
+      label: "P",
+      value: "P"
+    },
+    {
+      label: "D",
+      value: "D"
+    },
+    {
+      label: "T",
+      value: "T"
+    },
+    {
+      label: "V",
+      value: "V"
+    }
+  ]
+
+  const [presencaCelula, setPresencaCelula] = useState("-");
+  const [presencaCulto, setPresencaCulto] = useState("-");
+
   const handlePresentCelula = (value: string) => {
-    setSelectPerson({...data, celula: value})
+    setSelectPerson({ ...data, celula: value })
+    setPresencaCelula(value)
   };
 
   const handlePresentCulto = (value: string) => {
-    setSelectPerson({...data, culto: value})
+    setSelectPerson({ ...data, culto: value })
+    setPresencaCulto(value)
   };
 
   return (
@@ -21,30 +50,24 @@ export function CardMembersComponent({ data, setSelectPerson }: IDataPros) {
       </S.ContentName>
 
       <S.ContainerSelect>
-        <Picker
-          selectedValue={data.celula}
-          style={{ height: 50, width: 80 }}
-          onValueChange={handlePresentCelula}
-          mode="dropdown"
-        >
-          <Picker.Item label="F" value="F" />
-          <Picker.Item label="P" value="P" />
-          <Picker.Item label="D" value="D" />
-          <Picker.Item label="T" value="T" />
-          <Picker.Item label="V" value="V" />
-        </Picker>
-
-        <Picker
-          selectedValue={data.culto}
-          style={{ height: 50, width: 80 }}
-          onValueChange={handlePresentCulto}
-        >
-          <Picker.Item label="F" value="F" />
-          <Picker.Item label="P" value="P" />
-          <Picker.Item label="D" value="D" />
-          <Picker.Item label="T" value="T" />
-          <Picker.Item label="V" value="V" />
-        </Picker>
+        <S.BoxSelect>
+          <SelectComponent
+            onChange={handlePresentCelula}
+            selectedOption={handlePresentCelula}
+            labelSelect={presencaCelula}
+            dataOptions={presenca}
+            small
+          />
+        </S.BoxSelect>
+        <S.BoxSelect>
+          <SelectComponent
+            onChange={handlePresentCulto}
+            selectedOption={handlePresentCulto}
+            labelSelect={presencaCulto}
+            dataOptions={presenca}
+            small
+          />
+        </S.BoxSelect>
       </S.ContainerSelect>
     </S.Content>
   );

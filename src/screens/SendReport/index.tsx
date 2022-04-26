@@ -1,6 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { ScrollView } from "react-native";
-
+import { ScrollView, Text } from "react-native";
 import { DateComponent } from "../../components/Date";
 import { TitleComponent } from "../../components/Title";
 import { ModalComponent } from "../../components/Modal";
@@ -100,6 +99,32 @@ export function SendReportScreen() {
     });
   };
 
+  const handleRedeChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setRedeSelect,
+      payload: value,
+    });
+    dispatch({
+      type: FormReportActions.setDiscipuladoSelect,
+      payload: null,
+    });
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: null,
+    });
+  };
+
+  const handleDiscipuladoChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setDiscipuladoSelect,
+      payload: value,
+    });
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: null,
+    });
+  };
+
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
 
@@ -124,6 +149,43 @@ export function SendReportScreen() {
     setCelulaFiltered(filterCelulas);
   }, [celulas]);
 
+
+  const redes = celulas.map((item: any) => (item.rede))
+  const redesUnicas = redes.filter(function (este: any, i: any) {
+    return redes.indexOf(este) === i;
+  });
+
+  const mapRedesUnicas = redesUnicas.map((item: any) => {
+    return {
+      value: item
+    }
+  })
+
+  const filtrandoRedes = celulas.filter((item: any) => {
+    return item.rede === state.redeSelect
+  })
+  const discipulado = filtrandoRedes.map((item: any) =>
+    (item.discipulador))
+
+  const discipuladossUnicos = discipulado.filter(function (este: any, i: any) {
+    return discipulado.indexOf(este) === i;
+  });
+
+  const mapDiscipuladosUnicos = discipuladossUnicos.map((item: any) => {
+    return {
+      value: item
+    }
+  })
+
+  const filtrandoDiscipulado = celulas.filter((item: any) => {
+    return item.discipulador === state.discipuladoSelect && item.rede === state.redeSelect
+  })
+  const celulaAdm = filtrandoDiscipulado.map((item: any) => {
+    return {
+      value: `${item.celula} - ${item.lider}`
+    }
+  })
+
   const optionsCelula =
     celulaFiltered &&
     celulaFiltered.map((celulaIdentify: IContentProps) => {
@@ -131,6 +193,7 @@ export function SendReportScreen() {
         value: `${celulaIdentify?.celula} - ${celulaIdentify.lider}`,
       };
     });
+
 
   const office = () => {
     switch (whatOffice) {
@@ -140,9 +203,8 @@ export function SendReportScreen() {
             <TitleComponent title={`${FormFields.CELULA}:`} small primary />
             <S.ContentC>
               <S.IconC name="user-friends" />
-              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${
-                userInfo && userInfo.rede
-              }`}</S.DescriptionC>
+              <S.DescriptionC>{`${userInfo && userInfo.numero_celula} - ${userInfo && userInfo.rede
+                }`}</S.DescriptionC>
             </S.ContentC>
           </S.Grid>
         );
@@ -151,13 +213,93 @@ export function SendReportScreen() {
         return (
           <S.Grid>
             <TitleComponent title={`${FormFields.CELULA}:`} small primary />
-            <SelectComponent
-              onChange={handleCelulaChange}
-              labelSelect={state.textSelectCelula}
-              dataOptions={optionsCelula && optionsCelula}
-              selectedOption={selectedOptionCelula}
-            />
+            <S.ContentC>
+              <S.IconC name="user-friends" />
+              <SelectComponent
+                onChange={handleCelulaChange}
+                labelSelect={state.textSelectCelula}
+                dataOptions={optionsCelula && optionsCelula}
+                selectedOption={selectedOptionCelula}
+              />
+            </S.ContentC>
           </S.Grid>
+        );
+      case "pastor":
+        return (
+          <>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.DISCIPLESHIP}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="network-wired" />
+                <SelectComponent
+                  onChange={handleCelulaChange}
+                  labelSelect={state.textSelectCelula}
+                  dataOptions={[]}
+                  selectedOption={handleCelulaChange}
+                />
+              </S.ContentC>
+            </S.Grid>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.CELULA}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="user-friends" />
+                <SelectComponent
+                  onChange={handleCelulaChange}
+                  labelSelect={state.textSelectCelula}
+                  dataOptions={[]}
+                  selectedOption={selectedOptionCelula}
+                />
+                {
+                  redesUnicas && redesUnicas.map((item: any) => {
+                    return (
+                      <Text>{item}</Text>
+                    )
+                  })}
+              </S.ContentC>
+            </S.Grid>
+          </>
+        );
+
+      case "administrador":
+        return (
+          <>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.REDE}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="vector-square" />
+                <SelectComponent
+                  onChange={handleRedeChange}
+                  labelSelect={state.redeSelect}
+                  dataOptions={mapRedesUnicas}
+                  selectedOption={handleRedeChange}
+                />
+              </S.ContentC>
+            </S.Grid>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.DISCIPLESHIP}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="network-wired" />
+                <SelectComponent
+                  onChange={(handleDiscipuladoChange)}
+                  labelSelect={state.discipuladoSelect}
+                  dataOptions={state.redeSelect && mapDiscipuladosUnicos}
+                  selectedOption={handleDiscipuladoChange}
+                />
+              </S.ContentC>
+            </S.Grid>
+            <S.Grid>
+              <TitleComponent title={`${FormFields.CELULA}:`} small primary />
+              <S.ContentC>
+                <S.IconC name="user-friends" />
+                <SelectComponent
+                  onChange={handleCelulaChange}
+                  labelSelect={state.celulaSelect}
+                  dataOptions={celulaAdm}
+                  selectedOption={selectedOptionCelula}
+                />
+              </S.ContentC>
+            </S.Grid>
+          </>
         );
     }
   };
@@ -173,11 +315,10 @@ export function SendReportScreen() {
       {loading ? (
         <S.Loading source={loadingGif} />
       ) : (
-        <Fragment>
+        <ScrollView>
           {userInfo && (
-            <Fragment>
               <S.Content>
-                <ScrollView>
+                
                   <S.Form behavior="position" enabled>
                     {office()}
                     <S.Grid>
@@ -235,11 +376,9 @@ export function SendReportScreen() {
                       />
                     </S.ContentButton>
                   </S.Form>
-                </ScrollView>
               </S.Content>
-            </Fragment>
           )}
-        </Fragment>
+        </ScrollView>
       )}
 
       <ModalComponent
