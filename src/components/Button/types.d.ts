@@ -5,10 +5,16 @@ export interface IContentProps extends TouchableOpacityProps {
   small?: boolean;
   icon?: React.ComponentProps<typeof Feather>["name"];
   isLoading?: boolean;
+  width?: string;
+  heigth?: string;
+  size?: string;
 }
 
 export interface ISizeProps {
   small?: boolean;
+  width?: string;
+  heigth?: string;
+  size?: string;
 }
 
 export interface ISvgProps {

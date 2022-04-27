@@ -129,7 +129,7 @@ export function HomeScreen() {
                   <SelectedMenuComponent
                     icon={<S.WaitApprovalIcon name="thumbs-up" />}
                     title="Aguardando Aprovação"
-                    onPress={() => navigation.navigate("WaitApproval")}
+                    onPress={() => navigation.navigate("WaitingApprove")}
                   />
                   <SelectedMenuComponent
                     icon={<S.MultiplicationIcon name="multiplication" />}

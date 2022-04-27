@@ -4,9 +4,9 @@ import styled from "styled-components/native";
 import { ISizeProps, ISvgProps } from "./types";
 
 export const Content = styled.TouchableOpacity<ISizeProps>`
-  height: ${(props) => (props.small ? "32" : "48")};
+  height: ${({ heigth }) => (heigth ? heigth : "48")};
 
-  width: ${(props) => (props.small ? "170" : "100%")};
+  width: ${({ width }) => (width ? width : "100%")};
 
   background-color: ${({ theme }) => theme.colors.red};
   border-radius: 10;
@@ -30,8 +30,8 @@ export const BoxIcon = styled.View<ISvgProps>`
 `;
 
 export const Title = styled.Text<ISizeProps>`
-  font-size: ${(props) =>
-    props.small ? "10" : props.theme.fonts.fontSize.small};
+  font-size: ${({ theme, size }) =>
+    size ? size : theme.fonts.fontSize.small};
   font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 
   text-transform: uppercase;

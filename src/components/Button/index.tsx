@@ -7,15 +7,17 @@ import * as S from "./styles";
 
 export function ButtonComponent({
   title,
-  small,
   icon,
+  width,
+  heigth,
+  size,
   ...rest
 }: IContentProps) {
   return (
-    <S.Content small={small} {...rest}>
-      <S.Background small={small}>
+    <S.Content width={width} heigth={heigth} {...rest}>
+      <S.Background>
         <Feather name={icon} size={24} color="#000A3E" />
-        <S.Title small={small}>{title}</S.Title>
+        <S.Title size={size}>{title}</S.Title>
       </S.Background>
     </S.Content>
   );
