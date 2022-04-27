@@ -32,7 +32,7 @@ export function DetailsScreen() {
       ) : (
         <S.Container>
           <S.HeaderButtons>
-            <ButtonComponent title="Rejeitar" width='150' />
+            <ButtonComponent title="Rejeitar" width='150' icon={thumbs} />
             <ButtonComponent title="Aprovar" width='150' />
           </S.HeaderButtons>
         </S.Container>
