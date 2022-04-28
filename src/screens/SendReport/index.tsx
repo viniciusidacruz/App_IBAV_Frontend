@@ -29,7 +29,6 @@ import * as S from "./styles";
 export function SendReportScreen() {
   const [celulas, setCelulas] = useState<any>([]);
   const [showCalender, setShowCalender] = useState(false);
-  const [modalSuccess, setModalSuccess] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [celulaFiltered, setCelulaFiltered] = useState<any>([]);
 
@@ -38,10 +37,6 @@ export function SendReportScreen() {
 
   const handleOpenModal = () => {
     setModalVisible(true);
-  };
-
-  const openModalSuccess = () => {
-    setModalSuccess(true);
   };
 
   const handleOfferChange = (value: string) => {
@@ -388,19 +383,11 @@ export function SendReportScreen() {
         <ReportContentModalComponent
           handleCloseModal={setModalVisible}
           data={user}
-          onPressIn={openModalSuccess}
+          titCelulaAdm={state.celulaSelect}        
+          handleCancelForm={() => setModalVisible(false)}
         />
       </ModalComponent>
 
-      <ModalComponent
-        isVisible={modalSuccess}
-        onBackdropPress={() => setModalSuccess(false)}
-      >
-        <DefaultContentModalComponent
-          closeModal={setModalSuccess}
-          type="sendReport"
-        />
-      </ModalComponent>
     </Fragment>
   );
 }

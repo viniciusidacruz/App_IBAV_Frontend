@@ -6,7 +6,7 @@ import { ISizeProps, ISvgProps } from "./types";
 export const Content = styled.TouchableOpacity<ISizeProps>`
   height: ${(props) => (props.small ? "32" : "48")};
 
-  width: ${(props) => (props.small ? "170" : "100%")};
+  width: ${(props) => (props.small ? "170" : "auto")};
 
   background-color: ${({ theme }) => theme.colors.red};
   border-radius: 10;

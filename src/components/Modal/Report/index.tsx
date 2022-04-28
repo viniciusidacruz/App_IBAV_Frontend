@@ -17,10 +17,11 @@ import * as S from "./styles";
 export function ReportContentModalComponent({
   handleCloseModal,
   data,
-  onPressIn,
+  handleCancelForm,
+  titCelulaAdm,
 }: IContentModal) {
   const [sendModal, setSendModal] = useState(false);
-
+  const [modalSuccess, setModalSuccess] = useState(false);
   const { state } = useFormReport();
   const { user } = useUserFiltered();
 
@@ -30,6 +31,7 @@ export function ReportContentModalComponent({
     (item) => item.celula === "P"
   );
   const presentCTVisitors = state.visitors.filter((item) => item.culto === "P");
+
 
   const handleSubmitForm = () => {
     try {
@@ -59,20 +61,42 @@ export function ReportContentModalComponent({
     }
   };
 
+  const tituloCelula = () => {
+    switch (data && data[0][1].cargo) {
+      case 'lider':
+        return (
+          <TitleComponent
+            title={`Célula: ${data && data[0][1].numero_celula} - ${data && data[0][1].rede
+              }`}
+            decoration
+            primary
+          />
+        )
+        case 'administrador':
+        return (
+          <TitleComponent
+            title={`Célula: ${titCelulaAdm && titCelulaAdm}`}
+            decoration
+            primary
+          />
+        )
+    }
+  }
+
   return (
     <Fragment>
       <S.ContentModal>
         <S.TitleModal>Resumo do relatório</S.TitleModal>
 
         <S.ListModal>
-          <TitleComponent
-            title={`Célula: ${data && data[0][1].numero_celula} - ${
-              data && data[0][1].rede
-            }`}
+          {console.log(data, 'data')}
+          {/* <TitleComponent
+            title={`Célula: ${data && data[0][1].numero_celula} - ${data && data[0][1].rede
+              }`}
             decoration
             primary
-          />
-
+          /> */}
+          {tituloCelula()}
           <TitleComponent
             title={`Oferta: ${state.offer ? state.offer : "Nenhuma oferta!"}`}
             decoration
@@ -85,30 +109,26 @@ export function ReportContentModalComponent({
           />
           <TitleComponent title="Presença:" decoration primary />
           <TitleComponent
-            title={`- ${
-              presentCLMembers ? presentCLMembers.length : 0
-            } membros (célula)`}
+            title={`- ${presentCLMembers ? presentCLMembers.length : 0
+              } membros (célula)`}
             decoration
             primary
           />
           <TitleComponent
-            title={`- ${
-              presentCTMembers ? presentCTMembers.length : 0
-            } membros (culto)`}
+            title={`- ${presentCTMembers ? presentCTMembers.length : 0
+              } membros (culto)`}
             decoration
             primary
           />
           <TitleComponent
-            title={`- ${
-              presentCLVisitors ? presentCLVisitors.length : 0
-            } Visitantes (célula)`}
+            title={`- ${presentCLVisitors ? presentCLVisitors.length : 0
+              } Visitantes (célula)`}
             decoration
             primary
           />
           <TitleComponent
-            title={`- ${
-              presentCTVisitors ? presentCTVisitors.length : 0
-            } Visitantes (culto)`}
+            title={`- ${presentCTVisitors ? presentCTVisitors.length : 0
+              } Visitantes (culto)`}
             decoration
             primary
           />
@@ -116,19 +136,27 @@ export function ReportContentModalComponent({
 
         <S.ObservationModal>
           <TitleComponent
-            title={`Observações: ${
-              state.observations ? state.observations : "Nenhuma observação!"
-            }`}
+            title={`Observações: ${state.observations ? state.observations : "Nenhuma observação!"
+              }`}
             decoration
             primary
           />
         </S.ObservationModal>
+        <S.BoxButton>
+          <ButtonComponent
+            title="Cancelar"
+            onPress={handleCancelForm}
+            small
+          />
 
-        <ButtonComponent
-          title="Confirmar"
-          onPress={handleSubmitForm}
-          onPressIn={onPressIn}
-        />
+          <ButtonComponent
+            title="Confirmar"
+            onPress={handleSubmitForm}
+            onPressIn={() => setModalSuccess(true)}
+            small
+
+          />
+        </S.BoxButton>
       </S.ContentModal>
 
       <ModalComponent
@@ -137,6 +165,16 @@ export function ReportContentModalComponent({
       >
         <DefaultContentModalComponent
           closeModal={setSendModal}
+          type="sendReport"
+        />
+      </ModalComponent>
+
+      <ModalComponent
+        isVisible={modalSuccess}
+        onBackdropPress={() => setModalSuccess(false)}
+      >
+        <DefaultContentModalComponent
+          closeModal={setModalSuccess}
           type="sendReport"
         />
       </ModalComponent>
