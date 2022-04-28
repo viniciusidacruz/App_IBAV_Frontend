@@ -1,4 +1,5 @@
 import { TextInputProps } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 export type IContentInputProps = TextInputProps & {
   icon?: React.ComponentProps<typeof Feather>["name"];

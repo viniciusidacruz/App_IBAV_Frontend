@@ -11,13 +11,16 @@ export function ButtonComponent({
   width,
   heigth,
   size,
+  colorIcon,
   ...rest
 }: IContentProps) {
   return (
     <S.Content width={width} heigth={heigth} {...rest}>
       <S.Background>
-        <Feather name={icon} size={24} color="#000A3E" />
-        <S.Title size={size}>{title}</S.Title>
+        {icon && <Feather name={icon} size={24} color={colorIcon} />}
+        <S.Title size={size} icon={icon}>
+          {title}
+        </S.Title>
       </S.Background>
     </S.Content>
   );
