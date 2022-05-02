@@ -34,3 +34,7 @@ export const ObservationModal = styled.View`
 export const BoxButton = styled.View`
 flex-direction: row;
 `;
+
+export const BoxTitle = styled.View`
+flex-direction: row;
+`;

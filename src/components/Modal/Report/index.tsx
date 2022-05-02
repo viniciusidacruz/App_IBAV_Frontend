@@ -19,6 +19,7 @@ export function ReportContentModalComponent({
   data,
   handleCancelForm,
   titCelulaAdm,
+  titRedeAdm
 }: IContentModal) {
   const [sendModal, setSendModal] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
@@ -74,11 +75,22 @@ export function ReportContentModalComponent({
         )
         case 'administrador':
         return (
+          <S.BoxTitle>
           <TitleComponent
-            title={`Célula: ${titCelulaAdm && titCelulaAdm}`}
+            title={`Célula: `}
             decoration
             primary
+            weight
           />
+          <TitleComponent
+          title={`${titCelulaAdm && titCelulaAdm} - ${titRedeAdm && titRedeAdm}`}
+          decoration
+          primary
+          uppercase
+          weight
+        />
+        </S.BoxTitle>
+
         )
     }
   }

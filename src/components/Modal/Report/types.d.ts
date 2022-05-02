@@ -5,7 +5,8 @@ export interface IContentModal {
   membersPresent?: IMemberOrVisitor[] | undefined;
   visitorsPresent?: IMemberOrVisitor[] | undefined;
   handleCancelForm?: any;
-  titCelulaAdm?: any
+  titCelulaAdm?: any;
+  titRedeAdm?: any;
 }
 
 export type IMemberOrVisitor = {
