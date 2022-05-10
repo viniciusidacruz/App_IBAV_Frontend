@@ -25,21 +25,21 @@ export function ReportContentModalComponent({
   const [modalSuccess, setModalSuccess] = useState(false);
   const { state } = useFormReport();
   const { user } = useUserFiltered();
-
+  
   const presentCLMembers = state.members.filter((item) => item.celula === "P");
   const presentCTMembers = state.members.filter((item) => item.culto === "P");
   const presentCLVisitors = state.visitors.filter(
     (item) => item.celula === "P"
   );
   const presentCTVisitors = state.visitors.filter((item) => item.culto === "P");
-
+  
 
   const handleSubmitForm = () => {
     try {
       const numero_celula = user && user[0][1].numero_celula;
       const oferta = state.offer;
       const data = state.textDate;
-
+      
       let presencas = [...state.members, ...state.visitors];
 
       const observacoes = state.observations;
@@ -63,7 +63,7 @@ export function ReportContentModalComponent({
   };
 
   const tituloCelula = () => {
-    switch (data && data[0][1].cargo) {
+    switch (user && user[0][1].cargo) {
       case 'lider':
         return (
           <TitleComponent
@@ -83,7 +83,7 @@ export function ReportContentModalComponent({
             weight
           />
           <TitleComponent
-          title={`${titCelulaAdm && titCelulaAdm} - ${titRedeAdm && titRedeAdm}`}
+          title={`${state.celulaSelect} - ${state.redeSelect}`}
           decoration
           primary
           uppercase
@@ -101,13 +101,6 @@ export function ReportContentModalComponent({
         <S.TitleModal>Resumo do relatório</S.TitleModal>
 
         <S.ListModal>
-          {console.log(data, 'data')}
-          {/* <TitleComponent
-            title={`Célula: ${data && data[0][1].numero_celula} - ${data && data[0][1].rede
-              }`}
-            decoration
-            primary
-          /> */}
           {tituloCelula()}
           <TitleComponent
             title={`Oferta: ${state.offer ? state.offer : "Nenhuma oferta!"}`}
@@ -157,7 +150,7 @@ export function ReportContentModalComponent({
         <S.BoxButton>
           <ButtonComponent
             title="Cancelar"
-            onPress={handleCancelForm}
+            onPress={() =>  handleCloseModal(false)}
             small
           />
 

@@ -37,4 +37,5 @@ flex-direction: row;
 
 export const BoxTitle = styled.View`
 flex-direction: row;
+flex-wrap: wrap;
 `;

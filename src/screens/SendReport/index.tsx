@@ -383,9 +383,9 @@ export function SendReportScreen() {
         <ReportContentModalComponent
           handleCloseModal={setModalVisible}
           data={user}
-          titCelulaAdm={state.celulaSelect} 
-          titRedeAdm={state.redeSelect}       
-          handleCancelForm={() => setModalVisible(false)}
+          // titCelulaAdm={state.celulaSelect} 
+          // titRedeAdm={state.redeSelect}       
+         
         />
       </ModalComponent>
 
