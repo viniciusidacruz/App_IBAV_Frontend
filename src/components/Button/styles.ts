@@ -13,7 +13,7 @@ export const Content = styled.TouchableOpacity<ISizeProps>`
 
 export const Background = styled(LinearGradient).attrs({
   colors: ["#A60100", "#EA0000"],
-})<ISizeProps>`
+})`
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -25,17 +25,16 @@ export const Background = styled(LinearGradient).attrs({
 `;
 
 export const BoxIcon = styled.View<ISvgProps>`
-  margin-right: ${(props) => (props.icon ? "5" : "0")};
+  margin-right: ${({ icon }) => (icon ? "5" : "0")};
 `;
 
 export const Title = styled.Text<ISizeProps>`
-  font-size: ${({ theme, size }) => (size ? size : theme.fonts.fontSize.small)};
+  font-size: ${({ size, theme }) =>
+    size ? size : theme.fonts.fontSize.small};
   font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 
   text-transform: uppercase;
   letter-spacing: 1;
-
-  margin-left: ${({ icon }) => icon && "5"};
 
   color: ${({ theme }) => theme.colors.light};
 `;

@@ -47,7 +47,6 @@ export function DetailsScreen() {
               <S.TitleDescricao>Descrição</S.TitleDescricao>
               <S.GroupInfoAction>
                 <S.TitleAction>Ação:</S.TitleAction>
-                <S.Action>adicinou novo membro</S.Action>
               </S.GroupInfoAction>
             </S.DescriptionInfo>
         </S.Container>

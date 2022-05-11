@@ -17,7 +17,10 @@ export function ButtonComponent({
   return (
     <S.Content width={width} heigth={heigth} {...rest}>
       <S.Background>
-        <Feather name={icon} size={24} color={color} />
+        {icon && (
+          <Feather name={icon} size={24} color={color} />
+        )}
+
         <S.Title size={size}>{title}</S.Title>
       </S.Background>
     </S.Content>

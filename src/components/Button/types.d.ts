@@ -2,7 +2,6 @@ import { TouchableOpacityProps } from "react-native";
 import { Feather } from "@expo/vector-icons";
 export interface IContentProps extends TouchableOpacityProps {
   title: string;
-  small?: boolean;
   icon?: React.ComponentProps<typeof Feather>["name"];
   isLoading?: boolean;
   width?: string;

@@ -47,8 +47,6 @@ export const Description = styled.View``;
 
 export const TitleDescription = styled.Text``;
 
-export const Action = styled.Text``;
-
 export const ActionName = styled.Text``;
 
 export const Loading = styled(Image)``;
@@ -90,5 +88,3 @@ export const TitleDescricao = styled.Text``;
 export const GroupInfoAction = styled.View``;
 
 export const TitleAction = styled.Text``;
-
-export const Action = styled.Text``;
