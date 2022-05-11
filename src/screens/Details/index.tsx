@@ -32,9 +32,26 @@ export function DetailsScreen() {
       ) : (
         <S.Container>
           <S.HeaderButtons>
-            <ButtonComponent title="Rejeitar" width='150' icon={thumbs} />
-            <ButtonComponent title="Aprovar" width='150' />
-          </S.HeaderButtons>
+            <ButtonComponent title="Rejeitar" width='150' icon="thumbs-up" color="#FFFFFF" />
+            <ButtonComponent title="Aprovar" width='150' icon="thumbs-down" color="#FFFFFF" />
+            </S.HeaderButtons>
+            
+            <S.HeaderInfo>
+              <S.GroupName>
+                <S.TitleInfo>Usuário:</S.TitleInfo>
+                <S.NameInfo> felipepaulino</S.NameInfo>
+              </S.GroupName>
+
+              <S.NameInfoFull>Felipe Pauilino Ribeiro / Lider de Célula</S.NameInfoFull>
+            </S.HeaderInfo>
+
+            <S.DescriptionInfo>
+              <S.TitleDescricao>Descrição</S.TitleDescricao>
+              <S.GroupInfoAction>
+                <S.TitleAction>Ação:</S.TitleAction>
+                <S.Action>adicinou novo membro</S.Action>
+              </S.GroupInfoAction>
+            </S.DescriptionInfo>
         </S.Container>
       )
       }

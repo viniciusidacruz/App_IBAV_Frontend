@@ -8,6 +8,7 @@ export interface IContentProps extends TouchableOpacityProps {
   width?: string;
   heigth?: string;
   size?: string;
+  color?: string;
 }
 
 export interface ISizeProps {
