@@ -10,9 +10,11 @@ import { ComeBackComponent } from "../../components/ComeBack";
 import { InputMaskComponent } from "../../components/InputMask";
 import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
+import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 import FormFields from "../../common/constants/form";
 import { useFormReport } from "../../hooks/useFormReport";
+import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
 import {
@@ -22,14 +24,10 @@ import {
   selectState,
 } from "../../common/utils/selects";
 
-import { connectApi } from "../../common/services/ConnectApi";
-
 import { IAddress } from "../Register/types";
 import { IDataUser } from "./types";
 
 import * as S from "./styles";
-import { ReportContentModalComponent } from "../../components/Modal/Report";
-import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 export function UserRegisterScreen() {
   const [name, setName] = useState("");

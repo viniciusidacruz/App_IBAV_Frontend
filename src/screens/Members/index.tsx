@@ -30,11 +30,9 @@ export function MembersScreen(this: any) {
   const [modalConcluded, setModalConcluded] = useState(false)
   const [name, setName] = useState<string>();
   const [id, setId] = useState<any>();
-  // const [idCelula, setIdCelula] = useState<any>()
 
   const { data: celulas, isFetching: loading } = useFetch("celulas.json");
   const { user } = useUserFiltered();
-  // const idCelula = Object.entries(members[0])[0][1]
   const navigation = useNavigation<IPropsAppStack>();
 
   const identifyCelula = user && user[0][1].numero_celula;
@@ -57,26 +55,22 @@ export function MembersScreen(this: any) {
   }, [identifyCelula, celulas]);
 
   const idCelula = members && members.length > 0 && Object.entries(members[0])[0][1]
-  console.log(idCelula, 'apsdoskapodkaspo')
 
   const timeModal = () => {
     setModalConcluded(true)
   }
 
   const waitingDeletion = async () => {
-    console.log(idCelula, 'idCelula')
-    console.log(id, 'id Membro')
     try {
       await connectApi.patch(`/celulas/${idCelula}/membros/${id}.json`, {
         aguardando_exclusao: true
       })
         .then(() => {
           setSendModal(false)
-          console.log('DEU BOM')
-          setTimeout(timeModal, 3000)
+          setTimeout(timeModal, 300)
         })
     } catch (err) {
-      console.log('deu ruim')
+      alert(err)
     }
   }
 
@@ -89,7 +83,10 @@ export function MembersScreen(this: any) {
         <ButtonComponent
           title="Cadastrar"
           onPress={() => { }}
-          small
+          width='136px' 
+          heigth='33px'
+          size='12px' 
+          icon="user-plus"
         />
         <NotificationComponent />
       </HeaderComponent>
@@ -143,7 +140,7 @@ export function MembersScreen(this: any) {
         <RequestContentModalComponent
           name={name}
           cancel={() => setSendModal(false)}
-          confirm={() => { 
+          confirm={() => {
             waitingDeletion()
           }}
         />

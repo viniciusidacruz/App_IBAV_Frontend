@@ -14,16 +14,15 @@ export function RequestContentModalComponent({
     <S.Container>
       <S.Box>
         <S.ContainerText>
-          <S.TextDelete>Você realmente deseja</S.TextDelete>
-          <S.BoldDeleteText> EXCLUIR </S.BoldDeleteText>
+          <S.TextDelete>Você realmente deseja<S.BoldDeleteText> EXCLUIR</S.BoldDeleteText></S.TextDelete>
           <S.TextDelete>o cadastro de</S.TextDelete>
           <S.BoldTextBlue>{name} ? </S.BoldTextBlue>
           <S.TextDelete>essa ação não tem volta.</S.TextDelete>
         </S.ContainerText>
         <S.ContainerButton>
             
-          <ButtonComponent title="CANCELAR" onPress={cancel} />
-          <ButtonComponent title="CONFIRMAR" onPress={confirm} />
+          <ButtonComponent title="CANCELAR" onPress={cancel} width='105px' heigth='33px' size='12px'/>
+          <ButtonComponent title="CONFIRMAR" onPress={confirm} width='105px' heigth='33px' size='12px'/>
         </S.ContainerButton>
       </S.Box>
     </S.Container>
