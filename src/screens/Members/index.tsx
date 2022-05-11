@@ -53,7 +53,7 @@ export function MembersScreen(this: any) {
           title="Cadastrar"
           onPress={() => {}}
           small
-          icon={<S.RegisterIcon name="user-plus" />}
+          icon="user-plus"
         />
         <NotificationComponent />
       </HeaderComponent>
