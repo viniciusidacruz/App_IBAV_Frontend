@@ -4,14 +4,8 @@ import styled from "styled-components/native";
 import { ISizeProps, ISvgProps } from "./types";
 
 export const Content = styled.TouchableOpacity<ISizeProps>`
-<<<<<<< HEAD
-  height: ${(props) => (props.small ? "32" : "48")};
-
-  width: ${(props) => (props.small ? "170" : "auto")};
-=======
   height: ${({ heigth }) => (heigth ? heigth : "48")};
   width: ${({ width }) => (width ? width : "100%")};
->>>>>>> 064322c9415116bd9c4be5e2e0f653722309c029
 
   background-color: ${({ theme }) => theme.colors.red};
   border-radius: 10;

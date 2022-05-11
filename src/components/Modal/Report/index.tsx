@@ -102,6 +102,26 @@ export function ReportContentModalComponent({
           </S.BoxTitle>
         )
 
+        case 'pastor':
+          return (
+            <S.BoxTitle>
+              <TitleComponent
+                title={`Célula: `}
+                decoration
+                primary
+                weight
+              />
+              <TitleComponent
+                title={state.celulaSelect}
+                decoration
+                primary
+                uppercase
+                weight
+              />
+            </S.BoxTitle>
+  
+          )
+
       case 'administrador':
         return (
           <S.BoxTitle>
@@ -180,14 +200,16 @@ export function ReportContentModalComponent({
           <ButtonComponent
             title="Cancelar"
             onPress={() => handleCloseModal(false)}
-            small
+            width= '150px'
+            size= '16px'
           />
 
           <ButtonComponent
             title="Confirmar"
             onPress={handleSubmitForm}
             onPressIn={() => setModalSuccess(true)}
-            small
+            width= '150px'
+            size= '16px'
 
           />
         </S.BoxButton>

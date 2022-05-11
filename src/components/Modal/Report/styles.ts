@@ -33,6 +33,7 @@ export const ObservationModal = styled.View`
 
 export const BoxButton = styled.View`
 flex-direction: row;
+justify-content: space-between;
 `;
 
 export const BoxTitle = styled.View`
