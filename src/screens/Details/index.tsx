@@ -1,15 +1,15 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from "react";
 
-import MenuNavigation from '../../common/constants/navigation'
+import MenuNavigation from "../../common/constants/navigation";
 
-import { HeaderComponent } from '../../components/Header'
-import { ComeBackComponent } from '../../components/ComeBack'
-import { NotificationComponent } from '../../components/Notification'
+import { ButtonComponent } from "../../components/Button";
+import { HeaderComponent } from "../../components/Header";
+import { ComeBackComponent } from "../../components/ComeBack";
+import { NotificationComponent } from "../../components/Notification";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
-import * as S from './styles'
-import { ButtonComponent } from '../../components/Button'
+import * as S from "./styles";
 
 export function DetailsScreen() {
   const [loading, setLoading] = useState(false);
@@ -19,9 +19,7 @@ export function DetailsScreen() {
       <HeaderComponent>
         <S.ComeBack>
           <ComeBackComponent />
-          <S.TitlePage>
-            {MenuNavigation.DETAILS}
-          </S.TitlePage>
+          <S.TitlePage>{MenuNavigation.DETAILS}</S.TitlePage>
         </S.ComeBack>
 
         <NotificationComponent />
@@ -53,8 +51,7 @@ export function DetailsScreen() {
               </S.GroupInfoAction>
             </S.DescriptionInfo>
         </S.Container>
-      )
-      }
+      )}
     </Fragment>
-  )
+  );
 }

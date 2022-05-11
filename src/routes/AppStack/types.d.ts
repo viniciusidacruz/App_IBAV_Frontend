@@ -6,7 +6,6 @@ export type INavigationAppStackProps = {
   Members: undefined;
   Register: undefined;
   SendReport: undefined;
-  WaitApproval: undefined;
   UserRegister: undefined;
   PreListAdmin: undefined;
   MembersReport: undefined;
