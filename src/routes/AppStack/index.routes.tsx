@@ -11,6 +11,7 @@ import { PreListAdminScreen } from "../../screens/PreListAdmin";
 import { MembersReportScreen } from "../../screens/MembersReport";
 import { VisitorsReportScreen } from "../../screens/VisitorsReport";
 import { PreRegisterAdminScreen } from "../../screens/PreRegisterAdmin";
+import { MembersInformation } from "../../screens/MemberInformation";
 
 import { INavigationAppStackProps } from "./types";
 
@@ -31,6 +32,7 @@ export function AppRoutes() {
       <Screen name="MembersReport" component={MembersReportScreen} />
       <Screen name="VisitorsReport" component={VisitorsReportScreen} />
       <Screen name="PreRegisterAdmin" component={PreRegisterAdminScreen} />
+      <Screen name="MemberInformation" component={MembersInformation} />
     </Navigator>
   );
 }

@@ -72,7 +72,7 @@ export const RegisterIcon = styled(FontAwesome5)`
 `;
 
 export const Container = styled.View`
-  margin: 20;
+  margin: 20px;
 `;
 
 export const Loading = styled(Image)``;
