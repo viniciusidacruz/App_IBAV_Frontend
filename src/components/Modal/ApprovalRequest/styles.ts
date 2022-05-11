@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import { AntDesign } from '@expo/vector-icons';
 
 export const Container = styled.View`
     display: flex;
@@ -6,7 +7,7 @@ export const Container = styled.View`
 `
 
 export const Box = styled.View`
-    padding: 27px 10px 20px;
+    padding: 30px 10px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -39,9 +40,16 @@ export const BoldDeleteText = styled.Text`
     color: #D30000;
 `
 
-export const ContainerButton = styled.View`
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    flex-direction: row;
+export const TextRed = styled.Text`
+    font-size: 14px;
+    text-align: center;
+    color: #D30000;
 `
+
+export const IconBox = styled.View`
+    margin-top: 20px;
+`
+
+export const Icon = styled(AntDesign)`
+  font-size: ${({ theme }) => theme.fonts.fontSize.large};
+`;

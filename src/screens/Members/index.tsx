@@ -22,10 +22,12 @@ import * as S from "./styles";
 import { ModalComponent } from "../../components/Modal";
 import { RequestContentModalComponent } from "../../components/Modal/Request";
 import { connectApi } from "../../common/services/ConnectApi";
+import { ApprovalRequest } from "../../components/Modal/ApprovalRequest";
 
 export function MembersScreen(this: any) {
   const [members, setMembers] = useState<any>([]);
   const [sendModal, setSendModal] = useState(false);
+  const [modalConcluded, setModalConcluded] = useState(false)
   const [name, setName] = useState<string>();
   const [id, setId] = useState<any>();
   // const [idCelula, setIdCelula] = useState<any>()
@@ -53,9 +55,13 @@ export function MembersScreen(this: any) {
     }
 
   }, [identifyCelula, celulas]);
-  
+
   const idCelula = members && members.length > 0 && Object.entries(members[0])[0][1]
   console.log(idCelula, 'apsdoskapodkaspo')
+
+  const timeModal = () => {
+    setModalConcluded(true)
+  }
 
   const waitingDeletion = async () => {
     console.log(idCelula, 'idCelula')
@@ -64,12 +70,14 @@ export function MembersScreen(this: any) {
       await connectApi.patch(`/celulas/${idCelula}/membros/${id}.json`, {
         aguardando_exclusao: true
       })
-      .then((response) => {
-        console.log(response, 'response')
-      })
-     } catch(err) {
-        console.log('deu ruim')
-     }
+        .then(() => {
+          setSendModal(false)
+          console.log('DEU BOM')
+          setTimeout(timeModal, 3000)
+        })
+    } catch (err) {
+      console.log('deu ruim')
+    }
   }
 
 
@@ -82,7 +90,6 @@ export function MembersScreen(this: any) {
           title="Cadastrar"
           onPress={() => { }}
           small
-          icon={<S.RegisterIcon name="user-plus" />}
         />
         <NotificationComponent />
       </HeaderComponent>
@@ -118,8 +125,8 @@ export function MembersScreen(this: any) {
                         }
                         delMember={() => {
                           setSendModal(true),
-                          setName(item[1].nome),
-                          setId(item[0])
+                            setName(item[1].nome),
+                            setId(item[0])
                         }}
                       />
                     </Fragment>
@@ -133,12 +140,19 @@ export function MembersScreen(this: any) {
         isVisible={sendModal}
         onBackdropPress={() => setSendModal(false)}
       >
-        {console.log(id, 'id')}
         <RequestContentModalComponent
           name={name}
           cancel={() => setSendModal(false)}
-          confirm={() => waitingDeletion()}
+          confirm={() => { 
+            waitingDeletion()
+          }}
         />
+      </ModalComponent>
+      <ModalComponent
+        isVisible={modalConcluded}
+        onBackdropPress={() => setModalConcluded(false)}
+      >
+        <ApprovalRequest name={name} />
       </ModalComponent>
     </Fragment>
   );
