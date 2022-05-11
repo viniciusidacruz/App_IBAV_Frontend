@@ -25,21 +25,21 @@ export function ReportContentModalComponent({
   const [modalSuccess, setModalSuccess] = useState(false);
   const { state } = useFormReport();
   const { user } = useUserFiltered();
-  
+
   const presentCLMembers = state.members.filter((item) => item.celula === "P");
   const presentCTMembers = state.members.filter((item) => item.culto === "P");
   const presentCLVisitors = state.visitors.filter(
     (item) => item.celula === "P"
   );
   const presentCTVisitors = state.visitors.filter((item) => item.culto === "P");
-  
+
 
   const handleSubmitForm = () => {
     try {
       const numero_celula = user && user[0][1].numero_celula;
       const oferta = state.offer;
       const data = state.textDate;
-      
+
       let presencas = [...state.members, ...state.visitors];
 
       const observacoes = state.observations;
@@ -61,35 +61,64 @@ export function ReportContentModalComponent({
       }
     }
   };
-
+  { console.log(user, 'user') }
   const tituloCelula = () => {
     switch (user && user[0][1].cargo) {
       case 'lider':
         return (
-          <TitleComponent
-            title={`Célula: ${data && data[0][1].numero_celula} - ${data && data[0][1].rede
-              }`}
-            decoration
-            primary
-          />
+          <S.BoxTitle>
+            <TitleComponent
+              title={`Célula: `}
+              decoration
+              primary
+              weight
+            />
+            <TitleComponent
+              title={`${user && user[0][1].numero_celula} - ${user && user[0][1].rede
+                }`}
+              decoration
+              primary
+              uppercase
+              weight
+            />
+          </S.BoxTitle>
         )
-        case 'administrador':
+      case 'discipulador':
         return (
           <S.BoxTitle>
-          <TitleComponent
-            title={`Célula: `}
-            decoration
-            primary
-            weight
-          />
-          <TitleComponent
-          title={`${state.celulaSelect} - ${state.redeSelect}`}
-          decoration
-          primary
-          uppercase
-          weight
-        />
-        </S.BoxTitle>
+            <TitleComponent
+              title={`Célula: `}
+              decoration
+              primary
+              weight
+            />
+            <TitleComponent
+              title={`${state.celulaSelect}`}
+              decoration
+              primary
+              uppercase
+              weight
+            />
+          </S.BoxTitle>
+        )
+
+      case 'administrador':
+        return (
+          <S.BoxTitle>
+            <TitleComponent
+              title={`Célula: `}
+              decoration
+              primary
+              weight
+            />
+            <TitleComponent
+              title={`${state.celulaSelect} - ${state.redeSelect}`}
+              decoration
+              primary
+              uppercase
+              weight
+            />
+          </S.BoxTitle>
 
         )
     }
@@ -150,7 +179,7 @@ export function ReportContentModalComponent({
         <S.BoxButton>
           <ButtonComponent
             title="Cancelar"
-            onPress={() =>  handleCloseModal(false)}
+            onPress={() => handleCloseModal(false)}
             small
           />
 

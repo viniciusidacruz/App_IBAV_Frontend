@@ -244,12 +244,7 @@ export function SendReportScreen() {
                   dataOptions={[]}
                   selectedOption={selectedOptionCelula}
                 />
-                {
-                  redesUnicas && redesUnicas.map((item: any) => {
-                    return (
-                      <Text>{item}</Text>
-                    )
-                  })}
+               
               </S.ContentC>
             </S.Grid>
           </>
@@ -382,10 +377,7 @@ export function SendReportScreen() {
       >
         <ReportContentModalComponent
           handleCloseModal={setModalVisible}
-          data={user}
-          // titCelulaAdm={state.celulaSelect} 
-          // titRedeAdm={state.redeSelect}       
-         
+          data={user}          
         />
       </ModalComponent>
 

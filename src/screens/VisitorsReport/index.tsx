@@ -49,9 +49,11 @@ export function VisitorsReportScreen() {
        connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
       .then((response) => {
         setVisitantes(Object.values(response.data)); 
-            
-      }).finally(()=>setLoading(false))
+        setLoading(false)            
+      })
+      .catch(()=> setLoading(false))
     },[isAddVisible, ID_CELULA])
+    console.log(visitantes, 'visitantes')
   
    const { state, dispatch } = useFormReport();
 
