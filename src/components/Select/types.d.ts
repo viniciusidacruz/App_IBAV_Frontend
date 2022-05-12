@@ -6,6 +6,7 @@ export interface IContentProps {
   dataOptions: Array<IOptions>;
   disabled?: boolean;
   small?: boolean;
+  width?: string;
 }
 
 export interface IStyledDisabled {
@@ -14,6 +15,7 @@ export interface IStyledDisabled {
 
 export interface ISizeProps {
   small?: boolean;
+  width?: string;
 }
 
 interface IOptions {

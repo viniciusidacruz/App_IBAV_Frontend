@@ -13,7 +13,7 @@ export const Container = styled.TouchableOpacity<ISizeProps>`
   justify-content: space-between;
 
   height: 32;
-  width: ${(props) => (props.small ? "55" : "300")};
+  width: ${({ width }) => (width ? width : "100%")};
   margin-top: ${(props) => (props.small ? "-20" : "0")};
 
   border-color: ${({ theme }) => theme.colors.grey};

@@ -52,7 +52,6 @@ export function MembersScreen(this: any) {
         <ButtonComponent
           title="Cadastrar"
           onPress={() => {}}
-          small
           icon="user-plus"
         />
         <NotificationComponent />
