@@ -30,3 +30,13 @@ export const ObservationModal = styled.View`
   margin-top: 20;
   margin-bottom: 20;
 `;
+
+export const BoxButton = styled.View`
+flex-direction: row;
+justify-content: space-between;
+`;
+
+export const BoxTitle = styled.View`
+flex-direction: row;
+flex-wrap: wrap;
+`;

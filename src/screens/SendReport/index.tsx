@@ -29,7 +29,6 @@ import * as S from "./styles";
 export function SendReportScreen() {
   const [celulas, setCelulas] = useState<any>([]);
   const [showCalender, setShowCalender] = useState(false);
-  const [modalSuccess, setModalSuccess] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [celulaFiltered, setCelulaFiltered] = useState<any>([]);
 
@@ -38,10 +37,6 @@ export function SendReportScreen() {
 
   const handleOpenModal = () => {
     setModalVisible(true);
-  };
-
-  const openModalSuccess = () => {
-    setModalSuccess(true);
   };
 
   const handleOfferChange = (value: string) => {
@@ -150,6 +145,7 @@ export function SendReportScreen() {
   }, [celulas]);
 
 
+  // tratativas para o usuário administrador
   const redes = celulas.map((item: any) => (item.rede))
   const redesUnicas = redes.filter(function (este: any, i: any) {
     return redes.indexOf(este) === i;
@@ -185,7 +181,36 @@ export function SendReportScreen() {
       value: `${item.celula} - ${item.lider}`
     }
   })
+  //
 
+  // tratativas para o usuário pastor
+  const filtrandoDiscipuladoPastor = celulas.filter((item: any) => {
+    return item.rede === user[0][1].rede
+  })
+
+  const mapDiscipuladoPastor = filtrandoDiscipuladoPastor.map((item: any) => {
+    return item.discipulador
+  })
+
+  const discipuladossUnicosPastor = mapDiscipuladoPastor.filter(function (este: any, i: any) {
+    return mapDiscipuladoPastor.indexOf(este) === i;
+  });
+
+  const mapDiscipuladossUnicosPastor = discipuladossUnicosPastor.map((item: any) => {
+    return {
+      value: item
+    }
+  })
+  const filtrandoDiscipuladoPastorSelect = celulas.filter((item: any) => {
+    return item.discipulador === state.discipuladoSelect
+  })
+
+  const celulaPastor = filtrandoDiscipuladoPastorSelect.map((item: any) => {
+    return {
+      value: `${item.celula} - ${item.lider}`
+    }
+  })
+  //
   const optionsCelula =
     celulaFiltered &&
     celulaFiltered.map((celulaIdentify: IContentProps) => {
@@ -193,7 +218,6 @@ export function SendReportScreen() {
         value: `${celulaIdentify?.celula} - ${celulaIdentify.lider}`,
       };
     });
-
 
   const office = () => {
     switch (whatOffice) {
@@ -232,10 +256,10 @@ export function SendReportScreen() {
               <S.ContentC>
                 <S.IconC name="network-wired" />
                 <SelectComponent
-                  onChange={handleCelulaChange}
-                  labelSelect={state.textSelectCelula}
-                  dataOptions={[]}
-                  selectedOption={handleCelulaChange}
+                  onChange={handleDiscipuladoChange}
+                  labelSelect={state.discipuladoSelect}
+                  dataOptions={mapDiscipuladossUnicosPastor}
+                  selectedOption={handleDiscipuladoChange}
                 />
               </S.ContentC>
             </S.Grid>
@@ -245,16 +269,11 @@ export function SendReportScreen() {
                 <S.IconC name="user-friends" />
                 <SelectComponent
                   onChange={handleCelulaChange}
-                  labelSelect={state.textSelectCelula}
-                  dataOptions={[]}
+                  labelSelect={state.celulaSelect}
+                  dataOptions={celulaPastor}
                   selectedOption={selectedOptionCelula}
                 />
-                {
-                  redesUnicas && redesUnicas.map((item: any) => {
-                    return (
-                      <Text>{item}</Text>
-                    )
-                  })}
+
               </S.ContentC>
             </S.Grid>
           </>
@@ -317,66 +336,66 @@ export function SendReportScreen() {
       ) : (
         <ScrollView>
           {userInfo && (
-              <S.Content>
-                
-                  <S.Form behavior="position" enabled>
-                    {office()}
-                    <S.Grid>
-                      <TitleComponent
-                        title={`${FormFields.OFFER}R$:`}
-                        small
-                        primary
-                      />
-                      <S.ContentC>
-                        <S.IconC name="file-invoice-dollar" />
-                        <InputFieldComponent
-                          primary
-                          value={state.offer}
-                          placeholderTextColor="grey"
-                          onChangeText={handleOfferChange}
-                        />
-                      </S.ContentC>
-                    </S.Grid>
+            <S.Content>
 
-                    <S.Grid>
-                      <TitleComponent
-                        title={`${FormFields.DATE}:`}
-                        small
-                        primary
-                      />
-                      <S.ContentC>
-                        <DateComponent
-                          text={state.textDate}
-                          open={showMode}
-                          showCalender={showCalender}
-                          dataDados={state.date}
-                          onChange={handleDateChange}
-                        />
-                      </S.ContentC>
-                    </S.Grid>
+              <S.Form behavior="position" enabled>
+                {office()}
+                <S.Grid>
+                  <TitleComponent
+                    title={`${FormFields.OFFER}R$:`}
+                    small
+                    primary
+                  />
+                  <S.ContentC>
+                    <S.IconC name="file-invoice-dollar" />
+                    <InputFieldComponent
+                      primary
+                      value={state.offer}
+                      placeholderTextColor="grey"
+                      onChangeText={handleOfferChange}
+                    />
+                  </S.ContentC>
+                </S.Grid>
 
-                    <S.Grid>
-                      <TitleComponent
-                        title={`${FormFields.OBSERVATIONS}:`}
-                        small
-                        primary
-                      />
-                      <S.Observations
-                        multiline={true}
-                        numberOfLines={5}
-                        onChangeText={handleObservationsChange}
-                        value={state.observations}
-                      />
-                    </S.Grid>
+                <S.Grid>
+                  <TitleComponent
+                    title={`${FormFields.DATE}:`}
+                    small
+                    primary
+                  />
+                  <S.ContentC>
+                    <DateComponent
+                      text={state.textDate}
+                      open={showMode}
+                      showCalender={showCalender}
+                      dataDados={state.date}
+                      onChange={handleDateChange}
+                    />
+                  </S.ContentC>
+                </S.Grid>
 
-                    <S.ContentButton>
-                      <ButtonComponent
-                        title={ButtonsText.REPORT}
-                        onPress={handleOpenModal}
-                      />
-                    </S.ContentButton>
-                  </S.Form>
-              </S.Content>
+                <S.Grid>
+                  <TitleComponent
+                    title={`${FormFields.OBSERVATIONS}:`}
+                    small
+                    primary
+                  />
+                  <S.Observations
+                    multiline={true}
+                    numberOfLines={5}
+                    onChangeText={handleObservationsChange}
+                    value={state.observations}
+                  />
+                </S.Grid>
+
+                <S.ContentButton>
+                  <ButtonComponent
+                    title={ButtonsText.REPORT}
+                    onPress={handleOpenModal}
+                  />
+                </S.ContentButton>
+              </S.Form>
+            </S.Content>
           )}
         </ScrollView>
       )}
@@ -388,19 +407,9 @@ export function SendReportScreen() {
         <ReportContentModalComponent
           handleCloseModal={setModalVisible}
           data={user}
-          onPressIn={openModalSuccess}
         />
       </ModalComponent>
 
-      <ModalComponent
-        isVisible={modalSuccess}
-        onBackdropPress={() => setModalSuccess(false)}
-      >
-        <DefaultContentModalComponent
-          closeModal={setModalSuccess}
-          type="sendReport"
-        />
-      </ModalComponent>
     </Fragment>
   );
 }

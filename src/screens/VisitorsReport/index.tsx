@@ -44,12 +44,16 @@ export function VisitorsReportScreen() {
   const ID_CELULA =
     memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
-    useEffect(() => {
-      connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
+    useEffect( () => {
+      setLoading(true);
+       connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
       .then((response) => {
-        setVisitantes(Object.values(response.data));      
+        setVisitantes(Object.values(response.data)); 
+        setLoading(false)            
       })
-    },[isAddVisible])
+      .catch(()=> setLoading(false))
+    },[isAddVisible, ID_CELULA])
+    console.log(visitantes, 'visitantes')
   
    const { state, dispatch } = useFormReport();
 
@@ -88,17 +92,17 @@ export function VisitorsReportScreen() {
   };
 
   useEffect(() => {
-    setLoading(true);
+
     const checkMembers = async () => {
       const members = await AsyncStorage.getItem(GetStorage.MEMBERS_FILTERED);
       if (members) {
         setMemberStorage(JSON.parse(members));
-        setLoading(false);
+
       }
     };
     
     checkMembers();
-  }, [isAddVisible]);
+  }, []);
 
   useEffect(() => {
     const checkUser = async () => {
