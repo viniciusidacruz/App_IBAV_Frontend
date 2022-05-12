@@ -13,8 +13,9 @@ export const TitlePage = styled.Text`
 `;
 
 export const Main = styled.ScrollView`
-  padding-left: 10;
-  padding-right: 10;
+  padding-left: 12;
+  padding-right: 12;
+  margin-top: 12
 `;
 
 export const GridForm = styled.View`
@@ -45,9 +46,7 @@ export const FooterFields = styled.View`
   flex-direction: row;
   justify-content: space-between;
 
-  padding-left: 15;
-  padding-right: 15;
-
+margin-top: 20;
   margin-bottom: 15;
 `;
 
