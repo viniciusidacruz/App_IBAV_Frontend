@@ -14,13 +14,13 @@ import { DefaultContentModalComponent } from "../../components/Modal/Default";
 import MenuNavigation from "../../common/constants/navigation";
 import FormFields from "../../common/constants/form";
 
-// import { AppProps } from "../../routes/types/app";
-
 import * as S from "./styles";
-import { selectState } from "../../common/utils/selects";
+import { selectCategory, selectCivilStatus, selectState } from "../../common/utils/selects";
+import { connectApi } from "../../common/services/ConnectApi";
 
 export function MembersInformation(this: any, { navigation, route }: any) {
     const [successModal, setSuccessModal] = useState(false);
+    const [showCalender, setShowCalender] = useState(false);
     const [cep, setCep] = useState(route.params?.cep || "");
     const [name, setName] = useState(route.params?.nome || "");
     const [city, setCity] = useState(route.params?.cidade || "");
@@ -38,11 +38,29 @@ export function MembersInformation(this: any, { navigation, route }: any) {
         route.params?.estado_civil || ""
     );
 
+    const showMode = () => {
+        setShowCalender(true);
+      };
+
     const submitRegister = () => {
         try {
-            setSuccessModal(true);
+            connectApi.patch
         } catch (err) { }
     };
+
+    // const waitingDeletion = async () => {
+    //     try {
+    //       await connectApi.patch(`/celulas/${idCelula}/membros/${id}.json`, {
+    //         aguardando_exclusao: true
+    //       })
+    //         .then(() => {
+    //           setSendModal(false)
+    //           setTimeout(timeModal, 300)
+    //         })
+    //     } catch (err) {
+    //       alert(err)
+    //     }
+    //   }
 
     return (
         <>
@@ -82,16 +100,6 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                                 placeholder={FormFields.EMAIL}
                                 onChangeText={(value) => setEmail(value)}
                                 label="*Email"
-                            />
-                        </S.GridItemFull>
-
-                        <S.GridItemFull>
-                            <InputFieldComponent
-                                primary
-                                value={cep}
-                                placeholder={FormFields.CEP}
-                                onChangeText={(value) => setCep(value)}
-                                label="Cep"
                             />
                         </S.GridItemFull>
 
@@ -143,7 +151,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                             <S.GridItem>
                                 <SelectComponent
                                     label="Estado"
-                                    onChange={() => { }}
+                                    onChange={(labelSelect) => setState(labelSelect)}
                                     selectedOption={() => { }}
                                     labelSelect={state}
                                     dataOptions={selectState}
@@ -153,10 +161,10 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                             <S.GridItem>
                                 <SelectComponent
                                     label="Estado Civil"
-                                    onChange={() => { }}
+                                    onChange={(labelSelect) => setCivilStatus(labelSelect)}
                                     selectedOption={() => { }}
                                     labelSelect={civilStatus}
-                                    dataOptions={[]}
+                                    dataOptions={selectCivilStatus}
                                 />
                             </S.GridItem>
                         </S.GridForm>
@@ -165,10 +173,10 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                             <S.GridItem>
                                 <DateComponent
                                     text={birthday}
-                                    open={() => { }}
+                                    open={showMode}
                                     showCalender={false}
                                     dataDados={""}
-                                    onChange={() => { }}
+                                    onChange={(text: any) => setBirthday(text)}
                                     label="Data de Nascimento"
                                 />
                             </S.GridItem>
@@ -176,10 +184,10 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                             <S.GridItem>
                                 <SelectComponent
                                     label="Categoria"
-                                    onChange={() => { }}
+                                    onChange={(labelSelect) => setStatus(labelSelect)}
                                     selectedOption={() => { }}
                                     labelSelect={status}
-                                    dataOptions={[]}
+                                    dataOptions={selectCategory}
                                 />
                             </S.GridItem>
                         </S.GridForm>
@@ -187,7 +195,12 @@ export function MembersInformation(this: any, { navigation, route }: any) {
 
                     <S.FooterFields>
                         <S.Required>* Campos obrigatórios</S.Required>
-                        <ButtonComponent title="SALVAR INFORMAÇÕES" onPress={submitRegister} />
+                        <ButtonComponent title="SALVAR INFORMAÇÕES" 
+                        onPress={submitRegister}
+                        width='213px'
+                        heigth="39px"
+                        size="14px"
+                        />
                     </S.FooterFields>
                 </S.Container>
             </ScrollView>

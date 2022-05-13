@@ -74,4 +74,6 @@ export const FooterFields = styled.View`
   margin-bottom: 15;
 `;
 
-export const Required = styled.Text``;
+export const Required = styled.Text`
+  font-size: 8px;
+`;

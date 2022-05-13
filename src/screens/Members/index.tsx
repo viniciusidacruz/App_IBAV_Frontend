@@ -74,7 +74,6 @@ export function MembersScreen(this: any) {
     }
   }
 
-
   return (
     <Fragment>
       <HeaderComponent>
