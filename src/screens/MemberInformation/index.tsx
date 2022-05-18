@@ -37,10 +37,32 @@ export function MembersInformation(this: any, { navigation, route }: any) {
     const [civilStatus, setCivilStatus] = useState(
         route.params?.estado_civil || ""
     );
+    const [date, setDate] = useState(new Date())
+    const [selectDate, setSelectDate] = useState<any>("Selecione uma data")
 
     const showMode = () => {
         setShowCalender(true);
-      };
+    };
+
+    const handleDateChange = (event: Event, selectedDate: any) => {
+        const currentDate = selectedDate || state.dateRegister;
+
+        setShowCalender(false);
+
+        const tempDate = new Date(currentDate);
+        const newDate =
+            tempDate.getDate() +
+            "/" +
+            (tempDate.getMonth() + 1) +
+            "/" +
+            tempDate.getFullYear();
+
+        setDate(currentDate)
+        setSelectDate(newDate)
+        // setBirthday(newDate)
+
+    };
+
 
     const submitRegister = () => {
         try {
@@ -172,11 +194,11 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                         <S.GridForm>
                             <S.GridItem>
                                 <DateComponent
-                                    text={birthday}
+                                    text={selectDate}
                                     open={showMode}
-                                    showCalender={false}
-                                    dataDados={""}
-                                    onChange={(text: any) => setBirthday(text)}
+                                    showCalender={showCalender}
+                                    dataDados={date}
+                                    onChange={handleDateChange}
                                     label="Data de Nascimento"
                                 />
                             </S.GridItem>
@@ -195,11 +217,11 @@ export function MembersInformation(this: any, { navigation, route }: any) {
 
                     <S.FooterFields>
                         <S.Required>* Campos obrigatórios</S.Required>
-                        <ButtonComponent title="SALVAR INFORMAÇÕES" 
-                        onPress={submitRegister}
-                        width='213px'
-                        heigth="39px"
-                        size="14px"
+                        <ButtonComponent title="SALVAR INFORMAÇÕES"
+                            onPress={submitRegister}
+                            width='213px'
+                            heigth="39px"
+                            size="14px"
                         />
                     </S.FooterFields>
                 </S.Container>
