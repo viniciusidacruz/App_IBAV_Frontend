@@ -14,6 +14,7 @@ export const Container = styled.TouchableOpacity<ISizeProps>`
 
   height: 32;
   width: ${({ width }) => (width ? width : "100%")};
+  
   margin-top: ${(props) => (props.small ? "-20" : "0")};
 
   border-color: ${({ theme }) => theme.colors.grey};
