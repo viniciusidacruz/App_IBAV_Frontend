@@ -5,7 +5,8 @@ import { IPersonProps } from './types';
 export function PersonLabelComponent({
   nome,
   status,
-  onPress
+  onPress,
+  delMember
 }: IPersonProps) {
 
   return (
@@ -16,7 +17,7 @@ export function PersonLabelComponent({
                   <S.TextStatus >{status}</S.TextStatus>
                 </S.BoxStatus>
         </S.ContainerPerson>
-        <S.Icon name="trash" onClick={() => ("/")}/>
+        <S.Icon name="trash" onPress={delMember}/>
     </S.Box>
   );
 }
