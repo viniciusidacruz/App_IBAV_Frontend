@@ -14,6 +14,7 @@ export function SelectComponent({
   labelSelect,
   dataOptions,
   disabled,
+  width,
   small
 }: IContentProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -27,7 +28,7 @@ export function SelectComponent({
   return (
     <S.Content >
       <S.LabelField>{label}</S.LabelField>
-      <S.Container onPress={() => changeModalVisibility(true)} small={small}>
+      <S.Container onPress={() => changeModalVisibility(true)} small={small} width={width}>
         <S.Field>
           <S.Label>{labelSelect ? labelSelect : 'Selecione'}</S.Label>
         </S.Field>

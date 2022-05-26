@@ -56,7 +56,8 @@ export const FooterFields = styled.View`
 
   padding-left: 15;
   padding-right: 15;
-
+ 
+  margin-top: 20;
   margin-bottom: 15;
 `;
 

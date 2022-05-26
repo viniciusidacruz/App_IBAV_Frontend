@@ -291,6 +291,7 @@ export function SendReportScreen() {
                   labelSelect={state.redeSelect}
                   dataOptions={mapRedesUnicas}
                   selectedOption={handleRedeChange}
+                  width='300'
                 />
               </S.ContentC>
             </S.Grid>
@@ -303,6 +304,7 @@ export function SendReportScreen() {
                   labelSelect={state.discipuladoSelect}
                   dataOptions={state.redeSelect && mapDiscipuladosUnicos}
                   selectedOption={handleDiscipuladoChange}
+                  width='300'
                 />
               </S.ContentC>
             </S.Grid>
@@ -315,6 +317,7 @@ export function SendReportScreen() {
                   labelSelect={state.celulaSelect}
                   dataOptions={celulaAdm}
                   selectedOption={selectedOptionCelula}
+                  width='300'
                 />
               </S.ContentC>
             </S.Grid>

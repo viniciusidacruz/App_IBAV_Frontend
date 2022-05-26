@@ -397,7 +397,7 @@ export function UserRegisterScreen() {
               <ButtonComponent
                 title="Cadastrar"
                 onPress={submitRegister}
-                small
+                width= '170px'
               />
             </S.FooterFields>
           </Fragment>
