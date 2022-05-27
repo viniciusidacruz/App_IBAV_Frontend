@@ -30,7 +30,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
     const [phone, setPhone] = useState(route.params?.telefone || "");
     const [address, setAddress] = useState(route.params?.endereco || "");
     const [district, setDistrict] = useState(route.params?.bairro || "");
-    const [number, setNumber] = useState(route.params?.numero_casa || "");
+    const [number, setNumber] = useState(route.params?.numero_casa ? route.params?.numero_casa : FormFields.NUMBER );
     const [birthday, setBirthday] = useState(
         route.params?.data_de_nascimento || ""
     );
@@ -98,7 +98,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                         <S.GridItemFull>
                             <InputFieldComponent
                                 primary
-                                value={name}
+                                value={name === "undefined" ? FormFields.FULL_NAME : name}
                                 placeholder={`* ${FormFields.FULL_NAME}`}
                                 onChangeText={(value) => setName(value)}
                                 label="*Nome Completo"
@@ -108,7 +108,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                         <S.GridItemFull>
                             <InputFieldComponent
                                 primary
-                                value={phone}
+                                value={phone === "undefined" ? FormFields.PHONE : phone}
                                 placeholder={`* ${FormFields.PHONE}`}
                                 onChangeText={(value) => setPhone(value)}
                                 label="*Telefone"
@@ -118,7 +118,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                         <S.GridItemFull>
                             <InputFieldComponent
                                 primary
-                                value={email}
+                                value={email === "undefined" ? FormFields.EMAIL : email}
                                 placeholder={FormFields.EMAIL}
                                 onChangeText={(value) => setEmail(value)}
                                 label="*Email"
@@ -129,7 +129,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                             <S.GridItemLarge>
                                 <InputFieldComponent
                                     primary
-                                    value={address}
+                                    value={address ? FormFields.ADDRESS : address }
                                     placeholder={FormFields.ADDRESS}
                                     onChangeText={(value) => setAddress(value)}
                                     label="Endereço"
@@ -139,7 +139,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                             <S.GridItemSmall>
                                 <InputFieldComponent
                                     primary
-                                    value={number}
+                                    value={number === "undefined" ? FormFields.NUMBER : number}
                                     placeholder={FormFields.NUMBER}
                                     onChangeText={(value) => setNumber(value)}
                                     label="Nº"
@@ -151,7 +151,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                             <S.GridItem>
                                 <InputFieldComponent
                                     primary
-                                    value={district}
+                                    value={district === "undefined" ? FormFields.DISTRICT : district }
                                     placeholder={FormFields.DISTRICT}
                                     onChangeText={(value) => setDistrict(value)}
                                     label="Bairro"
@@ -161,7 +161,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                             <S.GridItem>
                                 <InputFieldComponent
                                     primary
-                                    value={city}
+                                    value={city === "undefined" ? FormFields.CITY : city}
                                     placeholder={FormFields.CITY}
                                     onChangeText={(value) => setCity(value)}
                                     label="Cidade"
@@ -174,8 +174,8 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                                 <SelectComponent
                                     label="Estado"
                                     onChange={(labelSelect) => setState(labelSelect)}
-                                    selectedOption={() => { }}
-                                    labelSelect={state}
+                                    selectedOption={(labelSelect) => setState(labelSelect)}
+                                    labelSelect={state === "undefined" ? FormFields.STATE : state}
                                     dataOptions={selectState}
                                 />
                             </S.GridItem>
@@ -184,8 +184,8 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                                 <SelectComponent
                                     label="Estado Civil"
                                     onChange={(labelSelect) => setCivilStatus(labelSelect)}
-                                    selectedOption={() => { }}
-                                    labelSelect={civilStatus}
+                                    selectedOption={(labelSelect) => setCivilStatus(labelSelect)}
+                                    labelSelect={civilStatus === "undefined" ? FormFields.CIVIL_STATUS : civilStatus}
                                     dataOptions={selectCivilStatus}
                                 />
                             </S.GridItem>
@@ -207,8 +207,8 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                                 <SelectComponent
                                     label="Categoria"
                                     onChange={(labelSelect) => setStatus(labelSelect)}
-                                    selectedOption={() => { }}
-                                    labelSelect={status}
+                                    selectedOption={(labelSelect) => setStatus(labelSelect)}
+                                    labelSelect={status === "undefined" ? FormFields.CATEGORY : status}
                                     dataOptions={selectCategory}
                                 />
                             </S.GridItem>
