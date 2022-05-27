@@ -30,6 +30,7 @@ export function MembersScreen(this: any) {
   const [modalConcluded, setModalConcluded] = useState(false)
   const [name, setName] = useState<string>();
   const [id, setId] = useState<any>();
+  const [updateMembers, setUpdateMembers] = useState<boolean>(true)
 
   const { data: celulas, isFetching: loading } = useFetch("celulas.json");
   const { user } = useUserFiltered();
@@ -52,7 +53,7 @@ export function MembersScreen(this: any) {
       );
     }
 
-  }, [identifyCelula, celulas]);
+  }, [identifyCelula, celulas, updateMembers]);
 
   const idCelula = members && members.length > 0 && Object.entries(members[0])[0][1]
 
@@ -60,18 +61,17 @@ export function MembersScreen(this: any) {
     setModalConcluded(true)
   }
 
-  const waitingDeletion = async () => {
-    try {
-      await connectApi.patch(`/celulas/${idCelula}/membros/${id}.json`, {
-        aguardando_exclusao: true
-      })
-        .then(() => {
-          setSendModal(false)
-          setTimeout(timeModal, 300)
-        })
-    } catch (err) {
-      alert(err)
-    }
+  const deleteMember = () => {
+      try {
+        connectApi.delete(`/celulas/${idCelula}/membros/${id}.json`)
+          .then(() => {
+            setUpdateMembers(!updateMembers)
+            setSendModal(false)
+            setTimeout(timeModal, 300)
+          })
+      } catch (err) {
+        alert(err)
+      }
   }
 
   return (
@@ -82,9 +82,9 @@ export function MembersScreen(this: any) {
         <ButtonComponent
           title="Cadastrar"
           onPress={() => { }}
-          width='136px' 
+          width='136px'
           heigth='33px'
-          size='12px' 
+          size='12px'
           icon="user-plus"
         />
         <NotificationComponent />
@@ -140,7 +140,7 @@ export function MembersScreen(this: any) {
           name={name}
           cancel={() => setSendModal(false)}
           confirm={() => {
-            waitingDeletion()
+            deleteMember()
           }}
         />
       </ModalComponent>

@@ -23,7 +23,7 @@ export function useFetch<T = unknown>(
       .finally(() => {
         setIsFetching(false);
       });
-  }, [stateActualize]);
+  }, [data]);
 
   return { data, isFetching, error };
 }

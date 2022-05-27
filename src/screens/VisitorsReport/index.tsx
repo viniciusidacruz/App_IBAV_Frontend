@@ -1,3 +1,5 @@
+// o código comentando é para cadastrar visitante (aplicado apenas numa segunda entrega)
+
 import React, { Fragment, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -6,15 +8,15 @@ import { ModalComponent } from "../../components/Modal";
 import { ButtonComponent } from "../../components/Button";
 import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
-import { InputMaskComponent } from "../../components/InputMask";
+// import { InputMaskComponent } from "../../components/InputMask";
 import { FooterInfoComponent } from "../../components/FooterInfo";
 import { NavigationComponent } from "../../components/Navigation";
-import { InputFieldComponent } from "../../components/InputField";
+// import { InputFieldComponent } from "../../components/InputField";
 import { NotificationComponent } from "../../components/Notification";
 import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
-import { DefaultContentModalComponent } from "../../components/Modal/Default";
+// import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -29,10 +31,10 @@ import * as S from "./styles";
 import { GetStorage } from "../../common/constants/storage";
 
 export function VisitorsReportScreen() {
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const [user, setUser] = useState<any>();
   const [loading, setLoading] = useState(false);
-  const [isAddVisible, setIsAddVisible] = useState(false);
+  // const [isAddVisible, setIsAddVisible] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [memberStorage, setMemberStorage] = useState<any>();
   const [visitorsIdentify, setVisitorsIdentify] = useState<any>();
@@ -40,55 +42,58 @@ export function VisitorsReportScreen() {
   const [selectPerson, setSelectPerson] = useState<
     ISelectedUserProps | undefined
   >(undefined);
+  
+  const { state, dispatch } = useFormReport();
 
   const ID_CELULA =
     memberStorage && memberStorage.length > 0 && memberStorage[0][0];
 
-    useEffect( () => {
-      setLoading(true);
-       connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
+  useEffect(() => {
+    setLoading(true);
+    connectApi.get(`/celulas/${ID_CELULA}/visitantes.json`)
       .then((response) => {
-        setVisitantes(Object.values(response.data)); 
-        setLoading(false)            
+        setVisitantes(Object.values(response.data));
+        setLoading(false)
       })
       .catch(()=> setLoading(false))
     },[isAddVisible, ID_CELULA])
   
-   const { state, dispatch } = useFormReport();
+      .catch(() => setLoading(false))
+  }, [ID_CELULA])
 
   const handleOpenModalReport = () => {
     setModalVisible(true);
   };
 
-  const handleOpenModalAdd = () => {
-    const nome = state.nameVisitor;
-    const telefone = state.phoneVisitor;
+  // const handleOpenModalAdd = () => {
+  //   const nome = state.nameVisitor;
+  //   const telefone = state.phoneVisitor;
 
-    if (state.phoneVisitor !== "") {
-      connectApi
-        .post(`/celulas/${ID_CELULA}/visitantes.json`, {
-          nome,
-          telefone,
-        })
-        .then(() => {
-          setIsAddVisible(true);
-          setError("");
+  //   if (state.phoneVisitor !== "") {
+  //     connectApi
+  //       .post(`/celulas/${ID_CELULA}/visitantes.json`, {
+  //         nome,
+  //         telefone,
+  //       })
+  //       .then(() => {
+  //         setIsAddVisible(true);
+  //         setError("");
 
-          dispatch({
-            type: FormReportActions.setPhoneVisitor,
-            payload: "",
-          });
+  //         dispatch({
+  //           type: FormReportActions.setPhoneVisitor,
+  //           payload: "",
+  //         });
 
-          dispatch({
-            type: FormReportActions.setNameVisitor,
-            payload: "",
-          });
+  //         dispatch({
+  //           type: FormReportActions.setNameVisitor,
+  //           payload: "",
+  //         });
 
-        });
-    } else {
-      setError("Campo obrigatório!");
-    }
-  };
+  //       });
+  //   } else {
+  //     setError("Campo obrigatório!");
+  //   }
+  // };
 
   useEffect(() => {
 
@@ -99,7 +104,7 @@ export function VisitorsReportScreen() {
 
       }
     };
-    
+
     checkMembers();
   }, []);
 
@@ -156,19 +161,19 @@ export function VisitorsReportScreen() {
     }
   }, [selectPerson]);
 
-  const handleNameVisitorChange = (value: string) => {
-    dispatch({
-      type: FormReportActions.setNameVisitor,
-      payload: value,
-    });
-  };
+  // const handleNameVisitorChange = (value: string) => {
+  //   dispatch({
+  //     type: FormReportActions.setNameVisitor,
+  //     payload: value,
+  //   });
+  // };
 
-  const handlePhoneVisitorChange = (value: string) => {
-    dispatch({
-      type: FormReportActions.setPhoneVisitor,
-      payload: value,
-    });
-  };
+  // const handlePhoneVisitorChange = (value: string) => {
+  //   dispatch({
+  //     type: FormReportActions.setPhoneVisitor,
+  //     payload: value,
+  //   });
+  // };
 
   function compared(a: IDataUserProps, b: IDataUserProps) {
     if (a.nome < b.nome) return -1;
@@ -190,15 +195,15 @@ export function VisitorsReportScreen() {
         <S.Loading source={loadingGif} />
       ) : (
         <ScrollView>
-        <S.Content>
-          {whatIsOffice && whatIsOffice !== "lider" && (
-            <S.Heading>
-              <S.Title>Célula</S.Title>
-              <S.Subtitle>{state.celulaSelect}</S.Subtitle>
-            </S.Heading>
-          )}
+          <S.Content>
+            {whatIsOffice && whatIsOffice !== "lider" && (
+              <S.Heading>
+                <S.Title>Célula</S.Title>
+                <S.Subtitle>{state.celulaSelect}</S.Subtitle>
+              </S.Heading>
+            )}
 
-            <InputFieldComponent
+            {/* <InputFieldComponent
               primary
               value={state.nameVisitor}
               placeholder="*Nome"
@@ -221,9 +226,9 @@ export function VisitorsReportScreen() {
                 title={ButtonsText.ADD_VISITOR}
                 onPress={handleOpenModalAdd}
               />
-            </S.FinishForm>
+            </S.FinishForm> */}
 
-          <HeadingPresentComponent />
+            <HeadingPresentComponent />
             {newArrayVisitors &&
               newArrayVisitors.map((data: any) => {
                 return (
@@ -234,15 +239,15 @@ export function VisitorsReportScreen() {
                   />
                 );
               })}
-          <FooterInfoComponent />
+            <FooterInfoComponent />
 
-          <S.Button>
-            <ButtonComponent
-              title={ButtonsText.REPORT}
-              onPress={handleOpenModalReport}
-            />
-          </S.Button>
-        </S.Content>
+            <S.Button>
+              <ButtonComponent
+                title={ButtonsText.REPORT}
+                onPress={handleOpenModalReport}
+              />
+            </S.Button>
+          </S.Content>
         </ScrollView>
       )}
 
@@ -256,7 +261,7 @@ export function VisitorsReportScreen() {
         />
       </ModalComponent>
 
-      <ModalComponent
+      {/* <ModalComponent
         isVisible={isAddVisible}
         onBackdropPress={() => setIsAddVisible(false)}
       >
@@ -264,7 +269,7 @@ export function VisitorsReportScreen() {
           closeModal={setIsAddVisible}
           type="addVisitor"
         />
-      </ModalComponent>
+      </ModalComponent> */}
     </Fragment>
   );
 }
