@@ -24,9 +24,9 @@ import { FormReportActions } from "../../contexts/FormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import MenuNavigation from "../../common/constants/navigation";
 import {
-  selectCivilStatus,
   selectState,
   selectCategory,
+  selectCivilStatus,
 } from "../../common/utils/selects";
 
 const loadingGif = require("../../assets/loader-two.gif");
@@ -52,21 +52,19 @@ export function RegisterScreen() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState<any>();
+  const [celulas, setCelulas] = useState<any>([]);
   const [numberHouse, setNumberHouse] = useState("");
   const [showCalender, setShowCalender] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const { user } = useUserFiltered();
   const { state, dispatch } = useFormReport();
-  const [celulas, setCelulas] = useState<any>([]);
 
   const identifyCelula = user && user[0][1].numero_celula;
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
-
-
 
   useEffect(() => {
     if (whatOffice !== "lider") {
