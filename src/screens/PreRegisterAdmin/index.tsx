@@ -1,25 +1,25 @@
 import React, { Fragment } from "react";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useFormReport } from "../../hooks/useFormReport";
+
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { NotificationComponent } from "../../components/Notification";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
+
+import { useFormReport } from "../../hooks/useFormReport";
+import { handleSignOut } from "../../common/utils/firebase";
+import { IPropsAppStack } from "../../routes/AppStack/types";
 import { FormReportActions } from "../../contexts/FormReport";
 
-import { handleSignOut } from "../../common/utils/firebase";
-
-import { IPropsAppStack } from "../../routes/AppStack/types";
 
 import * as S from "./styles";
 
 export function PreRegisterAdminScreen() {
-
-  const navigation = useNavigation<IPropsAppStack>();
   const { dispatch } = useFormReport();
+  const navigation = useNavigation<IPropsAppStack>();
 
   const clean = () => {
     navigation.navigate("Register")
