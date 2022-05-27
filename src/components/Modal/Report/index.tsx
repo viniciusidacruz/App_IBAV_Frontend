@@ -61,7 +61,7 @@ export function ReportContentModalComponent({
       }
     }
   };
-  { console.log(user, 'user') }
+  
   const tituloCelula = () => {
     switch (user && user[0][1].cargo) {
       case 'lider':

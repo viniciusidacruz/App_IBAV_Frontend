@@ -42,6 +42,8 @@ export function VisitorsReportScreen() {
   const [selectPerson, setSelectPerson] = useState<
     ISelectedUserProps | undefined
   >(undefined);
+  
+  const { state, dispatch } = useFormReport();
 
   const ID_CELULA =
     memberStorage && memberStorage.length > 0 && memberStorage[0][0];
@@ -53,10 +55,11 @@ export function VisitorsReportScreen() {
         setVisitantes(Object.values(response.data));
         setLoading(false)
       })
+      .catch(()=> setLoading(false))
+    },[isAddVisible, ID_CELULA])
+  
       .catch(() => setLoading(false))
   }, [ID_CELULA])
-
-  const { state, dispatch } = useFormReport();
 
   const handleOpenModalReport = () => {
     setModalVisible(true);
@@ -222,7 +225,6 @@ export function VisitorsReportScreen() {
               <ButtonComponent
                 title={ButtonsText.ADD_VISITOR}
                 onPress={handleOpenModalAdd}
-                small
               />
             </S.FinishForm> */}
 
