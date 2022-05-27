@@ -55,8 +55,6 @@ export function VisitorsReportScreen() {
         setVisitantes(Object.values(response.data));
         setLoading(false)
       })
-      .catch(()=> setLoading(false))
-    },[isAddVisible, ID_CELULA])
   
       .catch(() => setLoading(false))
   }, [ID_CELULA])
