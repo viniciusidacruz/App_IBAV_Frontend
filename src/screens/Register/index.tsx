@@ -57,21 +57,35 @@ export function RegisterScreen() {
   const [showCalender, setShowCalender] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
-  const { user } = useUserFiltered();
+  const { user, loading } = useUserFiltered();
   const { state, dispatch } = useFormReport();
-  const { data: celulas, isFetching: loading } = useFetch("celulas.json");
+  const [celulas, setCelulas] = useState<any>([]);
 
   const identifyCelula = user && user[0][1].numero_celula;
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
 
+
+
+  useEffect(() => {
+    if (whatOffice !== "lider") {
+      const getCelulas = async () => {
+        const response = await connectApi.get("/celulas.json");
+
+        setCelulas(Object.values(response.data));
+      };
+      getCelulas();
+    }
+  }, []);
+
+  console.log(celulas, 'celulas')
   useEffect(() => {
     const filterMembers =
       celulas &&
       celulas.filter((item: any) => {
-        return item[1].celula === identifyCelula;
+        return celulas.celula === identifyCelula;
       });
-
+    console.log(loading, 'loading')
     if (filterMembers) {
       setMembers(filterMembers);
       AsyncStorage.setItem(
@@ -143,7 +157,7 @@ export function RegisterScreen() {
             payload: "Selecione uma data",
           });
         });
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const handleDateChange = (event: Event, selectedDate: any) => {
@@ -494,7 +508,7 @@ export function RegisterScreen() {
               <ButtonComponent
                 title="Cadastrar"
                 onPress={submitRegister}
-                width= '170px'
+                width='170px'
               />
             </S.FooterFields>
           </S.Container>
