@@ -1,13 +1,14 @@
 import React, { Fragment } from "react";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { useFormReport } from "../../hooks/useFormReport";
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { NotificationComponent } from "../../components/Notification";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
+import { FormReportActions } from "../../contexts/FormReport";
 
 import { handleSignOut } from "../../common/utils/firebase";
 
@@ -16,7 +17,26 @@ import { IPropsAppStack } from "../../routes/AppStack/types";
 import * as S from "./styles";
 
 export function PreRegisterAdminScreen() {
+
   const navigation = useNavigation<IPropsAppStack>();
+  const { dispatch } = useFormReport();
+
+  const clean = () => {
+    navigation.navigate("Register")
+    dispatch({
+      type: FormReportActions.setRedeSelect,
+      payload: null,
+    });
+    dispatch({
+      type: FormReportActions.setDiscipuladoSelect,
+      payload: null,
+    });
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: null,
+    });
+  }
+
 
   return (
     <Fragment>
@@ -44,7 +64,7 @@ export function PreRegisterAdminScreen() {
           <SelectedMenuComponent
             icon={<S.RegisterIcon name="user-plus" />}
             title="Membros"
-            onPress={() => navigation.navigate("Register")}
+            onPress={() => clean()}
           />
           <SelectedMenuComponent
             icon={<S.UserGridIcon name="network-wired" />}

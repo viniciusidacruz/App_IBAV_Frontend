@@ -56,8 +56,9 @@ export function RegisterScreen() {
   const [numberHouse, setNumberHouse] = useState("");
   const [showCalender, setShowCalender] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const { user, loading } = useUserFiltered();
+  const { user } = useUserFiltered();
   const { state, dispatch } = useFormReport();
   const [celulas, setCelulas] = useState<any>([]);
 
@@ -73,19 +74,19 @@ export function RegisterScreen() {
         const response = await connectApi.get("/celulas.json");
 
         setCelulas(Object.values(response.data));
+        setLoading(false)
       };
       getCelulas();
     }
   }, []);
 
-  console.log(celulas, 'celulas')
   useEffect(() => {
     const filterMembers =
       celulas &&
       celulas.filter((item: any) => {
         return celulas.celula === identifyCelula;
       });
-    console.log(loading, 'loading')
+
     if (filterMembers) {
       setMembers(filterMembers);
       AsyncStorage.setItem(
@@ -249,6 +250,84 @@ export function RegisterScreen() {
       .catch((err) => console.log("Erro:", err));
   }, [address.cep]);
 
+  // tratativas para o usuário administrador
+  const selectedOptionCelula = (value: string) => {
+    dispatch({
+      type: FormReportActions.setTextSelectCelula,
+      payload: value,
+    });
+  };
+
+  const handleCelulaChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: value,
+    });
+  };
+
+  const handleDiscipuladoChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setDiscipuladoSelect,
+      payload: value,
+    });
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: null,
+    });
+  };
+
+  const handleRedeChange = (value: string) => {
+    dispatch({
+      type: FormReportActions.setRedeSelect,
+      payload: value,
+    });
+    dispatch({
+      type: FormReportActions.setDiscipuladoSelect,
+      payload: null,
+    });
+    dispatch({
+      type: FormReportActions.setCelulaSelect,
+      payload: null,
+    });
+  };
+
+  const redes = celulas.map((item: any) => (item.rede))
+  const redesUnicas = redes.filter(function (este: any, i: any) {
+    return redes.indexOf(este) === i;
+  });
+
+  const mapRedesUnicas = redesUnicas.map((item: any) => {
+    return {
+      value: item
+    }
+  })
+
+  const filtrandoRedes = celulas.filter((item: any) => {
+    return item.rede === state.redeSelect
+  })
+  const discipulado = filtrandoRedes.map((item: any) =>
+    (item.discipulador))
+
+  const discipuladossUnicos = discipulado.filter(function (este: any, i: any) {
+    return discipulado.indexOf(este) === i;
+  });
+
+  const mapDiscipuladosUnicos = discipuladossUnicos.map((item: any) => {
+    return {
+      value: item
+    }
+  })
+
+  const filtrandoDiscipulado = celulas.filter((item: any) => {
+    return item.discipulador === state.discipuladoSelect && item.rede === state.redeSelect
+  })
+  const celulaAdm = filtrandoDiscipulado.map((item: any) => {
+    return {
+      value: `${item.celula} - ${item.lider}`
+    }
+  })
+  //
+
   const office = () => {
     switch (whatOffice) {
       case "discipulador":
@@ -295,30 +374,30 @@ export function RegisterScreen() {
             <S.BoxSelect>
               <SelectComponent
                 label="Rede"
-                onChange={handleCivilStatusChange}
-                selectedOption={selectedOptionCivilStatus}
-                labelSelect={state.textSelectCivilStatus}
-                dataOptions={selectCivilStatus}
+                onChange={handleRedeChange}
+                labelSelect={state.redeSelect}
+                dataOptions={mapRedesUnicas}
+                selectedOption={handleRedeChange}
               />
             </S.BoxSelect>
 
             <S.BoxSelect>
               <SelectComponent
                 label="Discipulado"
-                onChange={handleCivilStatusChange}
-                selectedOption={selectedOptionCivilStatus}
-                labelSelect={state.textSelectCivilStatus}
-                dataOptions={selectCivilStatus}
+                onChange={(handleDiscipuladoChange)}
+                labelSelect={state.discipuladoSelect}
+                dataOptions={state.redeSelect && mapDiscipuladosUnicos}
+                selectedOption={handleDiscipuladoChange}
               />
             </S.BoxSelect>
 
             <S.BoxSelect>
               <SelectComponent
                 label="Célula"
-                onChange={handleCivilStatusChange}
-                selectedOption={selectedOptionCivilStatus}
-                labelSelect={state.textSelectCivilStatus}
-                dataOptions={selectCivilStatus}
+                onChange={handleCelulaChange}
+                labelSelect={state.celulaSelect}
+                dataOptions={celulaAdm}
+                selectedOption={selectedOptionCelula}
               />
             </S.BoxSelect>
           </Fragment>

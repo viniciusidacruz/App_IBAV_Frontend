@@ -57,6 +57,7 @@ export function CardMembersComponent({ data, setSelectPerson }: IDataPros) {
             labelSelect={presencaCelula}
             dataOptions={presenca}
             small
+            width="55"
           />
         </S.BoxSelect>
         <S.BoxSelect>
@@ -66,6 +67,7 @@ export function CardMembersComponent({ data, setSelectPerson }: IDataPros) {
             labelSelect={presencaCulto}
             dataOptions={presenca}
             small
+            width="55"
           />
         </S.BoxSelect>
       </S.ContainerSelect>
