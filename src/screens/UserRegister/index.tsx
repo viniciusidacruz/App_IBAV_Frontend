@@ -17,11 +17,12 @@ import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
+import initialValueRegisterUser from "../../common/utils/initialValues";
+
 import {
-  officeMembers,
-  selectCategory,
-  selectCivilStatus,
   selectState,
+  officeMembers,
+  selectCivilStatus,
 } from "../../common/utils/selects";
 
 import { IAddress } from "../Register/types";
@@ -30,18 +31,12 @@ import { IDataUser } from "./types";
 import * as S from "./styles";
 
 export function UserRegisterScreen() {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [state, setState] = useState("");
   const [users, setUsers] = useState([]);
-  const [category, setCategory] = useState("");
-  const [stateCivil, setStateCivil] = useState("");
-  const [numberHouse, setNumberHouse] = useState("");
   const [office, setOffice] = useState("Selecionar");
   const [showCalender, setShowCalender] = useState(false);
   const [selectNetwork, setSelectNetwork] = useState("Selecionar");
   const [selectDisciples, setSelectDisciples] = useState("Selecionar");
+  const [formValues, setFormValues] = useState(initialValueRegisterUser);
   const [confirmRegisterModal, setConfirmRegisterModal] = useState(false);
 
   const [address, setAddress] = useState<IAddress>({
@@ -96,6 +91,23 @@ export function UserRegisterScreen() {
       };
     });
 
+  const handleSelectOffice = (value: string) => {
+    setOffice(value);
+
+    setSelectNetwork("Selecionar");
+    setSelectDisciples("Selecionar");
+  };
+
+  const handleNetworkChange = (value: string) => {
+    setSelectNetwork(value);
+
+    setSelectDisciples("Selecionar");
+  };
+
+  const handleDisciplesChange = (value: string) => {
+    setSelectDisciples(value);
+  };
+
   const getAddressFromApi = useCallback(() => {
     axios
       .get(`https://viacep.com.br/ws/${address.cep}/json/`)
@@ -115,25 +127,6 @@ export function UserRegisterScreen() {
       })
       .catch((err) => console.log("Erro:", err));
   }, [address.cep]);
-
-  const handleStateChange = (value: string) => {
-    setState(value);
-  };
-
-  const selectOffice = (value: string) => {
-    setOffice(value);
-
-    setSelectNetwork("Selecionar");
-    setSelectDisciples("Selecionar");
-  };
-
-  const handleCivilStatusChange = (value: string) => {
-    setStateCivil(value);
-  };
-
-  const handleCategoryChange = (value: string) => {
-    setCategory(value);
-  };
 
   const showMode = () => {
     setShowCalender(true);
@@ -163,36 +156,14 @@ export function UserRegisterScreen() {
     });
   };
 
-  const handleNetworkChange = (value: string) => {
-    setSelectNetwork(value);
-
-    setSelectDisciples("Selecionar");
-  };
-
-  const handleDisciplesChange = (value: string) => {
-    setSelectDisciples(value);
-  };
-
   const submitRegister = () => {
     setConfirmRegisterModal(true);
   };
 
   const renderSelectsOptions = () => {
-    if (office === "discipulador") {
-      return (
-        <S.GridSelect>
-          <SelectComponent
-            label="Rede"
-            onChange={handleNetworkChange}
-            selectedOption={handleNetworkChange}
-            labelSelect={selectNetwork}
-            dataOptions={optionsNetwork && optionsNetwork}
-          />
-        </S.GridSelect>
-      );
-    } else if (office === "lider de celula") {
-      return (
-        <Fragment>
+    switch (office) {
+      case "discipulador":
+        return (
           <S.GridSelect>
             <SelectComponent
               label="Rede"
@@ -202,18 +173,65 @@ export function UserRegisterScreen() {
               dataOptions={optionsNetwork && optionsNetwork}
             />
           </S.GridSelect>
+        );
 
-          <S.GridSelect>
-            <SelectComponent
-              label="Discipulado"
-              onChange={handleDisciplesChange}
-              selectedOption={handleDisciplesChange}
-              labelSelect={selectDisciples}
-              dataOptions={optionsDisciples && optionsDisciples}
-            />
-          </S.GridSelect>
-        </Fragment>
-      );
+      case "lider de celula":
+        return (
+          <Fragment>
+            <S.GridSelect>
+              <SelectComponent
+                label="Rede"
+                onChange={handleNetworkChange}
+                selectedOption={handleNetworkChange}
+                labelSelect={selectNetwork}
+                dataOptions={optionsNetwork && optionsNetwork}
+              />
+            </S.GridSelect>
+  
+            <S.GridSelect>
+              <SelectComponent
+                label="Discipulado"
+                onChange={handleDisciplesChange}
+                selectedOption={handleDisciplesChange}
+                labelSelect={selectDisciples}
+                dataOptions={optionsDisciples && optionsDisciples}
+              />
+            </S.GridSelect>
+          </Fragment>
+        );
+
+      default:
+        return;
+    }
+  };
+
+  const renderMoreInput = () => {
+    switch (office) {
+      case "pastor de rede":
+        return (
+          <InputFieldComponent
+            primary
+            value={formValues.network}
+            placeholder={`* ${FormFields.NETWORK}`}
+            onChangeText={(value) =>
+              setFormValues({ ...formValues, network: value })
+            }
+          />
+        );
+      case "lider de celula":
+        return (
+          <InputFieldComponent
+            primary
+            value={formValues.numberCelula}
+            placeholder={`* ${FormFields.NUMBER_CELULA}`}
+            onChangeText={(value) =>
+              setFormValues({ ...formValues, numberCelula: value })
+            }
+          />
+        );
+
+      default:
+        return;
     }
   };
 
@@ -231,8 +249,8 @@ export function UserRegisterScreen() {
         <S.GridSelect>
           <SelectComponent
             label="Cargo"
-            onChange={selectOffice}
-            selectedOption={selectOffice}
+            onChange={handleSelectOffice}
+            selectedOption={handleSelectOffice}
             labelSelect={office}
             dataOptions={officeMembers}
           />
@@ -242,27 +260,44 @@ export function UserRegisterScreen() {
 
         {office !== "Selecionar" && (
           <Fragment>
+            {renderMoreInput()}
+
             <InputFieldComponent
               primary
-              value={name}
+              value={formValues.email}
+              placeholder={`* ${FormFields.EMAIL}`}
+              onChangeText={(value) =>
+                setFormValues({ ...formValues, email: value })
+              }
+            />
+
+            <InputFieldComponent
+              primary
+              value={formValues.password}
+              placeholder={`* ${FormFields.PASSWORD}`}
+              onChangeText={(value) =>
+                setFormValues({ ...formValues, password: value })
+              }
+            />
+
+            <InputFieldComponent
+              primary
+              value={formValues.name}
               placeholder={`* ${FormFields.FULL_NAME}`}
-              onChangeText={setName}
+              onChangeText={(value) =>
+                setFormValues({ ...formValues, name: value })
+              }
             />
 
             <InputMaskComponent
-              value={phone}
+              value={formValues.phone}
               mask="phone"
               maxLength={14}
               placeholder={`* ${FormFields.PHONE}`}
-              inputMaskChange={(value: string) => setPhone(value)}
+              inputMaskChange={(value: string) =>
+                setFormValues({ ...formValues, phone: value })
+              }
               primary
-            />
-
-            <InputFieldComponent
-              primary
-              value={email}
-              placeholder={FormFields.EMAIL}
-              onChangeText={setEmail}
             />
 
             <InputFieldComponent
@@ -301,9 +336,11 @@ export function UserRegisterScreen() {
               <S.GridItemSmall>
                 <InputFieldComponent
                   primary
-                  value={numberHouse}
+                  value={formValues.numberHouse}
                   placeholder={FormFields.NUMBER}
-                  onChangeText={setNumberHouse}
+                  onChangeText={(value) =>
+                    setFormValues({ ...formValues, numberHouse: value })
+                  }
                 />
               </S.GridItemSmall>
             </S.GridForm>
@@ -350,9 +387,13 @@ export function UserRegisterScreen() {
               <S.GridItem>
                 <SelectComponent
                   label="Estado"
-                  onChange={handleStateChange}
-                  selectedOption={handleStateChange}
-                  labelSelect={address.uf ? address.uf : state}
+                  onChange={(value) =>
+                    setFormValues({ ...formValues, state: value })
+                  }
+                  selectedOption={(value) =>
+                    setFormValues({ ...formValues, state: value })
+                  }
+                  labelSelect={address.uf ? address.uf : formValues.state}
                   dataOptions={selectState}
                   disabled={address.uf !== ""}
                 />
@@ -361,9 +402,13 @@ export function UserRegisterScreen() {
               <S.GridItem>
                 <SelectComponent
                   label="Estado Civil"
-                  onChange={handleCivilStatusChange}
-                  selectedOption={handleCivilStatusChange}
-                  labelSelect={stateCivil}
+                  onChange={(value) =>
+                    setFormValues({ ...formValues, stateCivil: value })
+                  }
+                  selectedOption={(value) =>
+                    setFormValues({ ...formValues, stateCivil: value })
+                  }
+                  labelSelect={formValues.stateCivil}
                   dataOptions={selectCivilStatus}
                 />
               </S.GridItem>
@@ -380,16 +425,6 @@ export function UserRegisterScreen() {
                   label="Data de Nascimento"
                 />
               </S.GridItem>
-
-              <S.GridItem>
-                <SelectComponent
-                  label="Categoria"
-                  onChange={handleCategoryChange}
-                  selectedOption={handleCategoryChange}
-                  labelSelect={category}
-                  dataOptions={selectCategory}
-                />
-              </S.GridItem>
             </S.GridForm>
 
             <S.FooterFields>
@@ -397,7 +432,7 @@ export function UserRegisterScreen() {
               <ButtonComponent
                 title="Cadastrar"
                 onPress={submitRegister}
-                width= '170px'
+                width="170px"
               />
             </S.FooterFields>
           </Fragment>
@@ -411,7 +446,7 @@ export function UserRegisterScreen() {
         <DefaultContentModalComponent
           closeModal={setConfirmRegisterModal}
           type="register"
-          data={name}
+          data={formValues.name}
         />
       </ModalComponent>
     </Fragment>

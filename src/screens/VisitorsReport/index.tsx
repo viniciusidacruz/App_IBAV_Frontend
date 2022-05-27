@@ -53,7 +53,6 @@ export function VisitorsReportScreen() {
       })
       .catch(()=> setLoading(false))
     },[isAddVisible, ID_CELULA])
-    console.log(visitantes, 'visitantes')
   
    const { state, dispatch } = useFormReport();
 
@@ -221,7 +220,6 @@ export function VisitorsReportScreen() {
               <ButtonComponent
                 title={ButtonsText.ADD_VISITOR}
                 onPress={handleOpenModalAdd}
-                small
               />
             </S.FinishForm>
 
