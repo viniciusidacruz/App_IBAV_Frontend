@@ -17,7 +17,7 @@ import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
-import initialValueRegisterUser from "../../common/utils/initialValues";
+import { initialValuesRequestCep, initialValueRegisterUser } from "../../common/utils/initialValues";
 
 import {
   selectState,
@@ -25,8 +25,8 @@ import {
   selectCivilStatus,
 } from "../../common/utils/selects";
 
-import { IAddress } from "../Register/types";
 import { IDataUser } from "./types";
+import IAddress from "../../types/initialValues";
 
 import * as S from "./styles";
 
@@ -34,23 +34,11 @@ export function UserRegisterScreen() {
   const [users, setUsers] = useState([]);
   const [office, setOffice] = useState("Selecionar");
   const [showCalender, setShowCalender] = useState(false);
+  const [address, setAddress] = useState(initialValuesRequestCep);
   const [selectNetwork, setSelectNetwork] = useState("Selecionar");
   const [selectDisciples, setSelectDisciples] = useState("Selecionar");
   const [formValues, setFormValues] = useState(initialValueRegisterUser);
   const [confirmRegisterModal, setConfirmRegisterModal] = useState(false);
-
-  const [address, setAddress] = useState<IAddress>({
-    uf: "",
-    cep: "",
-    ddd: "",
-    gia: "",
-    ibge: "",
-    siafi: "",
-    bairro: "",
-    logradouro: "",
-    localidade: "",
-    complemento: "",
-  });
 
   const { state: stateReducer, dispatch } = useFormReport();
 
@@ -67,6 +55,7 @@ export function UserRegisterScreen() {
 
   const usersMinister =
     users && users.filter((minister: IDataUser) => minister.cargo === "pastor");
+  
   const usersDisciples =
     users &&
     users.filter((discipler: IDataUser) => discipler.cargo === "discipulador");
