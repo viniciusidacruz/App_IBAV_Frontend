@@ -17,7 +17,10 @@ import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
-import { initialValuesRequestCep, initialValueRegisterUser } from "../../common/utils/initialValues";
+import {
+  initialValuesRequestCep,
+  initialValueRegisterUser,
+} from "../../common/utils/initialValues";
 
 import {
   selectState,
@@ -55,7 +58,7 @@ export function UserRegisterScreen() {
 
   const usersMinister =
     users && users.filter((minister: IDataUser) => minister.cargo === "pastor");
-  
+
   const usersDisciples =
     users &&
     users.filter((discipler: IDataUser) => discipler.cargo === "discipulador");
@@ -147,6 +150,62 @@ export function UserRegisterScreen() {
 
   const submitRegister = () => {
     setConfirmRegisterModal(true);
+
+    try {
+      if (office === "pastor de rede") {
+        connectApi.post("/users.json", {
+          cargo: "pastor",
+          cep: address.cep,
+          nome: formValues.name,
+          bairro: address.bairro,
+          email: formValues.email,
+          estado: formValues.state,
+          rede: formValues.network,
+          cidade: address.localidade,
+          senha: formValues.password,
+          telefone: formValues.phone,
+          endereco: address.logradouro,
+          numero_casa: formValues.numberHouse,
+          estado_civil: formValues.stateCivil,
+          data_de_nascimento: stateReducer.textRegister,
+        });
+      } else if (office === "discipulador") {
+        connectApi.post("/users.json", {
+          cargo: "discipulador",
+          cep: address.cep,
+          nome: formValues.name,
+          bairro: address.bairro,
+          email: formValues.email,
+          estado: formValues.state,
+          cidade: address.localidade,
+          senha: formValues.password,
+          telefone: formValues.phone,
+          endereco: address.logradouro,
+          estado_civil: formValues.stateCivil,
+          numero_casa: formValues.numberHouse,
+          data_de_nascimento: stateReducer.textRegister,
+        });
+      } else {
+        connectApi.post("/users.json", {
+          cargo: "lider de celula",
+          cep: address.cep,
+          nome: formValues.name,
+          bairro: address.bairro,
+          email: formValues.email,
+          estado: formValues.state,
+          cidade: address.localidade,
+          senha: formValues.password,
+          telefone: formValues.phone,
+          endereco: address.logradouro,
+          estado_civil: formValues.stateCivil,
+          numero_casa: formValues.numberHouse,
+          numero_celula: formValues.numberCelula,
+          data_de_nascimento: stateReducer.textRegister,
+        });
+      }
+    } catch (err) {
+      throw new Error("Ops, algo deu errado!");
+    }
   };
 
   const renderSelectsOptions = () => {
@@ -176,7 +235,7 @@ export function UserRegisterScreen() {
                 dataOptions={optionsNetwork && optionsNetwork}
               />
             </S.GridSelect>
-  
+
             <S.GridSelect>
               <SelectComponent
                 label="Discipulado"
