@@ -178,7 +178,7 @@ export function SendReportScreen() {
   })
   const celulaAdm = filtrandoDiscipulado.map((item: any) => {
     return {
-      value: `${item.celula} - ${item.lider}`
+      value: `${item.numero_celula} - ${item.lider}`
     }
   })
   //
@@ -207,7 +207,7 @@ export function SendReportScreen() {
 
   const celulaPastor = filtrandoDiscipuladoPastorSelect.map((item: any) => {
     return {
-      value: `${item.celula} - ${item.lider}`
+      value: `${item.numero_celula} - ${item.lider}`
     }
   })
   //
@@ -215,7 +215,7 @@ export function SendReportScreen() {
     celulaFiltered &&
     celulaFiltered.map((celulaIdentify: IContentProps) => {
       return {
-        value: `${celulaIdentify?.celula} - ${celulaIdentify.lider}`,
+        value: `${celulaIdentify?.numero_celula} - ${celulaIdentify.lider}`,
       };
     });
 
@@ -283,7 +283,7 @@ export function SendReportScreen() {
         return (
           <>
             <S.Grid>
-              <TitleComponent title={`${FormFields.REDE}:`} small primary />
+              <TitleComponent title={`${FormFields.NETWORK}:`} small primary />
               <S.ContentC>
                 <S.IconC name="vector-square" />
                 <SelectComponent

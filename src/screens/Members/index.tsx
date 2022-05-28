@@ -42,7 +42,7 @@ export function MembersScreen(this: any) {
     const filterMembers =
       celulas &&
       celulas.filter((item: any) => {
-        return item[1].celula === identifyCelula;
+        return item[1].numero_celula === identifyCelula;
       });
 
     if (filterMembers) {
@@ -62,16 +62,16 @@ export function MembersScreen(this: any) {
   }
 
   const deleteMember = () => {
-      try {
-        connectApi.delete(`/celulas/${idCelula}/membros/${id}.json`)
-          .then(() => {
-            setUpdateMembers(!updateMembers)
-            setSendModal(false)
-            setTimeout(timeModal, 300)
-          })
-      } catch (err) {
-        alert(err)
-      }
+    try {
+      connectApi.delete(`/celulas/${idCelula}/membros/${id}.json`)
+        .then(() => {
+          setUpdateMembers(!updateMembers)
+          setSendModal(false)
+          setTimeout(timeModal, 300)
+        })
+    } catch (err) {
+      alert(err)
+    }
   }
 
   return (
