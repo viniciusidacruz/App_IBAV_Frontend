@@ -27,10 +27,10 @@ import { ApprovalRequest } from "../../components/Modal/ApprovalRequest";
 export function MembersScreen(this: any) {
   const [members, setMembers] = useState<any>([]);
   const [sendModal, setSendModal] = useState(false);
-  const [modalConcluded, setModalConcluded] = useState(false)
+  const [modalConcluded, setModalConcluded] = useState(false);
   const [name, setName] = useState<string>();
   const [id, setId] = useState<any>();
-  const [updateMembers, setUpdateMembers] = useState<boolean>(true)
+  const [updateMembers, setUpdateMembers] = useState<boolean>(true);
 
   const { data: celulas, isFetching: loading } = useFetch("celulas.json");
   const { user } = useUserFiltered();
@@ -38,12 +38,18 @@ export function MembersScreen(this: any) {
 
   const identifyCelula = user && user[0][1].numero_celula;
 
+  console.log("user", user);
+  console.log("identifyCelula", identifyCelula);
+
   useEffect(() => {
     const filterMembers =
       celulas &&
       celulas.filter((item: any) => {
+        console.log("item", item[1].numero_celula);
         return item[1].numero_celula === identifyCelula;
       });
+
+    console.log("filterMembers", filterMembers);
 
     if (filterMembers) {
       setMembers(filterMembers);
@@ -52,27 +58,26 @@ export function MembersScreen(this: any) {
         JSON.stringify(filterMembers)
       );
     }
-
   }, [identifyCelula, celulas, updateMembers]);
 
-  const idCelula = members && members.length > 0 && Object.entries(members[0])[0][1]
+  const idCelula =
+    members && members.length > 0 && Object.entries(members[0])[0][1];
 
   const timeModal = () => {
-    setModalConcluded(true)
-  }
+    setModalConcluded(true);
+  };
 
   const deleteMember = () => {
     try {
-      connectApi.delete(`/celulas/${idCelula}/membros/${id}.json`)
-        .then(() => {
-          setUpdateMembers(!updateMembers)
-          setSendModal(false)
-          setTimeout(timeModal, 300)
-        })
+      connectApi.delete(`/celulas/${idCelula}/membros/${id}.json`).then(() => {
+        setUpdateMembers(!updateMembers);
+        setSendModal(false);
+        setTimeout(timeModal, 300);
+      });
     } catch (err) {
-      alert(err)
+      alert(err);
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -81,10 +86,10 @@ export function MembersScreen(this: any) {
         <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
         <ButtonComponent
           title="Cadastrar"
-          onPress={() => { }}
-          width='136px'
-          heigth='33px'
-          size='12px'
+          onPress={() => {}}
+          width="136px"
+          heigth="33px"
+          size="12px"
           icon="user-plus"
         />
         <NotificationComponent />
@@ -122,7 +127,7 @@ export function MembersScreen(this: any) {
                         delMember={() => {
                           setSendModal(true),
                             setName(item[1].nome),
-                            setId(item[0])
+                            setId(item[0]);
                         }}
                       />
                     </Fragment>
@@ -140,7 +145,7 @@ export function MembersScreen(this: any) {
           name={name}
           cancel={() => setSendModal(false)}
           confirm={() => {
-            deleteMember()
+            deleteMember();
           }}
         />
       </ModalComponent>

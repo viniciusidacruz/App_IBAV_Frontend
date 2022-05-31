@@ -5,7 +5,7 @@ import { connectApi } from "../common/services/ConnectApi";
 export function useFetch<T = unknown>(
   url: string,
   options?: AxiosRequestConfig,
-  stateActualize?: any,
+  stateActualize?: any
 ) {
   const [data, setData] = useState<T | any>(null);
   const [isFetching, setIsFetching] = useState(true);
@@ -23,7 +23,7 @@ export function useFetch<T = unknown>(
       .finally(() => {
         setIsFetching(false);
       });
-  }, [data]);
+  }, [stateActualize]);
 
   return { data, isFetching, error };
 }
