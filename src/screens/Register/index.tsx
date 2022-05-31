@@ -70,7 +70,7 @@ export function RegisterScreen() {
     const filterMembers =
       celulas &&
       celulas.filter((item: any) => {
-        return celulas.celula === identifyCelula;
+        return celulas.numero_celula === identifyCelula;
       });
 
     if (filterMembers) {
@@ -291,7 +291,7 @@ export function RegisterScreen() {
   const filtrandoRedes = celulas.filter((item: any) => {
     return item.rede === state.redeSelect
   })
-  
+
   const discipulado = filtrandoRedes.map((item: any) =>
     (item.discipulador))
 
@@ -308,10 +308,10 @@ export function RegisterScreen() {
   const filtrandoDiscipulado = celulas.filter((item: any) => {
     return item.discipulador === state.discipuladoSelect && item.rede === state.redeSelect
   })
-  
+
   const celulaAdm = filtrandoDiscipulado.map((item: any) => {
     return {
-      value: `${item.celula} - ${item.lider}`
+      value: `${item.numero_celula} - ${item.lider}`
     }
   })
 

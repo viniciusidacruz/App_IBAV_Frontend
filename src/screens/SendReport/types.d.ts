@@ -1,4 +1,4 @@
 export interface IContentProps {
-  celula: string;
+  numero_celula: string;
   lider: string;
 }

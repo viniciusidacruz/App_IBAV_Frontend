@@ -44,7 +44,8 @@ export function MembersReportScreen() {
 
   const dataUser = user && user[0] && user[0][1];
   const identifyCelula = user && user[0][1].numero_celula;
-  const idCelulaSelect = state.celulaSelect && state.celulaSelect.split(" -")[0];
+  const idCelulaSelect =
+    state.celulaSelect && state.celulaSelect.split(" -")[0];
   const whatIsOffice = dataUser && dataUser.cargo;
 
   useEffect(() => {
@@ -52,7 +53,8 @@ export function MembersReportScreen() {
       celulas &&
       celulas.filter((item: any) => {
         return (
-          item[1].celula === identifyCelula || item[1].celula === idCelulaSelect
+          item[1].numero_celula == identifyCelula ||
+          item[1].numero_celula == idCelulaSelect
         );
       });
 
@@ -130,35 +132,35 @@ export function MembersReportScreen() {
         <S.Loading source={loadingGif} />
       ) : (
         <ScrollView>
-        <S.Content>
-          {whatIsOffice !== "lider" && (
-            <S.Heading>
-              <S.Title>Célula</S.Title>
-              <S.Subtitle>{state.celulaSelect}</S.Subtitle>
-            </S.Heading>
-          )}
+          <S.Content>
+            {whatIsOffice !== "lider" && (
+              <S.Heading>
+                <S.Title>Célula</S.Title>
+                <S.Subtitle>{state.celulaSelect}</S.Subtitle>
+              </S.Heading>
+            )}
 
-          <HeadingPresentComponent />
+            <HeadingPresentComponent />
 
-          <ScrollView>
-            {newArrayMembers &&
-              newArrayMembers.map((data: any) => (
-                <CardMembersComponent
-                  key={data}
-                  data={data}
-                  setSelectPerson={setSelectPerson}
-                />
-              ))}
-          </ScrollView>
-          <FooterInfoComponent />
+            <ScrollView>
+              {newArrayMembers &&
+                newArrayMembers.map((data: any) => (
+                  <CardMembersComponent
+                    key={data}
+                    data={data}
+                    setSelectPerson={setSelectPerson}
+                  />
+                ))}
+            </ScrollView>
+            <FooterInfoComponent />
 
-          <S.Button>
-            <ButtonComponent
-              title={ButtonsText.REPORT}
-              onPress={handleOpenModal}
-            />
-          </S.Button>
-        </S.Content>
+            <S.Button>
+              <ButtonComponent
+                title={ButtonsText.REPORT}
+                onPress={handleOpenModal}
+              />
+            </S.Button>
+          </S.Content>
         </ScrollView>
       )}
 
