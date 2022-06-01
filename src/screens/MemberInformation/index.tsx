@@ -31,14 +31,9 @@ export function MembersInformation(this: any, { navigation, route }: any) {
     const [address, setAddress] = useState(route.params?.endereco || "");
     const [district, setDistrict] = useState(route.params?.bairro || "");
     const [number, setNumber] = useState(route.params?.numero_casa ? route.params?.numero_casa : FormFields.NUMBER );
-    const [birthday, setBirthday] = useState(
-        route.params?.data_de_nascimento || ""
-    );
-    const [civilStatus, setCivilStatus] = useState(
-        route.params?.estado_civil || ""
-    );
+    const [birthday, setBirthday] = useState(route.params?.data_de_nascimento || "");
+    const [civilStatus, setCivilStatus] = useState(route.params?.estado_civil || "");
     const [date, setDate] = useState(new Date())
-    const [selectDate, setSelectDate] = useState<any>("Selecione uma data")
 
     const showMode = () => {
         setShowCalender(true);
@@ -58,31 +53,18 @@ export function MembersInformation(this: any, { navigation, route }: any) {
             tempDate.getFullYear();
 
         setDate(currentDate)
-        setSelectDate(newDate)
-        // setBirthday(newDate)
+        setBirthday(newDate)
 
     };
 
 
     const submitRegister = () => {
         try {
-            connectApi.patch
+            connectApi.put(``, {
+                
+            })
         } catch (err) { }
     };
-
-    // const waitingDeletion = async () => {
-    //     try {
-    //       await connectApi.patch(`/celulas/${idCelula}/membros/${id}.json`, {
-    //         aguardando_exclusao: true
-    //       })
-    //         .then(() => {
-    //           setSendModal(false)
-    //           setTimeout(timeModal, 300)
-    //         })
-    //     } catch (err) {
-    //       alert(err)
-    //     }
-    //   }
 
     return (
         <>
@@ -194,7 +176,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                         <S.GridForm>
                             <S.GridItem>
                                 <DateComponent
-                                    text={selectDate}
+                                    text={birthday}
                                     open={showMode}
                                     showCalender={showCalender}
                                     dataDados={date}
