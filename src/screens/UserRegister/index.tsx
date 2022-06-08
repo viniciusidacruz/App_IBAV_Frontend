@@ -1,5 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 
 import { DateComponent } from "../../components/Date";
 import { ModalComponent } from "../../components/Modal";
@@ -13,11 +15,15 @@ import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 import FormFields from "../../common/constants/form";
+import { firebaseConfig } from "../../config/firebase";
 import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
 import MenuNavigation from "../../common/constants/navigation";
-import initialValueRegisterUser from "../../common/utils/initialValues";
+import {
+  initialValuesRequestCep,
+  initialValueRegisterUser,
+} from "../../common/utils/initialValues";
 
 import {
   selectState,
@@ -25,8 +31,8 @@ import {
   selectCivilStatus,
 } from "../../common/utils/selects";
 
-import { IAddress } from "../Register/types";
 import { IDataUser } from "./types";
+import IAddress from "../../types/initialValues";
 
 import * as S from "./styles";
 
@@ -34,25 +40,15 @@ export function UserRegisterScreen() {
   const [users, setUsers] = useState([]);
   const [office, setOffice] = useState("Selecionar");
   const [showCalender, setShowCalender] = useState(false);
+  const [address, setAddress] = useState(initialValuesRequestCep);
   const [selectNetwork, setSelectNetwork] = useState("Selecionar");
   const [selectDisciples, setSelectDisciples] = useState("Selecionar");
   const [formValues, setFormValues] = useState(initialValueRegisterUser);
   const [confirmRegisterModal, setConfirmRegisterModal] = useState(false);
 
-  const [address, setAddress] = useState<IAddress>({
-    uf: "",
-    cep: "",
-    ddd: "",
-    gia: "",
-    ibge: "",
-    siafi: "",
-    bairro: "",
-    logradouro: "",
-    localidade: "",
-    complemento: "",
-  });
-
   const { state: stateReducer, dispatch } = useFormReport();
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
   useEffect(() => {
     const getCelulas = async () => {
@@ -67,6 +63,7 @@ export function UserRegisterScreen() {
 
   const usersMinister =
     users && users.filter((minister: IDataUser) => minister.cargo === "pastor");
+
   const usersDisciples =
     users &&
     users.filter((discipler: IDataUser) => discipler.cargo === "discipulador");
@@ -156,8 +153,75 @@ export function UserRegisterScreen() {
     });
   };
 
-  const submitRegister = () => {
-    setConfirmRegisterModal(true);
+  const registerUser = () => {
+    const { email, password } = formValues;
+
+    createUserWithEmailAndPassword(auth, email, password);
+    credentialsPost();
+  };
+
+  const credentialsPost = () => {
+    try {
+      if (office === "pastor de rede") {
+        connectApi
+          .post("/users.json", {
+            cargo: "pastor",
+            cep: address.cep,
+            nome: formValues.name,
+            bairro: address.bairro,
+            email: formValues.email,
+            estado: address.uf ? address.uf : formValues.state,
+            rede: formValues.network,
+            cidade: address.localidade,
+            senha: formValues.password,
+            telefone: formValues.phone,
+            endereco: address.logradouro,
+            numero_casa: formValues.numberHouse,
+            estado_civil: formValues.stateCivil,
+            data_de_nascimento: stateReducer.textRegister,
+          })
+          .then(() => setConfirmRegisterModal(true));
+      } else if (office === "discipulador") {
+        connectApi
+          .post("/users.json", {
+            cargo: "discipulador",
+            cep: address.cep,
+            nome: formValues.name,
+            bairro: address.bairro,
+            email: formValues.email,
+            estado: address.uf ? address.uf : formValues.state,
+            cidade: address.localidade,
+            senha: formValues.password,
+            telefone: formValues.phone,
+            endereco: address.logradouro,
+            estado_civil: formValues.stateCivil,
+            numero_casa: formValues.numberHouse,
+            data_de_nascimento: stateReducer.textRegister,
+          })
+          .then(() => setConfirmRegisterModal(true));
+      } else {
+        connectApi
+          .post("/users.json", {
+            cargo: "lider de celula",
+            cep: address.cep,
+            nome: formValues.name,
+            bairro: address.bairro,
+            email: formValues.email,
+            estado: address.uf ? address.uf : formValues.state,
+            cidade: address.localidade,
+            senha: formValues.password,
+            telefone: formValues.phone,
+            endereco: address.logradouro,
+            estado_civil: formValues.stateCivil,
+            numero_casa: formValues.numberHouse,
+            numero_celula: formValues.numberCelula,
+            data_de_nascimento: stateReducer.textRegister,
+          })
+          .then(() => setConfirmRegisterModal(true));
+      }
+    } catch (err) {
+      throw new Error("Ops, algo deu errado!");
+    }
   };
 
   const renderSelectsOptions = () => {
@@ -187,7 +251,7 @@ export function UserRegisterScreen() {
                 dataOptions={optionsNetwork && optionsNetwork}
               />
             </S.GridSelect>
-  
+
             <S.GridSelect>
               <SelectComponent
                 label="Discipulado"
@@ -431,7 +495,7 @@ export function UserRegisterScreen() {
               <S.Required>* Campos obrigatórios</S.Required>
               <ButtonComponent
                 title="Cadastrar"
-                onPress={submitRegister}
+                onPress={registerUser}
                 width="170px"
               />
             </S.FooterFields>
