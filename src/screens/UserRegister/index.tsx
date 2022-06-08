@@ -11,7 +11,7 @@ import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputMaskComponent } from "../../components/InputMask";
 import { InputFieldComponent } from "../../components/InputField";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 import FormFields from "../../common/constants/form";
@@ -306,7 +306,7 @@ export function UserRegisterScreen() {
           <ComeBackComponent />
           <S.TitlePage>{MenuNavigation.REGISTER_USERS}</S.TitlePage>
         </S.ComeBack>
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
 
       <S.Main>

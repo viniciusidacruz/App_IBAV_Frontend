@@ -7,7 +7,7 @@ import { HeaderComponent } from "../../components/Header";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { PersonLabelComponent } from "../../components/PersonLabel";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -86,13 +86,13 @@ export function MembersScreen(this: any) {
         <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
         <ButtonComponent
           title="Cadastrar"
-          onPress={() => {}}
+          onPress={() => { }}
           width="136px"
           heigth="33px"
           size="12px"
           icon="user-plus"
         />
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
       <ScrollView>
         <S.Container>

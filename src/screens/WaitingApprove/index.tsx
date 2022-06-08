@@ -6,7 +6,7 @@ import MenuNavigation from "../../common/constants/navigation";
 
 import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -81,7 +81,7 @@ export function WaitingApproveScreen() {
           <S.TitlePage>{MenuNavigation.PENDING}</S.TitlePage>
         </S.ComeBack>
 
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
 
       {loading ? (

@@ -12,7 +12,7 @@ import { ComeBackComponent } from "../../components/ComeBack";
 import { FooterInfoComponent } from "../../components/FooterInfo";
 import { NavigationComponent } from "../../components/Navigation";
 // import { InputFieldComponent } from "../../components/InputField";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
@@ -42,7 +42,7 @@ export function VisitorsReportScreen() {
   const [selectPerson, setSelectPerson] = useState<
     ISelectedUserProps | undefined
   >(undefined);
-  
+
   const { state, dispatch } = useFormReport();
 
   const ID_CELULA =
@@ -55,7 +55,7 @@ export function VisitorsReportScreen() {
         setVisitantes(Object.values(response.data));
         setLoading(false)
       })
-  
+
       .catch(() => setLoading(false))
   }, [ID_CELULA])
 
@@ -186,7 +186,7 @@ export function VisitorsReportScreen() {
       <HeaderComponent>
         <ComeBackComponent />
         <NavigationComponent visitors />
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
 
       {loading ? (

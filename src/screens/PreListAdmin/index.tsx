@@ -6,7 +6,7 @@ import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
 import { IPropsAppStack } from "../../routes/AppStack/types";
@@ -26,7 +26,7 @@ export function PreListAdminScreen() {
         </S.HeadingIcons>
 
         <S.Buttons>
-          <NotificationComponent />
+          {/* <NotificationComponent /> */}
 
           <TouchableOpacity onPress={() => handleSignOut()}>
             <S.Logout name="logout" />
