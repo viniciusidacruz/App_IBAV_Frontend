@@ -45,6 +45,12 @@ export function DefaultContentModalComponent({
           <S.SubDescription>O cadastro foi para aprovação.</S.SubDescription>
         </S.InfoModal>
       )}
+
+      {type === "edited" && (
+          <S.Description>
+            Cadastro de <S.Name>{data}</S.Name> editado com sucesso
+          </S.Description>
+      )}
       <S.Success name="verified" />
     </S.ContentModal>
   );

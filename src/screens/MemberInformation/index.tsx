@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView } from 'react-native';
+import useUserFiltered from "../../hooks/useUserFiltered";
+import RequestService from "../../common/services/RequestService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GetStorage } from "../../common/constants/storage";
 
 import { DateComponent } from "../../components/Date";
 import { ModalComponent } from "../../components/Modal";
@@ -18,7 +22,7 @@ import * as S from "./styles";
 import { selectCategory, selectCivilStatus, selectState } from "../../common/utils/selects";
 import { connectApi } from "../../common/services/ConnectApi";
 
-export function MembersInformation(this: any, { navigation, route }: any) {
+export function MembersInformation(this: any, { route }: any) {
     const [successModal, setSuccessModal] = useState(false);
     const [showCalender, setShowCalender] = useState(false);
     const [cep, setCep] = useState(route.params?.cep || "");
@@ -30,10 +34,55 @@ export function MembersInformation(this: any, { navigation, route }: any) {
     const [phone, setPhone] = useState(route.params?.telefone || "");
     const [address, setAddress] = useState(route.params?.endereco || "");
     const [district, setDistrict] = useState(route.params?.bairro || "");
-    const [number, setNumber] = useState(route.params?.numero_casa ? route.params?.numero_casa : FormFields.NUMBER );
     const [birthday, setBirthday] = useState(route.params?.data_de_nascimento || "");
     const [civilStatus, setCivilStatus] = useState(route.params?.estado_civil || "");
+
     const [date, setDate] = useState(new Date())
+    const [celulas, setCelulas] = useState<any>()
+    const [members, setMembers] = useState<any>([]);
+    const [id, setId] = useState()
+
+    const { user } = useUserFiltered();
+    
+    useEffect(() => {
+        const idMember = route.params?.id && route.params?.id
+        setId(idMember)
+    },[])
+    
+    // console.log(id, 'id vindo')
+
+    const identifyCelula = user && user[0][1].numero_celula;
+
+    const serviceGet = new RequestService()
+
+    const idCelula =
+    members && members.length > 0 && Object.entries(members[0])[0][1];
+
+    useEffect(() => {
+        const getCelulas = async () => {
+          await serviceGet.getCelulas().then((response) =>{
+            setCelulas(Object.entries(response))
+          })
+        }
+    
+        getCelulas()
+      }, [celulas])
+
+      useEffect(() => {
+        const filterMembers =
+          celulas &&
+          celulas.filter((item: any) => {
+            return item[1].numero_celula == identifyCelula;
+          });
+    
+        if (filterMembers) {
+          setMembers(filterMembers);
+          AsyncStorage.setItem(
+            GetStorage.MEMBERS_FILTERED,
+            JSON.stringify(filterMembers)
+          );
+        }
+      }, [identifyCelula, celulas]);
 
     const showMode = () => {
         setShowCalender(true);
@@ -57,13 +106,29 @@ export function MembersInformation(this: any, { navigation, route }: any) {
 
     };
 
+    const timeModal = () => {
+        setSuccessModal(true);
+      };
 
     const submitRegister = () => {
         try {
-            connectApi.put(``, {
-                
+            connectApi.put(`/celulas/${idCelula}/membros/${id}.json`, {
+                nome: name,
+                status: status,
+                telefone: phone,
+                email: email,
+                endereco: address,
+                cep: cep,
+                bairro: district,
+                cidade: city,
+                estado: state,
+                data_de_nascimento: birthday,
+                estado_civil: civilStatus
             })
-        } catch (err) { }
+            setTimeout(timeModal, 300);
+        } catch (err) {
+            alert('deu ruim')
+        }
     };
 
     return (
@@ -108,25 +173,25 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                         </S.GridItemFull>
 
                         <S.GridForm>
-                            <S.GridItemLarge>
+                            <S.GridItem>
                                 <InputFieldComponent
                                     primary
-                                    value={address ? FormFields.ADDRESS : address }
+                                    value={address && address}
                                     placeholder={FormFields.ADDRESS}
                                     onChangeText={(value) => setAddress(value)}
                                     label="Endereço"
                                 />
-                            </S.GridItemLarge>
+                            </S.GridItem>
 
-                            <S.GridItemSmall>
+                            <S.GridItem>
                                 <InputFieldComponent
                                     primary
-                                    value={number === "undefined" ? FormFields.NUMBER : number}
-                                    placeholder={FormFields.NUMBER}
-                                    onChangeText={(value) => setNumber(value)}
-                                    label="Nº"
+                                    value={cep === "undefined" ? FormFields.CEP : cep}
+                                    placeholder={FormFields.CEP}
+                                    onChangeText={(value) => setCep(value)}
+                                    label="Cep"
                                 />
-                            </S.GridItemSmall>
+                            </S.GridItem>
                         </S.GridForm>
 
                         <S.GridForm>
@@ -216,7 +281,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                 <DefaultContentModalComponent
                     closeModal={setSuccessModal}
                     data={name}
-                    type="register"
+                    type="edited"
                 />
             </ModalComponent>
         </>

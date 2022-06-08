@@ -11,7 +11,6 @@ import { NotificationComponent } from "../../components/Notification";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
-import { useFetch } from "../../hooks/useFetch";
 import useUserFiltered from "../../hooks/useUserFiltered";
 import { GetStorage } from "../../common/constants/storage";
 import MenuNavigation from "../../common/constants/navigation";
@@ -31,7 +30,6 @@ export function MembersScreen(this: any) {
   const [modalConcluded, setModalConcluded] = useState(false);
   const [name, setName] = useState<string>();
   const [id, setId] = useState<any>();
-  const [updateMembers, setUpdateMembers] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false)
   const [celulas, setCelulas] = useState<any>()
 
@@ -69,7 +67,7 @@ export function MembersScreen(this: any) {
         JSON.stringify(filterMembers)
       );
     }
-  }, [identifyCelula, celulas, updateMembers]);
+  }, [identifyCelula, celulas]);
 
 
 
@@ -80,7 +78,6 @@ export function MembersScreen(this: any) {
   const deleteMember = () => {
     try {
       connectApi.delete(`/celulas/${idCelula}/membros/${id}.json`).then(() => {
-        setUpdateMembers(!updateMembers);
         setSendModal(false);
         setTimeout(timeModal, 300);
       });
@@ -132,6 +129,7 @@ export function MembersScreen(this: any) {
                             data_de_nascimento: `${item[1].data_de_nascimento}`,
                             status: `${item[1].status}`,
                             numero_casa: `${item[1].numero_casa}`,
+                            id: `${item[0]}`
                           })
                         }
                         delMember={() => {
