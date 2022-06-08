@@ -1,5 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 
 import { DateComponent } from "../../components/Date";
 import { ModalComponent } from "../../components/Modal";
@@ -13,6 +15,7 @@ import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 import FormFields from "../../common/constants/form";
+import { firebaseConfig } from "../../config/firebase";
 import { useFormReport } from "../../hooks/useFormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import { FormReportActions } from "../../contexts/FormReport";
@@ -44,6 +47,8 @@ export function UserRegisterScreen() {
   const [confirmRegisterModal, setConfirmRegisterModal] = useState(false);
 
   const { state: stateReducer, dispatch } = useFormReport();
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
   useEffect(() => {
     const getCelulas = async () => {
@@ -148,60 +153,71 @@ export function UserRegisterScreen() {
     });
   };
 
-  const submitRegister = () => {
-    setConfirmRegisterModal(true);
+  const registerUser = () => {
+    const { email, password } = formValues;
 
+    createUserWithEmailAndPassword(auth, email, password);
+    credentialsPost();
+  };
+
+  const credentialsPost = () => {
     try {
       if (office === "pastor de rede") {
-        connectApi.post("/users.json", {
-          cargo: "pastor",
-          cep: address.cep,
-          nome: formValues.name,
-          bairro: address.bairro,
-          email: formValues.email,
-          estado: formValues.state,
-          rede: formValues.network,
-          cidade: address.localidade,
-          senha: formValues.password,
-          telefone: formValues.phone,
-          endereco: address.logradouro,
-          numero_casa: formValues.numberHouse,
-          estado_civil: formValues.stateCivil,
-          data_de_nascimento: stateReducer.textRegister,
-        });
+        connectApi
+          .post("/users.json", {
+            cargo: "pastor",
+            cep: address.cep,
+            nome: formValues.name,
+            bairro: address.bairro,
+            email: formValues.email,
+            estado: address.uf ? address.uf : formValues.state,
+            rede: formValues.network,
+            cidade: address.localidade,
+            senha: formValues.password,
+            telefone: formValues.phone,
+            endereco: address.logradouro,
+            numero_casa: formValues.numberHouse,
+            estado_civil: formValues.stateCivil,
+            data_de_nascimento: stateReducer.textRegister,
+          })
+          .then(() => setConfirmRegisterModal(true));
       } else if (office === "discipulador") {
-        connectApi.post("/users.json", {
-          cargo: "discipulador",
-          cep: address.cep,
-          nome: formValues.name,
-          bairro: address.bairro,
-          email: formValues.email,
-          estado: formValues.state,
-          cidade: address.localidade,
-          senha: formValues.password,
-          telefone: formValues.phone,
-          endereco: address.logradouro,
-          estado_civil: formValues.stateCivil,
-          numero_casa: formValues.numberHouse,
-          data_de_nascimento: stateReducer.textRegister,
-        });
+        connectApi
+          .post("/users.json", {
+            cargo: "discipulador",
+            cep: address.cep,
+            nome: formValues.name,
+            bairro: address.bairro,
+            email: formValues.email,
+            estado: address.uf ? address.uf : formValues.state,
+            cidade: address.localidade,
+            senha: formValues.password,
+            telefone: formValues.phone,
+            endereco: address.logradouro,
+            estado_civil: formValues.stateCivil,
+            numero_casa: formValues.numberHouse,
+            data_de_nascimento: stateReducer.textRegister,
+          })
+          .then(() => setConfirmRegisterModal(true));
       } else {
-        connectApi.post("/users.json", {
-          cargo: "lider de celula",
-          cep: address.cep,
-          nome: formValues.name,
-          bairro: address.bairro,
-          email: formValues.email,
-          estado: formValues.state,
-          cidade: address.localidade,
-          senha: formValues.password,
-          telefone: formValues.phone,
-          endereco: address.logradouro,
-          estado_civil: formValues.stateCivil,
-          numero_casa: formValues.numberHouse,
-          numero_celula: formValues.numberCelula,
-          data_de_nascimento: stateReducer.textRegister,
-        });
+        connectApi
+          .post("/users.json", {
+            cargo: "lider de celula",
+            cep: address.cep,
+            nome: formValues.name,
+            bairro: address.bairro,
+            email: formValues.email,
+            estado: address.uf ? address.uf : formValues.state,
+            cidade: address.localidade,
+            senha: formValues.password,
+            telefone: formValues.phone,
+            endereco: address.logradouro,
+            estado_civil: formValues.stateCivil,
+            numero_casa: formValues.numberHouse,
+            numero_celula: formValues.numberCelula,
+            data_de_nascimento: stateReducer.textRegister,
+          })
+          .then(() => setConfirmRegisterModal(true));
       }
     } catch (err) {
       throw new Error("Ops, algo deu errado!");
@@ -479,7 +495,7 @@ export function UserRegisterScreen() {
               <S.Required>* Campos obrigatórios</S.Required>
               <ButtonComponent
                 title="Cadastrar"
-                onPress={submitRegister}
+                onPress={registerUser}
                 width="170px"
               />
             </S.FooterFields>
