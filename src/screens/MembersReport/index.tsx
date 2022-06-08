@@ -8,7 +8,7 @@ import { HeaderComponent } from "../../components/Header";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { NavigationComponent } from "../../components/Navigation";
 import { FooterInfoComponent } from "../../components/FooterInfo";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { CardMembersComponent } from "../../components/Cards/Members";
 import { HeadingPresentComponent } from "../../components/HeadingPresent";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
@@ -125,7 +125,7 @@ export function MembersReportScreen() {
       <HeaderComponent>
         <ComeBackComponent />
         <NavigationComponent members />
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
 
       {loading ? (

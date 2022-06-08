@@ -12,7 +12,7 @@ import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputMaskComponent } from "../../components/InputMask";
 import { InputFieldComponent } from "../../components/InputField";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 import { useFetch } from "../../hooks/useFetch";
@@ -416,7 +416,7 @@ export function RegisterScreen() {
           </S.TitlePage>
         </S.ComeBack>
 
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
 
       {loading ? (
