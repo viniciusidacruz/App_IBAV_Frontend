@@ -38,6 +38,8 @@ export interface IActions {
 export interface IContextType {
   state: IState;
   dispatch: (action: IActions) => void;
+  trigger: boolean,
+  setTrigger: (action: boolean) => void;
 }
 
 export interface IProvider {

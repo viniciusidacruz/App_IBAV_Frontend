@@ -23,6 +23,7 @@ import { RequestContentModalComponent } from "../../components/Modal/Request";
 import { connectApi } from "../../common/services/ConnectApi";
 import { ApprovalRequest } from "../../components/Modal/ApprovalRequest";
 import RequestService from "../../common/services/RequestService";
+import { useFormReport } from "../../hooks/useFormReport";
 
 export function MembersScreen(this: any) {
   const [members, setMembers] = useState<any>([]);
@@ -34,24 +35,25 @@ export function MembersScreen(this: any) {
   const [celulas, setCelulas] = useState<any>()
 
   const { user } = useUserFiltered();
+  const { trigger, setTrigger } = useFormReport()
   const navigation = useNavigation<IPropsAppStack>();
-  
+
   const identifyCelula = user && user[0][1].numero_celula;
-  
+
   const serviceGet = new RequestService()
 
   const idCelula =
-  members && members.length > 0 && Object.entries(members[0])[0][1];
+    members && members.length > 0 && Object.entries(members[0])[0][1];
 
   useEffect(() => {
     const getCelulas = async () => {
-      await serviceGet.getCelulas().then((response) =>{
+      await serviceGet.getCelulas().then((response) => {
         setCelulas(Object.entries(response))
       })
     }
 
     getCelulas()
-  }, [celulas])
+  }, [trigger])
 
   useEffect(() => {
     const filterMembers =
@@ -80,6 +82,7 @@ export function MembersScreen(this: any) {
       connectApi.delete(`/celulas/${idCelula}/membros/${id}.json`).then(() => {
         setSendModal(false);
         setTimeout(timeModal, 300);
+        setTrigger(!trigger)
       });
     } catch (err) {
       alert(err);
@@ -93,7 +96,7 @@ export function MembersScreen(this: any) {
         <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
         <ButtonComponent
           title="Cadastrar"
-          onPress={() => {}}
+          onPress={() => { }}
           width="136px"
           heigth="33px"
           size="12px"
@@ -129,7 +132,8 @@ export function MembersScreen(this: any) {
                             data_de_nascimento: `${item[1].data_de_nascimento}`,
                             status: `${item[1].status}`,
                             numero_casa: `${item[1].numero_casa}`,
-                            id: `${item[0]}`
+                            id: `${item[0]}`,
+                            active: setTrigger
                           })
                         }
                         delMember={() => {

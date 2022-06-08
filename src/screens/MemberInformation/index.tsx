@@ -21,10 +21,12 @@ import FormFields from "../../common/constants/form";
 import * as S from "./styles";
 import { selectCategory, selectCivilStatus, selectState } from "../../common/utils/selects";
 import { connectApi } from "../../common/services/ConnectApi";
+import { useFormReport } from "../../hooks/useFormReport";
 
 export function MembersInformation(this: any, { route }: any) {
     const [successModal, setSuccessModal] = useState(false);
     const [showCalender, setShowCalender] = useState(false);
+
     const [cep, setCep] = useState(route.params?.cep || "");
     const [name, setName] = useState(route.params?.nome || "");
     const [city, setCity] = useState(route.params?.cidade || "");
@@ -36,21 +38,18 @@ export function MembersInformation(this: any, { route }: any) {
     const [district, setDistrict] = useState(route.params?.bairro || "");
     const [birthday, setBirthday] = useState(route.params?.data_de_nascimento || "");
     const [civilStatus, setCivilStatus] = useState(route.params?.estado_civil || "");
+    const [id, setId] = useState(route.params?.id)
 
     const [date, setDate] = useState(new Date())
     const [celulas, setCelulas] = useState<any>()
     const [members, setMembers] = useState<any>([]);
-    const [id, setId] = useState()
+
+    console.log(route.params.active, 'active')
 
     const { user } = useUserFiltered();
-    
-    useEffect(() => {
-        const idMember = route.params?.id && route.params?.id
-        setId(idMember)
-    },[])
-    
-    // console.log(id, 'id vindo')
+    const { trigger, setTrigger } = useFormReport()
 
+    
     const identifyCelula = user && user[0][1].numero_celula;
 
     const serviceGet = new RequestService()
@@ -66,7 +65,7 @@ export function MembersInformation(this: any, { route }: any) {
         }
     
         getCelulas()
-      }, [celulas])
+      }, [])
 
       useEffect(() => {
         const filterMembers =
@@ -125,6 +124,7 @@ export function MembersInformation(this: any, { route }: any) {
                 data_de_nascimento: birthday,
                 estado_civil: civilStatus
             })
+            setTrigger(!trigger)
             setTimeout(timeModal, 300);
         } catch (err) {
             alert('deu ruim')

@@ -123,6 +123,8 @@ export function SendReportScreen() {
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
 
+  console.log(userInfo, 'userInfo')
+
   useEffect(() => {
     if (whatOffice !== "lider") {
       const getCelulas = async () => {

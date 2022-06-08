@@ -6,7 +6,7 @@ export function PersonLabelComponent({
   nome,
   status,
   onPress,
-  delMember
+  delMember,
 }: IPersonProps) {
 
   return (
