@@ -1,3 +1,5 @@
+import IAddress from "../../types/initialValues";
+
 const initialValueRegisterUser = {
     name: "",
     phone: "",
@@ -11,4 +13,17 @@ const initialValueRegisterUser = {
     numberCelula: "",
 }
 
-export default initialValueRegisterUser;
+const initialValuesRequestCep: IAddress = {
+    uf: "",
+    cep: "",
+    ddd: "",
+    gia: "",
+    ibge: "",
+    siafi: "",
+    bairro: "",
+    logradouro: "",
+    localidade: "",
+    complemento: "",
+}
+
+export { initialValueRegisterUser, initialValuesRequestCep };

@@ -7,7 +7,7 @@ import { FormReportActions } from "../../contexts/FormReport";
 import { LogoComponent } from "../../components/Logo";
 import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { SelectedMenuComponent } from "../../components/SelectedMenu";
 
 const loadingGif = require("../../assets/loader-two.gif");
@@ -26,7 +26,7 @@ export function HomeScreen() {
 
   const dataUser = user && user[0] && user[0][1];
   const whatIsOffice = dataUser && dataUser.cargo;
-  
+
   const { dispatch } = useFormReport();
   const clean = () => {
     navigation.navigate("SendReport")
@@ -60,7 +60,7 @@ export function HomeScreen() {
         <LogoComponent full />
 
         <S.Buttons>
-          <NotificationComponent />
+          {/* <NotificationComponent /> */}
 
           <TouchableOpacity onPress={signOut}>
             <S.Material name="logout" size={24} />

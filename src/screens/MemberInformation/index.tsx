@@ -12,7 +12,7 @@ import { SelectComponent } from "../../components/Select";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
 import MenuNavigation from "../../common/constants/navigation";
@@ -36,10 +36,20 @@ export function MembersInformation(this: any, { route }: any) {
     const [phone, setPhone] = useState(route.params?.telefone || "");
     const [address, setAddress] = useState(route.params?.endereco || "");
     const [district, setDistrict] = useState(route.params?.bairro || "");
+<<<<<<< HEAD
     const [birthday, setBirthday] = useState(route.params?.data_de_nascimento || "");
     const [civilStatus, setCivilStatus] = useState(route.params?.estado_civil || "");
     const [id, setId] = useState(route.params?.id)
 
+=======
+    const [number, setNumber] = useState(route.params?.numero_casa ? route.params?.numero_casa : FormFields.NUMBER);
+    const [birthday, setBirthday] = useState(
+        route.params?.data_de_nascimento || ""
+    );
+    const [civilStatus, setCivilStatus] = useState(
+        route.params?.estado_civil || ""
+    );
+>>>>>>> b8b54b51338eb4f003312b7bd97389f629025786
     const [date, setDate] = useState(new Date())
     const [celulas, setCelulas] = useState<any>()
     const [members, setMembers] = useState<any>([]);
@@ -134,7 +144,7 @@ export function MembersInformation(this: any, { route }: any) {
             <HeaderComponent>
                 <ComeBackComponent />
                 <S.Navigation>{MenuNavigation.MEMBERS}</S.Navigation>
-                <NotificationComponent />
+                {/* <NotificationComponent /> */}
             </HeaderComponent>
 
             <ScrollView>
@@ -174,7 +184,11 @@ export function MembersInformation(this: any, { route }: any) {
                             <S.GridItem>
                                 <InputFieldComponent
                                     primary
+<<<<<<< HEAD
                                     value={address && address}
+=======
+                                    value={address ? FormFields.ADDRESS : address}
+>>>>>>> b8b54b51338eb4f003312b7bd97389f629025786
                                     placeholder={FormFields.ADDRESS}
                                     onChangeText={(value) => setAddress(value)}
                                     label="Endereço"
@@ -196,7 +210,7 @@ export function MembersInformation(this: any, { route }: any) {
                             <S.GridItem>
                                 <InputFieldComponent
                                     primary
-                                    value={district === "undefined" ? FormFields.DISTRICT : district }
+                                    value={district === "undefined" ? FormFields.DISTRICT : district}
                                     placeholder={FormFields.DISTRICT}
                                     onChangeText={(value) => setDistrict(value)}
                                     label="Bairro"

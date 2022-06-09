@@ -7,7 +7,7 @@ import { HeaderComponent } from "../../components/Header";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { PersonLabelComponent } from "../../components/PersonLabel";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
@@ -102,7 +102,7 @@ export function MembersScreen(this: any) {
           size="12px"
           icon="user-plus"
         />
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
       <ScrollView>
         <S.Container>

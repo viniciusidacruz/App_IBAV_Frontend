@@ -5,17 +5,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DateComponent } from "../../components/Date";
 import { ModalComponent } from "../../components/Modal";
-import { TitleComponent } from "../../components/Title";
 import { HeaderComponent } from "../../components/Header";
 import { SelectComponent } from "../../components/Select";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputMaskComponent } from "../../components/InputMask";
 import { InputFieldComponent } from "../../components/InputField";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
-import { useFetch } from "../../hooks/useFetch";
 import FormFields from "../../common/constants/form";
 import useUserFiltered from "../../hooks/useUserFiltered";
 import { useFormReport } from "../../hooks/useFormReport";
@@ -23,6 +21,7 @@ import { GetStorage } from "../../common/constants/storage";
 import { FormReportActions } from "../../contexts/FormReport";
 import { connectApi } from "../../common/services/ConnectApi";
 import MenuNavigation from "../../common/constants/navigation";
+import { initialValuesRequestCep } from "../../common/utils/initialValues";
 import {
   selectState,
   selectCategory,
@@ -31,23 +30,12 @@ import {
 
 const loadingGif = require("../../assets/loader-two.gif");
 
-import { IAddress } from "./types";
+import IAddress from "../../types/initialValues";
 
 import * as S from "./styles";
 
 export function RegisterScreen() {
-  const [address, setAddress] = useState<IAddress>({
-    uf: "",
-    cep: "",
-    ddd: "",
-    gia: "",
-    ibge: "",
-    siafi: "",
-    bairro: "",
-    logradouro: "",
-    localidade: "",
-    complemento: "",
-  });
+  const [address, setAddress] = useState(initialValuesRequestCep);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -416,7 +404,7 @@ export function RegisterScreen() {
           </S.TitlePage>
         </S.ComeBack>
 
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
 
       {loading ? (

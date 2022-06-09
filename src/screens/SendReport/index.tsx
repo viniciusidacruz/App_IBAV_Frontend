@@ -9,7 +9,7 @@ import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { InputFieldComponent } from "../../components/InputField";
 import { NavigationComponent } from "../../components/Navigation";
-import { NotificationComponent } from "../../components/Notification";
+// import { NotificationComponent } from "../../components/Notification";
 import { ReportContentModalComponent } from "../../components/Modal/Report";
 import { DefaultContentModalComponent } from "../../components/Modal/Default";
 
@@ -330,7 +330,7 @@ export function SendReportScreen() {
       <HeaderComponent>
         <ComeBackComponent />
         <NavigationComponent data />
-        <NotificationComponent />
+        {/* <NotificationComponent /> */}
       </HeaderComponent>
 
       {loading ? (
