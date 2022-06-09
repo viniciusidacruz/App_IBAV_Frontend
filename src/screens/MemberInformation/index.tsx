@@ -44,8 +44,6 @@ export function MembersInformation(this: any, { route }: any) {
     const [celulas, setCelulas] = useState<any>()
     const [members, setMembers] = useState<any>([]);
 
-    console.log(route.params.active, 'active')
-
     const { user } = useUserFiltered();
     const { trigger, setTrigger } = useFormReport()
 
@@ -127,7 +125,7 @@ export function MembersInformation(this: any, { route }: any) {
             setTrigger(!trigger)
             setTimeout(timeModal, 300);
         } catch (err) {
-            alert('deu ruim')
+            alert(err)
         }
     };
 

@@ -123,8 +123,6 @@ export function SendReportScreen() {
   const userInfo = user && user[0][1];
   const whatOffice = userInfo && userInfo.cargo;
 
-  console.log(userInfo, 'userInfo')
-
   useEffect(() => {
     if (whatOffice !== "lider") {
       const getCelulas = async () => {
@@ -145,7 +143,6 @@ export function SendReportScreen() {
 
     setCelulaFiltered(filterCelulas);
   }, [celulas]);
-
 
   // tratativas para o usuário administrador
   const redes = celulas.map((item: any) => (item.rede))
