@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useState } from "react";
 import { IActions, IContextType, IProvider, IState } from "./types";
 
 const initialData: IState = {
@@ -120,8 +120,9 @@ const formReportReducer = (state: IState, action: IActions) => {
 };
 
 export const FormProvider = ({ children }: IProvider) => {
+  const [trigger, setTrigger] = useState(false)
   const [state, dispatch] = useReducer(formReportReducer, initialData);
-  const value = { state, dispatch };
+  const value = { state, dispatch, trigger, setTrigger };
 
   return (
     <FormReportContext.Provider value={value}>

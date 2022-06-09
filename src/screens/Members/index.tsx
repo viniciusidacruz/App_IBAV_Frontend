@@ -11,7 +11,6 @@ import { PersonLabelComponent } from "../../components/PersonLabel";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
-import { useFetch } from "../../hooks/useFetch";
 import useUserFiltered from "../../hooks/useUserFiltered";
 import { GetStorage } from "../../common/constants/storage";
 import MenuNavigation from "../../common/constants/navigation";
@@ -23,6 +22,8 @@ import { ModalComponent } from "../../components/Modal";
 import { RequestContentModalComponent } from "../../components/Modal/Request";
 import { connectApi } from "../../common/services/ConnectApi";
 import { ApprovalRequest } from "../../components/Modal/ApprovalRequest";
+import RequestService from "../../common/services/RequestService";
+import { useFormReport } from "../../hooks/useFormReport";
 
 export function MembersScreen(this: any) {
   const [members, setMembers] = useState<any>([]);
@@ -30,26 +31,36 @@ export function MembersScreen(this: any) {
   const [modalConcluded, setModalConcluded] = useState(false);
   const [name, setName] = useState<string>();
   const [id, setId] = useState<any>();
-  const [updateMembers, setUpdateMembers] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false)
+  const [celulas, setCelulas] = useState<any>()
 
-  const { data: celulas, isFetching: loading } = useFetch("celulas.json");
   const { user } = useUserFiltered();
+  const { trigger, setTrigger } = useFormReport()
   const navigation = useNavigation<IPropsAppStack>();
 
   const identifyCelula = user && user[0][1].numero_celula;
 
-  console.log("user", user);
-  console.log("identifyCelula", identifyCelula);
+  const serviceGet = new RequestService()
+
+  const idCelula =
+    members && members.length > 0 && Object.entries(members[0])[0][1];
+
+  useEffect(() => {
+    const getCelulas = async () => {
+      await serviceGet.getCelulas().then((response) => {
+        setCelulas(Object.entries(response))
+      })
+    }
+
+    getCelulas()
+  }, [trigger])
 
   useEffect(() => {
     const filterMembers =
       celulas &&
       celulas.filter((item: any) => {
-        console.log("item", item[1].numero_celula);
-        return item[1].numero_celula === identifyCelula;
+        return item[1].numero_celula == identifyCelula;
       });
-
-    console.log("filterMembers", filterMembers);
 
     if (filterMembers) {
       setMembers(filterMembers);
@@ -58,10 +69,9 @@ export function MembersScreen(this: any) {
         JSON.stringify(filterMembers)
       );
     }
-  }, [identifyCelula, celulas, updateMembers]);
+  }, [identifyCelula, celulas]);
 
-  const idCelula =
-    members && members.length > 0 && Object.entries(members[0])[0][1];
+
 
   const timeModal = () => {
     setModalConcluded(true);
@@ -70,9 +80,9 @@ export function MembersScreen(this: any) {
   const deleteMember = () => {
     try {
       connectApi.delete(`/celulas/${idCelula}/membros/${id}.json`).then(() => {
-        setUpdateMembers(!updateMembers);
         setSendModal(false);
         setTimeout(timeModal, 300);
+        setTrigger(!trigger)
       });
     } catch (err) {
       alert(err);
@@ -122,6 +132,8 @@ export function MembersScreen(this: any) {
                             data_de_nascimento: `${item[1].data_de_nascimento}`,
                             status: `${item[1].status}`,
                             numero_casa: `${item[1].numero_casa}`,
+                            id: `${item[0]}`,
+                            active: setTrigger
                           })
                         }
                         delMember={() => {

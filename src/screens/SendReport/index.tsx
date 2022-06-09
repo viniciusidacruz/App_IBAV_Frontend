@@ -144,7 +144,6 @@ export function SendReportScreen() {
     setCelulaFiltered(filterCelulas);
   }, [celulas]);
 
-
   // tratativas para o usuário administrador
   const redes = celulas.map((item: any) => (item.rede))
   const redesUnicas = redes.filter(function (este: any, i: any) {

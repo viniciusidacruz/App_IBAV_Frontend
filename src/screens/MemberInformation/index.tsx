@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView } from 'react-native';
+import useUserFiltered from "../../hooks/useUserFiltered";
+import RequestService from "../../common/services/RequestService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GetStorage } from "../../common/constants/storage";
 
 import { DateComponent } from "../../components/Date";
 import { ModalComponent } from "../../components/Modal";
@@ -17,10 +21,12 @@ import FormFields from "../../common/constants/form";
 import * as S from "./styles";
 import { selectCategory, selectCivilStatus, selectState } from "../../common/utils/selects";
 import { connectApi } from "../../common/services/ConnectApi";
+import { useFormReport } from "../../hooks/useFormReport";
 
-export function MembersInformation(this: any, { navigation, route }: any) {
+export function MembersInformation(this: any, { route }: any) {
     const [successModal, setSuccessModal] = useState(false);
     const [showCalender, setShowCalender] = useState(false);
+
     const [cep, setCep] = useState(route.params?.cep || "");
     const [name, setName] = useState(route.params?.nome || "");
     const [city, setCity] = useState(route.params?.cidade || "");
@@ -30,6 +36,12 @@ export function MembersInformation(this: any, { navigation, route }: any) {
     const [phone, setPhone] = useState(route.params?.telefone || "");
     const [address, setAddress] = useState(route.params?.endereco || "");
     const [district, setDistrict] = useState(route.params?.bairro || "");
+<<<<<<< HEAD
+    const [birthday, setBirthday] = useState(route.params?.data_de_nascimento || "");
+    const [civilStatus, setCivilStatus] = useState(route.params?.estado_civil || "");
+    const [id, setId] = useState(route.params?.id)
+
+=======
     const [number, setNumber] = useState(route.params?.numero_casa ? route.params?.numero_casa : FormFields.NUMBER);
     const [birthday, setBirthday] = useState(
         route.params?.data_de_nascimento || ""
@@ -37,8 +49,47 @@ export function MembersInformation(this: any, { navigation, route }: any) {
     const [civilStatus, setCivilStatus] = useState(
         route.params?.estado_civil || ""
     );
+>>>>>>> b8b54b51338eb4f003312b7bd97389f629025786
     const [date, setDate] = useState(new Date())
-    const [selectDate, setSelectDate] = useState<any>("Selecione uma data")
+    const [celulas, setCelulas] = useState<any>()
+    const [members, setMembers] = useState<any>([]);
+
+    const { user } = useUserFiltered();
+    const { trigger, setTrigger } = useFormReport()
+
+    
+    const identifyCelula = user && user[0][1].numero_celula;
+
+    const serviceGet = new RequestService()
+
+    const idCelula =
+    members && members.length > 0 && Object.entries(members[0])[0][1];
+
+    useEffect(() => {
+        const getCelulas = async () => {
+          await serviceGet.getCelulas().then((response) =>{
+            setCelulas(Object.entries(response))
+          })
+        }
+    
+        getCelulas()
+      }, [])
+
+      useEffect(() => {
+        const filterMembers =
+          celulas &&
+          celulas.filter((item: any) => {
+            return item[1].numero_celula == identifyCelula;
+          });
+    
+        if (filterMembers) {
+          setMembers(filterMembers);
+          AsyncStorage.setItem(
+            GetStorage.MEMBERS_FILTERED,
+            JSON.stringify(filterMembers)
+          );
+        }
+      }, [identifyCelula, celulas]);
 
     const showMode = () => {
         setShowCalender(true);
@@ -58,31 +109,35 @@ export function MembersInformation(this: any, { navigation, route }: any) {
             tempDate.getFullYear();
 
         setDate(currentDate)
-        setSelectDate(newDate)
-        // setBirthday(newDate)
+        setBirthday(newDate)
 
     };
 
+    const timeModal = () => {
+        setSuccessModal(true);
+      };
 
     const submitRegister = () => {
         try {
-            connectApi.patch
-        } catch (err) { }
+            connectApi.put(`/celulas/${idCelula}/membros/${id}.json`, {
+                nome: name,
+                status: status,
+                telefone: phone,
+                email: email,
+                endereco: address,
+                cep: cep,
+                bairro: district,
+                cidade: city,
+                estado: state,
+                data_de_nascimento: birthday,
+                estado_civil: civilStatus
+            })
+            setTrigger(!trigger)
+            setTimeout(timeModal, 300);
+        } catch (err) {
+            alert(err)
+        }
     };
-
-    // const waitingDeletion = async () => {
-    //     try {
-    //       await connectApi.patch(`/celulas/${idCelula}/membros/${id}.json`, {
-    //         aguardando_exclusao: true
-    //       })
-    //         .then(() => {
-    //           setSendModal(false)
-    //           setTimeout(timeModal, 300)
-    //         })
-    //     } catch (err) {
-    //       alert(err)
-    //     }
-    //   }
 
     return (
         <>
@@ -126,25 +181,29 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                         </S.GridItemFull>
 
                         <S.GridForm>
-                            <S.GridItemLarge>
+                            <S.GridItem>
                                 <InputFieldComponent
                                     primary
+<<<<<<< HEAD
+                                    value={address && address}
+=======
                                     value={address ? FormFields.ADDRESS : address}
+>>>>>>> b8b54b51338eb4f003312b7bd97389f629025786
                                     placeholder={FormFields.ADDRESS}
                                     onChangeText={(value) => setAddress(value)}
                                     label="Endereço"
                                 />
-                            </S.GridItemLarge>
+                            </S.GridItem>
 
-                            <S.GridItemSmall>
+                            <S.GridItem>
                                 <InputFieldComponent
                                     primary
-                                    value={number === "undefined" ? FormFields.NUMBER : number}
-                                    placeholder={FormFields.NUMBER}
-                                    onChangeText={(value) => setNumber(value)}
-                                    label="Nº"
+                                    value={cep === "undefined" ? FormFields.CEP : cep}
+                                    placeholder={FormFields.CEP}
+                                    onChangeText={(value) => setCep(value)}
+                                    label="Cep"
                                 />
-                            </S.GridItemSmall>
+                            </S.GridItem>
                         </S.GridForm>
 
                         <S.GridForm>
@@ -194,7 +253,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                         <S.GridForm>
                             <S.GridItem>
                                 <DateComponent
-                                    text={selectDate}
+                                    text={birthday}
                                     open={showMode}
                                     showCalender={showCalender}
                                     dataDados={date}
@@ -234,7 +293,7 @@ export function MembersInformation(this: any, { navigation, route }: any) {
                 <DefaultContentModalComponent
                     closeModal={setSuccessModal}
                     data={name}
-                    type="register"
+                    type="edited"
                 />
             </ModalComponent>
         </>
