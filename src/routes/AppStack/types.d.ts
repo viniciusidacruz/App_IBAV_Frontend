@@ -13,6 +13,7 @@ export type INavigationAppStackProps = {
   Multiplication: undefined;
   WaitingApprove: undefined;
   PreRegisterAdmin: undefined;
+  NetworkListScreen: undefined;
   MemberInformation: undefined;
 };
 

@@ -11,10 +11,11 @@ import { PreListAdminScreen } from "../../screens/PreListAdmin";
 import { MembersReportScreen } from "../../screens/MembersReport";
 import { WaitingApproveScreen } from "../../screens/WaitingApprove";
 import { VisitorsReportScreen } from "../../screens/VisitorsReport";
-import { PreRegisterAdminScreen } from "../../screens/PreRegisterAdmin";
 import { MembersInformation } from "../../screens/MemberInformation";
+import { PreRegisterAdminScreen } from "../../screens/PreRegisterAdmin";
 
 import { INavigationAppStackProps } from "./types";
+import NetworkListScreen from "../../screens/NetworkList";
 
 export function AppRoutes() {
   const { Navigator, Screen } =
@@ -31,10 +32,11 @@ export function AppRoutes() {
       <Screen name="PreListAdmin" component={PreListAdminScreen} />
       <Screen name="UserRegister" component={UserRegisterScreen} />
       <Screen name="MembersReport" component={MembersReportScreen} />
+      <Screen name="NetworkListScreen" component={NetworkListScreen} />
       <Screen name="WaitingApprove" component={WaitingApproveScreen} />
       <Screen name="VisitorsReport" component={VisitorsReportScreen} />
-      <Screen name="PreRegisterAdmin" component={PreRegisterAdminScreen} />
       <Screen name="MemberInformation" component={MembersInformation} />
+      <Screen name="PreRegisterAdmin" component={PreRegisterAdminScreen} />
     </Navigator>
   );
 }

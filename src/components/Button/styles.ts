@@ -29,12 +29,13 @@ export const BoxIcon = styled.View<ISvgProps>`
 `;
 
 export const Title = styled.Text<ISizeProps>`
-  font-size: ${({ size, theme }) =>
-    size ? size : theme.fonts.fontSize.small};
+  font-size: ${({ size, theme }) => (size ? size : theme.fonts.fontSize.small)};
   font-family: ${({ theme }) => theme.fonts.fontFamily.bold};
 
   text-transform: uppercase;
   letter-spacing: 1;
+
+  margin-left: ${({ icon }) => icon && "10"};
 
   color: ${({ theme }) => theme.colors.light};
 `;
