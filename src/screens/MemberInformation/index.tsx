@@ -36,20 +36,10 @@ export function MembersInformation(this: any, { route }: any) {
     const [phone, setPhone] = useState(route.params?.telefone || "");
     const [address, setAddress] = useState(route.params?.endereco || "");
     const [district, setDistrict] = useState(route.params?.bairro || "");
-<<<<<<< HEAD
     const [birthday, setBirthday] = useState(route.params?.data_de_nascimento || "");
     const [civilStatus, setCivilStatus] = useState(route.params?.estado_civil || "");
     const [id, setId] = useState(route.params?.id)
 
-=======
-    const [number, setNumber] = useState(route.params?.numero_casa ? route.params?.numero_casa : FormFields.NUMBER);
-    const [birthday, setBirthday] = useState(
-        route.params?.data_de_nascimento || ""
-    );
-    const [civilStatus, setCivilStatus] = useState(
-        route.params?.estado_civil || ""
-    );
->>>>>>> b8b54b51338eb4f003312b7bd97389f629025786
     const [date, setDate] = useState(new Date())
     const [celulas, setCelulas] = useState<any>()
     const [members, setMembers] = useState<any>([]);
@@ -57,39 +47,39 @@ export function MembersInformation(this: any, { route }: any) {
     const { user } = useUserFiltered();
     const { trigger, setTrigger } = useFormReport()
 
-    
+
     const identifyCelula = user && user[0][1].numero_celula;
 
     const serviceGet = new RequestService()
 
     const idCelula =
-    members && members.length > 0 && Object.entries(members[0])[0][1];
+        members && members.length > 0 && Object.entries(members[0])[0][1];
 
     useEffect(() => {
         const getCelulas = async () => {
-          await serviceGet.getCelulas().then((response) =>{
-            setCelulas(Object.entries(response))
-          })
+            await serviceGet.getCelulas().then((response) => {
+                setCelulas(Object.entries(response))
+            })
         }
-    
-        getCelulas()
-      }, [])
 
-      useEffect(() => {
+        getCelulas()
+    }, [])
+
+    useEffect(() => {
         const filterMembers =
-          celulas &&
-          celulas.filter((item: any) => {
-            return item[1].numero_celula == identifyCelula;
-          });
-    
+            celulas &&
+            celulas.filter((item: any) => {
+                return item[1].numero_celula == identifyCelula;
+            });
+
         if (filterMembers) {
-          setMembers(filterMembers);
-          AsyncStorage.setItem(
-            GetStorage.MEMBERS_FILTERED,
-            JSON.stringify(filterMembers)
-          );
+            setMembers(filterMembers);
+            AsyncStorage.setItem(
+                GetStorage.MEMBERS_FILTERED,
+                JSON.stringify(filterMembers)
+            );
         }
-      }, [identifyCelula, celulas]);
+    }, [identifyCelula, celulas]);
 
     const showMode = () => {
         setShowCalender(true);
@@ -115,7 +105,7 @@ export function MembersInformation(this: any, { route }: any) {
 
     const timeModal = () => {
         setSuccessModal(true);
-      };
+    };
 
     const submitRegister = () => {
         try {
@@ -184,11 +174,7 @@ export function MembersInformation(this: any, { route }: any) {
                             <S.GridItem>
                                 <InputFieldComponent
                                     primary
-<<<<<<< HEAD
                                     value={address && address}
-=======
-                                    value={address ? FormFields.ADDRESS : address}
->>>>>>> b8b54b51338eb4f003312b7bd97389f629025786
                                     placeholder={FormFields.ADDRESS}
                                     onChangeText={(value) => setAddress(value)}
                                     label="Endereço"
