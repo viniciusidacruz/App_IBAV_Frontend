@@ -6,12 +6,14 @@ import MenuNavigation from "../../common/constants/navigation";
 
 import { IDataProps } from "./types";
 import { IPropsAppStack } from "../../routes/AppStack/types";
-
+import { useFormReport } from "../../hooks/useFormReport";
 import { Navigation } from "./styles";
 
 export function NavigationComponent({ data, members, visitors }: IDataProps) {
   const navigation = useNavigation<IPropsAppStack>();
 
+  const { state } = useFormReport();
+  const disableNavegation = state.celulaSelect === null
   return (
     <Fragment>
       {data && (
@@ -23,16 +25,16 @@ export function NavigationComponent({ data, members, visitors }: IDataProps) {
               {MenuNavigation.DATA}
             </Navigation>
           </TouchableOpacity>
-
+          {console.log(disableNavegation, 'state.celulaSelect navegation')}
           <TouchableOpacity
             onPress={() => navigation.navigate("MembersReport")}
-          >
+            disabled={disableNavegation}>
             <Navigation>{MenuNavigation.MEMBERS}</Navigation>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => navigation.navigate("VisitorsReport")}
-          >
+            disabled={disableNavegation}>
             <Navigation>{MenuNavigation.VISITORS}</Navigation>
           </TouchableOpacity>
         </Fragment>
