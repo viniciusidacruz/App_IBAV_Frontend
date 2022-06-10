@@ -7,10 +7,13 @@ import { HeaderComponent } from "../../components/Header";
 import { ButtonComponent } from "../../components/Button";
 import { ComeBackComponent } from "../../components/ComeBack";
 import { PersonLabelComponent } from "../../components/PersonLabel";
+import { SelectComponent } from "../../components/Select";
+import { TitleComponent } from "../../components/Title";
 // import { NotificationComponent } from "../../components/Notification";
 
 const loadingGif = require("../../assets/loader-two.gif");
 
+import FormFields from "../../common/constants/form";
 import useUserFiltered from "../../hooks/useUserFiltered";
 import { GetStorage } from "../../common/constants/storage";
 import MenuNavigation from "../../common/constants/navigation";
@@ -35,7 +38,7 @@ export function MembersScreen(this: any) {
   const [celulas, setCelulas] = useState<any>()
 
   const { user } = useUserFiltered();
-  const { trigger, setTrigger } = useFormReport()
+  const { state, trigger, setTrigger } = useFormReport()
   const navigation = useNavigation<IPropsAppStack>();
 
   const identifyCelula = user && user[0][1].numero_celula;
@@ -104,6 +107,10 @@ export function MembersScreen(this: any) {
         />
         {/* <NotificationComponent /> */}
       </HeaderComponent>
+      <TitleComponent title={`${FormFields.NETWORK}:`} small primary />
+      {/* <SelectComponent
+        labelSelect={state.textSelectCelula}
+      /> */}
       <ScrollView>
         <S.Container>
           {loading ? (
