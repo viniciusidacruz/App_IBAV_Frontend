@@ -4,5 +4,5 @@ export interface IDataProps {
   data?: boolean;
   members?: boolean;
   visitors?: boolean;
-  disabled?: any;
+  disabled?: boolean;
 }

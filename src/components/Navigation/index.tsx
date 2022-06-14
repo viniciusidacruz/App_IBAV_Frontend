@@ -25,17 +25,16 @@ export function NavigationComponent({ data, members, visitors }: IDataProps) {
               {MenuNavigation.DATA}
             </Navigation>
           </TouchableOpacity>
-          {console.log(disableNavegation, 'state.celulaSelect navegation')}
           <TouchableOpacity
             onPress={() => navigation.navigate("MembersReport")}
             disabled={disableNavegation}>
-            <Navigation>{MenuNavigation.MEMBERS}</Navigation>
+            <Navigation disabled={disableNavegation}>{MenuNavigation.MEMBERS}</Navigation>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => navigation.navigate("VisitorsReport")}
             disabled={disableNavegation}>
-            <Navigation>{MenuNavigation.VISITORS}</Navigation>
+            <Navigation disabled={disableNavegation}>{MenuNavigation.VISITORS}</Navigation>
           </TouchableOpacity>
         </Fragment>
       )}
