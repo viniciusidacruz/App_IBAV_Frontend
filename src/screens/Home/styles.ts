@@ -12,7 +12,7 @@ export const Material = styled(MaterialIcons)`
 
 export const Buttons = styled.View`
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
 `;
 
