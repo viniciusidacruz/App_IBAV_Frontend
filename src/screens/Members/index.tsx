@@ -70,20 +70,18 @@ export function MembersScreen(this: any) {
   useEffect(() => {
     const getCelulas = async () => {
       await serviceGet.getCelulas().then((response) => {
-      setCelulas(Object.entries(response))
+      setCelulas(Object.values(response))
       })
     }
 
     getCelulas()
-  }, [trigger])
-
-  console.log(celulas && Object.values(celulas), 'asdasdasdasdas')
+  }, [trigger]);
 
   if (whatOffice === 'lider') {
     useEffect(() => {
       const filterMembers =
         celulas &&
-        celulas[1].filter((item: any) => {
+        celulas.filter((item: any) => {
           return item.numero_celula == identifyCelula;
         });
 
@@ -150,7 +148,7 @@ export function MembersScreen(this: any) {
   }, [celulas]);
 
     // tratativas para o usuário administrador
-    const redes = celulas && celulas.map((item: any) => (item[1].rede))
+    const redes = celulas && celulas.map((item: any) => (item.rede))
     const redesUnicas = redes && redes.filter(function (este: any, i: any) {
       return redes.indexOf(este) === i;
     });
@@ -161,7 +159,7 @@ export function MembersScreen(this: any) {
       }
     })
 
-    const filtrandoRedes = celulas && celulas[1].filter((item: any) => {
+    const filtrandoRedes = celulas && celulas.filter((item: any) => {
       return item.rede === state.redeSelect
     })
 
@@ -178,7 +176,7 @@ export function MembersScreen(this: any) {
       }
     })
 
-    const filtrandoDiscipulado = celulas && celulas[1].filter((item: any) => {
+    const filtrandoDiscipulado = celulas && celulas.filter((item: any) => {
       return item.discipulador === state.discipuladoSelect && item.rede === state.redeSelect
     })
 
