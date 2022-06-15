@@ -12,10 +12,8 @@ export const Material = styled(MaterialIcons)`
 
 export const Buttons = styled.View`
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-
-  width: 20%;
 `;
 
 export const Content = styled.View`
@@ -106,7 +104,7 @@ export const RegisterIcon = styled(FontAwesome5)`
   font-size: ${({ theme }) => theme.fonts.fontSize.large};
 `;
 
-export const WaitApprovalIcon = styled(FontAwesome5)`
+export const ReportView = styled(FontAwesome5)`
   color: ${({ theme }) => theme.colors.light};
 
   font-size: ${({ theme }) => theme.fonts.fontSize.large};

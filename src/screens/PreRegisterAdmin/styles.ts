@@ -18,10 +18,8 @@ export const HeadingIcons = styled.View`
 
 export const Buttons = styled.View`
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-
-  width: 20%;
 `;
 
 export const Content = styled.View`

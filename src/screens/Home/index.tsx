@@ -127,8 +127,8 @@ export function HomeScreen() {
               {whatIsOffice === "administrador" && (
                 <S.ContentOptions>
                   <SelectedMenuComponent
-                    icon={<S.WaitApprovalIcon name="thumbs-up" />}
-                    title="Aguardando Aprovação"
+                    icon={<S.ReportView name="copy" />}
+                    title="Ver Relatórios Entregues"
                     onPress={() => navigation.navigate("WaitingApprove")}
                   />
                   <SelectedMenuComponent
