@@ -1,5 +1,6 @@
 const MenuNavigation = {
   DATA: "DADOS",
+  USERS: "USUÁRIOS",
   MEMBERS: "MEMBROS",
   DETAILS: "DETALHES",
   REGISTER: "CADASTRAR",
