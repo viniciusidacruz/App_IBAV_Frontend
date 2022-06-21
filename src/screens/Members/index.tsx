@@ -70,7 +70,7 @@ export function MembersScreen(this: any) {
   useEffect(() => {
     const getCelulas = async () => {
       await serviceGet.getCelulas().then((response) => {
-      setCelulas(Object.values(response))
+        setCelulas(Object.values(response))
       })
     }
 
@@ -94,6 +94,8 @@ export function MembersScreen(this: any) {
       }
     }, [identifyCelula, celulas]);
   }
+
+  console.log(celulas && celulas, 'celulas')
 
   const timeModal = () => {
     setModalConcluded(true);
@@ -147,44 +149,62 @@ export function MembersScreen(this: any) {
     setCelulaFiltered(filterCelulas);
   }, [celulas]);
 
-    // tratativas para o usuário administrador
-    const redes = celulas && celulas.map((item: any) => (item.rede))
-    const redesUnicas = redes && redes.filter(function (este: any, i: any) {
-      return redes.indexOf(este) === i;
-    });
-  
-    const mapRedesUnicas = redesUnicas && redesUnicas.map((item: any) => {
-      return {
-        value: item
+  // tratativas para o usuário administrador
+  const redes = celulas && celulas.map((item: any) => (item.rede))
+  const redesUnicas = redes && redes.filter(function (este: any, i: any) {
+    return redes.indexOf(este) === i;
+  });
+
+  const mapRedesUnicas = redesUnicas && redesUnicas.map((item: any) => {
+    return {
+      value: item
+    }
+  })
+
+  const filtrandoRedes = celulas && celulas.filter((item: any) => {
+    return item.rede === state.redeSelect
+  })
+
+  const discipulado = filtrandoRedes && filtrandoRedes.map((item: any) =>
+    (item.discipulador))
+
+  const discipuladossUnicos = discipulado && discipulado.filter(function (este: any, i: any) {
+    return discipulado.indexOf(este) === i;
+  });
+
+  const mapDiscipuladosUnicos = discipuladossUnicos && discipuladossUnicos.map((item: any) => {
+    return {
+      value: item
+    }
+  })
+
+  const filtrandoDiscipulado = celulas && celulas.filter((item: any) => {
+    return item.discipulador === state.discipuladoSelect && item.rede === state.redeSelect
+  })
+
+  const celulaAdm = filtrandoDiscipulado && filtrandoDiscipulado.map((item: any) => {
+    return {
+      value: `${item.numero_celula} - ${item.lider}`
+    }
+  })
+
+  const numberCelula = celulaAdm && celulaAdm[0]?.value.split(' - ')[0]
+
+  useEffect(() => {
+    if (whatOffice === 'administrador') {
+
+      const filterMembers =
+        celulas &&
+        celulas.filter((item: any) => {
+
+          return item.numero_celula == numberCelula;
+        });
+
+      if (filterMembers) {
+        setMembers(filterMembers);
       }
-    })
-
-    const filtrandoRedes = celulas && celulas.filter((item: any) => {
-      return item.rede === state.redeSelect
-    })
-
-    const discipulado = filtrandoRedes && filtrandoRedes.map((item: any) =>
-      (item.discipulador))
-  
-    const discipuladossUnicos = discipulado && discipulado.filter(function (este: any, i: any) {
-      return discipulado.indexOf(este) === i;
-    });
-  
-    const mapDiscipuladosUnicos = discipuladossUnicos && discipuladossUnicos.map((item: any) => {
-      return {
-        value: item
-      }
-    })
-
-    const filtrandoDiscipulado = celulas && celulas.filter((item: any) => {
-      return item.discipulador === state.discipuladoSelect && item.rede === state.redeSelect
-    })
-
-    const celulaAdm = filtrandoDiscipulado && filtrandoDiscipulado.map((item: any) => {
-      return {
-        value: `${item.numero_celula} - ${item.lider}`
-      }
-    })
+    }
+  }, [numberCelula, celulas])
 
   // tratativas para o usuário pastor
 
@@ -354,7 +374,7 @@ export function MembersScreen(this: any) {
               {office()}
               {members &&
                 members.length > 0 &&
-                Object.entries(members[0][1].membros).map((item: any) => {
+                Object?.entries(members[0]?.membros).map((item: any) => {
                   return (
                     <Fragment>
                       <PersonLabelComponent
