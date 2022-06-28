@@ -14,6 +14,7 @@ export type INavigationAppStackProps = {
   WaitingApprove: undefined;
   PreRegisterAdmin: undefined;
   MemberInformation: undefined;
+  Report: undefined;
 };
 
 export type IPropsAppStack = NativeStackScreenProps<INavigationAppStackProps>;

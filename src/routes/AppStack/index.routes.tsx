@@ -4,6 +4,7 @@ import { HomeScreen } from "../../screens/Home";
 import { DetailsScreen } from "../../screens/Details";
 import { MembersScreen } from "../../screens/Members";
 import { RegisterScreen } from "../../screens/Register";
+import { ReportScreen } from "../../screens/Report";
 import { SendReportScreen } from "../../screens/SendReport";
 import { Multiplication } from "../../screens/Multiplication";
 import { UserRegisterScreen } from "../../screens/UserRegister";
@@ -26,7 +27,8 @@ export function AppRoutes() {
       <Screen name="Details" component={DetailsScreen} />
       <Screen name="Members" component={MembersScreen} />
       <Screen name="Register" component={RegisterScreen} />
-      <Screen name="SendReport" component={SendReportScreen} />
+      {/* <Screen name="SendReport" component={SendReportScreen} /> */}
+      <Screen name="Report" component={ReportScreen} />
       <Screen name="Multiplication" component={Multiplication} />
       <Screen name="PreListAdmin" component={PreListAdminScreen} />
       <Screen name="UserRegister" component={UserRegisterScreen} />
